@@ -1,0 +1,803 @@
+<link rel="stylesheet" type="text/css" href="style.css">
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="n">md</span>
+<span class="k">#</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">&lt;h1&gt;&lt;/h1&gt;</span>
+</pre></div>
+
+<h3>Read csv file and create paired RDD</h3>
+
+<div class="highlight"><pre><span></span>%sh <span class="nb">pwd</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">/home/ubuntu/test_spark/zeppelin-0.8.1-bin-netinst</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Input files</span>
+<span class="n">z</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="s">&quot;transactionFile&quot;</span><span class="o">,</span> <span class="s">&quot;/home/ubuntu/test_spark/sia/ch04_data_transactions.txt&quot;</span><span class="o">)</span>
+<span class="n">z</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="s">&quot;productFile&quot;</span><span class="o">,</span> <span class="s">&quot;/home/ubuntu/test_spark/sia/ch04_data_products.txt&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>%sh
+ls -l <span class="o">{</span>transactionFile<span class="o">}</span>
+ls -l <span class="o">{</span>productFile<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">-rw-rw-r-- 1 ubuntu ubuntu 34996 Mar 12 15:46 /home/ubuntu/test_spark/sia/ch04_data_transactions.txt</span>
+<span class="go">-rw-rw-r-- 1 ubuntu ubuntu 3466 Mar 12 15:46 /home/ubuntu/test_spark/sia/ch04_data_products.txt</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>%sh
+head <span class="o">{</span>transactionFile<span class="o">}</span>
+<span class="nb">echo</span>
+<span class="nb">echo</span>
+head <span class="o">{</span>productFile<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">2015-03-30#6:55 AM#51#68#1#9506.21</span>
+<span class="go">2015-03-30#7:39 PM#99#86#5#4107.59</span>
+<span class="go">2015-03-30#11:57 AM#79#58#7#2987.22</span>
+<span class="go">2015-03-30#12:46 AM#51#50#6#7501.89</span>
+<span class="go">2015-03-30#11:39 AM#86#24#5#8370.2</span>
+<span class="go">2015-03-30#10:35 AM#63#19#5#1023.57</span>
+<span class="go">2015-03-30#2:30 AM#23#77#7#5892.41</span>
+<span class="go">2015-03-30#7:41 PM#49#58#4#9298.18</span>
+<span class="go">2015-03-30#9:18 AM#97#86#8#9462.89</span>
+<span class="go">2015-03-30#10:06 PM#94#26#4#4199.15</span>
+
+
+<span class="go">1#ROBITUSSIN PEAK COLD NIGHTTIME COLD PLUS FLU#9721.89#10</span>
+<span class="go">2#Mattel Little Mommy Doctor Doll#6060.78#6</span>
+<span class="go">3#Cute baby doll, battery#1808.79#2</span>
+<span class="go">4#Bear doll#51.06#6</span>
+<span class="go">5#LEGO Legends of Chima#849.36#6</span>
+<span class="go">6#LEGO Castle#4777.51#10</span>
+<span class="go">7#LEGO Mixels#8720.91#1</span>
+<span class="go">8#LEGO Star Wars#7592.44#4</span>
+<span class="go">9#LEGO Lord of the Rings#851.67#2</span>
+<span class="go">10#LEGO The Hobbit#7314.55#9</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Read transaction file into RDD using csv format</span>
+
+<span class="k">val</span> <span class="n">transFile</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;transactionFile&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">transFile: org.apache.spark.rdd.RDD[String] = /home/ubuntu/test_spark/sia/ch04_data_transactions.txt MapPartitionsRDD[596] at textFile at &lt;console&gt;:153</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">transFile</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res118: Array[String] = Array(2015-03-30#6:55 AM#51#68#1#9506.21, 2015-03-30#7:39 PM#99#86#5#4107.59, 2015-03-30#11:57 AM#79#58#7#2987.22, 2015-03-30#12:46 AM#51#50#6#7501.89, 2015-03-30#11:39 AM#86#24#5#8370.2)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">transData</span> <span class="k">=</span> <span class="n">transFile</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;#&quot;</span><span class="o">))</span>
+<span class="n">transData</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">transData: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[597] at map at &lt;console&gt;:149</span>
+<span class="go">res119: Array[Array[String]] = Array(Array(2015-03-30, 6:55 AM, 51, 68, 1, 9506.21), Array(2015-03-30, 7:39 PM, 99, 86, 5, 4107.59), Array(2015-03-30, 11:57 AM, 79, 58, 7, 2987.22), Array(2015-03-30, 12:46 AM, 51, 50, 6, 7501.89), Array(2015-03-30, 11:39 AM, 86, 24, 5, 8370.2))</span>
+</pre></div>
+
+<h4>Create paired RDD</h4>
+<p><a href="https://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions">Paired RDD Functions</a></p>
+
+<div class="highlight"><pre><span></span><span class="k">var</span> <span class="n">transByCust</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;transactionFile&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+                        <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;#&quot;</span><span class="o">))</span>
+                        <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">trans</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">trans</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">toInt</span><span class="o">,</span> <span class="n">trans</span><span class="o">))</span>
+<span class="n">transByCust</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">transByCust: org.apache.spark.rdd.RDD[(Int, Array[String])] = MapPartitionsRDD[601] at map at &lt;console&gt;:153</span>
+<span class="go">res120: Array[(Int, Array[String])] = Array((51,Array(2015-03-30, 6:55 AM, 51, 68, 1, 9506.21)), (99,Array(2015-03-30, 7:39 PM, 99, 86, 5, 4107.59)), (79,Array(2015-03-30, 11:57 AM, 79, 58, 7, 2987.22)), (51,Array(2015-03-30, 12:46 AM, 51, 50, 6, 7501.89)), (86,Array(2015-03-30, 11:39 AM, 86, 24, 5, 8370.2)))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Another way</span>
+
+<span class="k">val</span> <span class="n">transByCust1</span> <span class="k">=</span> <span class="n">transData</span><span class="o">.</span><span class="n">keyBy</span><span class="o">(</span><span class="k">_</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">toInt</span><span class="o">)</span>
+<span class="n">transByCust1</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">transByCust1: org.apache.spark.rdd.RDD[(Int, Array[String])] = MapPartitionsRDD[602] at keyBy at &lt;console&gt;:151</span>
+<span class="go">res121: Array[(Int, Array[String])] = Array((51,Array(2015-03-30, 6:55 AM, 51, 68, 1, 9506.21)), (99,Array(2015-03-30, 7:39 PM, 99, 86, 5, 4107.59)), (79,Array(2015-03-30, 11:57 AM, 79, 58, 7, 2987.22)), (51,Array(2015-03-30, 12:46 AM, 51, 50, 6, 7501.89)), (86,Array(2015-03-30, 11:39 AM, 86, 24, 5, 8370.2)))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">transByCust1</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res127: org.apache.spark.rdd.RDD[(Int, Array[String])] = MapPartitionsRDD[602] at keyBy at &lt;console&gt;:151</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Number of unique customers</span>
+
+<span class="k">val</span> <span class="n">uniqueCustomerIds</span> <span class="k">=</span> <span class="n">transByCust</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">distinct</span><span class="o">.</span><span class="n">count</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">uniqueCustomerIds: Long = 100</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">transByCust</span><span class="o">.</span><span class="n">keys</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res122: org.apache.spark.rdd.RDD[Int] = MapPartitionsRDD[607] at keys at &lt;console&gt;:150</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Group by customerId</span>
+<span class="n">transByCust</span><span class="o">.</span><span class="n">countByKey</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res123: scala.collection.Map[Int,Long] = Map(69 -&gt; 7, 88 -&gt; 5, 5 -&gt; 11, 10 -&gt; 7, 56 -&gt; 17, 42 -&gt; 7, 24 -&gt; 9, 37 -&gt; 7, 25 -&gt; 12, 52 -&gt; 9)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">transByCust</span><span class="o">.</span><span class="n">countByKey</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">sum</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res124: Long = 1000</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">transByCust</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res126: Array[Array[String]] = Array(Array(2015-03-30, 6:55 AM, 51, 68, 1, 9506.21), Array(2015-03-30, 7:39 PM, 99, 86, 5, 4107.59), Array(2015-03-30, 11:57 AM, 79, 58, 7, 2987.22), Array(2015-03-30, 12:46 AM, 51, 50, 6, 7501.89), Array(2015-03-30, 11:39 AM, 86, 24, 5, 8370.2))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">transByCust</span><span class="o">.</span><span class="n">countByKey</span><span class="o">.</span><span class="n">toSeq</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res5: Seq[(Int, Long)] = ArrayBuffer((69,7), (88,5), (5,11), (10,7), (56,17), (42,7), (24,9), (37,7), (25,12), (52,9), (14,8), (20,8), (46,9), (93,12), (57,8), (78,11), (29,9), (84,9), (61,8), (89,9), (1,9), (74,11), (6,7), (60,4), (85,9), (28,11), (38,9), (70,8), (21,13), (33,9), (92,8), (65,10), (97,12), (9,7), (53,19), (77,11), (96,8), (13,12), (41,12), (73,7), (2,15), (32,14), (34,14), (45,11), (64,10), (17,13), (22,10), (44,8), (59,9), (27,7), (71,10), (12,7), (54,7), (49,8), (86,9), (81,9), (76,15), (7,10), (39,11), (98,11), (91,13), (66,11), (3,13), (80,7), (35,10), (48,5), (63,12), (18,9), (95,8), (50,14), (67,5), (16,8), (31,14), (11,8), (72,7), (43,12), (99,12), (87,10), (40,10), (26,11), (55,13), (23,13), (8,10), (75,10), (58,13), (82,13), (36,5), (30,5), (51,18), (19,6), (4,...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Customer who purchased most items</span>
+
+<span class="n">transByCust</span><span class="o">.</span><span class="n">countByKey</span><span class="o">.</span><span class="n">toSeq</span><span class="o">.</span><span class="n">sortBy</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">_2</span><span class="o">).</span><span class="n">last</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res6: (Int, Long) = (53,19)</span>
+</pre></div>
+
+<h4>countByKey returns a scala object. If we want to group and sort keys in RDD</h4>
+<p>Operations which can cause a shuffle include repartition operations like repartition and coalesce, ‘ByKey operations (except for counting) like groupByKey and reduceByKey, and join operations like cogroup and join.</p>
+<p>Reference: <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html">RDD Programming guide</a></p>
+
+<div class="highlight"><pre><span></span><span class="n">transByCust</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span> <span class="mi">1</span><span class="o">))</span>
+        <span class="o">.</span><span class="n">reduceByKey</span><span class="o">(</span><span class="k">_</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">sortBy</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">_2</span><span class="o">,</span> <span class="n">ascending</span><span class="k">=</span><span class="kc">false</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res128: Array[(Int, Int)] = Array((53,19))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// sorting doesn&#39;t cause shuffling</span>
+
+<span class="n">transByCust</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span> <span class="mi">1</span><span class="o">))</span>
+        <span class="o">.</span><span class="n">sortBy</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">_1</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res133: Array[(Int, Int)] = Array((1,1), (1,1), (1,1), (1,1), (1,1))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// All transactions by customerId 53</span>
+<span class="c1">// NOTE: lookup() transfers results to driver</span>
+
+<span class="n">transByCust</span><span class="o">.</span><span class="n">lookup</span><span class="o">(</span><span class="mi">53</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res14: Seq[Array[String]] = WrappedArray(Array(2015-03-30, 6:18 AM, 53, 42, 5, 2197.85), Array(2015-03-30, 4:42 AM, 53, 44, 6, 9182.08), Array(2015-03-30, 2:51 AM, 53, 59, 5, 3154.43), Array(2015-03-30, 5:57 PM, 53, 31, 5, 6649.27), Array(2015-03-30, 6:11 AM, 53, 33, 10, 2353.72), Array(2015-03-30, 9:46 PM, 53, 93, 1, 2889.03), Array(2015-03-30, 4:15 PM, 53, 72, 7, 9157.55), Array(2015-03-30, 2:42 PM, 53, 94, 1, 921.65), Array(2015-03-30, 8:30 AM, 53, 38, 5, 4000.92), Array(2015-03-30, 6:06 AM, 53, 12, 6, 2174.02), Array(2015-03-30, 3:44 AM, 53, 47, 1, 7556.32), Array(2015-03-30, 10:25 AM, 53, 30, 2, 5107.0), Array(2015-03-30, 1:48 AM, 53, 58, 4, 718.93), Array(2015-03-30, 9:31 AM, 53, 18, 4, 8214.79), Array(2015-03-30, 9:04 AM, 53, 68, 4, 9246.59), Array(2015-03-30, 1:51 AM, 53, 40, 1,...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Using filter() instead of lookup()</span>
+
+<span class="k">val</span> <span class="n">transByCust53</span> <span class="k">=</span> <span class="n">transByCust</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">_1</span> <span class="o">==</span> <span class="mi">53</span><span class="o">)</span>
+<span class="n">transByCust53</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">transByCust53: org.apache.spark.rdd.RDD[(Int, Array[String])] = MapPartitionsRDD[18] at filter at &lt;console&gt;:27</span>
+<span class="go">res7: Array[(Int, Array[String])] = Array((53,Array(2015-03-30, 6:18 AM, 53, 42, 5, 2197.85)), (53,Array(2015-03-30, 4:42 AM, 53, 44, 6, 9182.08)), (53,Array(2015-03-30, 2:51 AM, 53, 59, 5, 3154.43)), (53,Array(2015-03-30, 5:57 PM, 53, 31, 5, 6649.27)), (53,Array(2015-03-30, 6:11 AM, 53, 33, 10, 2353.72)), (53,Array(2015-03-30, 9:46 PM, 53, 93, 1, 2889.03)), (53,Array(2015-03-30, 4:15 PM, 53, 72, 7, 9157.55)), (53,Array(2015-03-30, 2:42 PM, 53, 94, 1, 921.65)), (53,Array(2015-03-30, 8:30 AM, 53, 38, 5, 4000.92)), (53,Array(2015-03-30, 6:06 AM, 53, 12, 6, 2174.02)))</span>
+</pre></div>
+
+<h4>Modifying values in paired RDDs</h4>
+
+<div class="highlight"><pre><span></span><span class="n">transByCust</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">_2</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="n">toInt</span> <span class="o">==</span> <span class="mi">25</span><span class="o">).</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res13: Array[(Int, Array[String])] = Array((25,Array(2015-03-30, 5:55 AM, 25, 25, 1, 5089.02)), (17,Array(2015-03-30, 6:26 PM, 17, 25, 6, 7193.11)), (93,Array(2015-03-30, 7:27 AM, 93, 25, 7, 2749.15)), (100,Array(2015-03-30, 5:34 AM, 100, 25, 1, 7520.96)), (68,Array(2015-03-30, 1:07 AM, 68, 25, 9, 8391.61)), (59,Array(2015-03-30, 1:23 AM, 59, 25, 5, 5296.69)), (42,Array(2015-03-30, 9:45 AM, 42, 25, 10, 1363.97)), (77,Array(2015-03-30, 10:40 PM, 77, 25, 3, 3345.81)), (22,Array(2015-03-30, 12:53 PM, 22, 25, 9, 6996.42)), (32,Array(2015-03-30, 12:44 AM, 32, 25, 8, 8849.5)))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Modify only transactions with product id 25 and multiple purchased quantity.</span>
+
+<span class="n">transByCust</span> <span class="k">=</span> <span class="n">transByCust</span><span class="o">.</span><span class="n">mapValues</span><span class="o">(</span><span class="n">tran</span> <span class="k">=&gt;</span> <span class="o">{</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">tran</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="n">toInt</span> <span class="o">==</span> <span class="mi">25</span> <span class="o">&amp;&amp;</span> <span class="n">tran</span><span class="o">(</span><span class="mi">4</span><span class="o">).</span><span class="n">toInt</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">newPrice</span> <span class="k">=</span> <span class="n">tran</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="n">toDouble</span> <span class="o">*</span> <span class="mf">0.95</span>
+        <span class="n">tran</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span> <span class="k">=</span> <span class="s">f&quot;</span><span class="si">$newPrice</span><span class="s">%1.2f&quot;</span>
+    <span class="o">}</span>
+    <span class="n">tran</span>
+<span class="o">})</span>
+
+<span class="n">transByCust</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">_2</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="n">toInt</span> <span class="o">==</span> <span class="mi">25</span><span class="o">).</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">transByCust: org.apache.spark.rdd.RDD[(Int, Array[String])] = MapPartitionsRDD[4] at mapValues at &lt;console&gt;:27</span>
+<span class="go">res3: Array[(Int, Array[String])] = Array((25,Array(2015-03-30, 5:55 AM, 25, 25, 1, 5089.02)), (17,Array(2015-03-30, 6:26 PM, 17, 25, 6, 6833.45)), (93,Array(2015-03-30, 7:27 AM, 93, 25, 7, 2611.69)), (100,Array(2015-03-30, 5:34 AM, 100, 25, 1, 7520.96)), (68,Array(2015-03-30, 1:07 AM, 68, 25, 9, 7972.03)), (59,Array(2015-03-30, 1:23 AM, 59, 25, 5, 5031.86)), (42,Array(2015-03-30, 9:45 AM, 42, 25, 10, 1295.77)), (77,Array(2015-03-30, 10:40 PM, 77, 25, 3, 3178.52)), (22,Array(2015-03-30, 12:53 PM, 22, 25, 9, 6646.60)), (32,Array(2015-03-30, 12:44 AM, 32, 25, 8, 8407.03)))</span>
+</pre></div>
+
+<h4>Adding or removing values for a key</h4>
+<h5>flatMapValues() <em>Pass each value in the key-value pair RDD through a flatMap function without changing the keys; this also retains the original RDD's partitioning.</em></h5>
+<h5>Customers who bought 5 or more dictionaries (id : 81)</h5>
+
+<div class="highlight"><pre><span></span><span class="n">transByCust</span><span class="o">.</span><span class="n">filter</span><span class="o">{</span><span class="k">case</span> <span class="o">(</span><span class="n">custId</span><span class="o">,</span> <span class="n">tran</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">tran</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="n">toInt</span> <span class="o">==</span> <span class="mi">81</span> <span class="o">&amp;&amp;</span> <span class="n">tran</span><span class="o">(</span><span class="mi">4</span><span class="o">).</span><span class="n">toInt</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="o">}.</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res25: Array[(Int, Array[String])] = Array((85,Array(2015-03-30, 1:55 PM, 85, 81, 7, 9648.24)), (82,Array(2015-03-30, 3:40 AM, 82, 81, 6, 3665.45)), (47,Array(2015-03-30, 10:39 PM, 47, 81, 10, 1122.89)), (16,Array(2015-03-30, 11:02 AM, 16, 81, 9, 9063.74)), (10,Array(2015-03-30, 2:54 PM, 10, 81, 10, 9897.61)))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">transByCust</span> <span class="k">=</span> <span class="n">transByCust</span><span class="o">.</span><span class="n">flatMapValues</span><span class="o">(</span><span class="n">tran</span> <span class="k">=&gt;</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">tran</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="n">toInt</span> <span class="o">==</span> <span class="mi">81</span> <span class="o">&amp;&amp;</span> <span class="n">tran</span><span class="o">(</span><span class="mi">4</span><span class="o">).</span><span class="n">toInt</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">cloned</span> <span class="k">=</span> <span class="n">tran</span><span class="o">.</span><span class="n">clone</span><span class="o">()</span>
+        <span class="c1">// Add a free toothbrush (id 70)</span>
+        <span class="n">cloned</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="k">=</span> <span class="s">&quot;70&quot;</span><span class="o">;</span> <span class="n">cloned</span><span class="o">(</span><span class="mi">4</span><span class="o">)</span> <span class="k">=</span> <span class="s">&quot;1&quot;</span><span class="o">;</span> <span class="n">cloned</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span> <span class="k">=</span> <span class="s">&quot;0.00&quot;</span>
+        <span class="nc">List</span><span class="o">(</span><span class="n">tran</span><span class="o">,</span> <span class="n">cloned</span><span class="o">)</span>
+    <span class="o">}</span> <span class="k">else</span>
+        <span class="nc">List</span><span class="o">(</span><span class="n">tran</span><span class="o">)</span>
+<span class="o">})</span>
+
+<span class="n">transByCust</span><span class="o">.</span><span class="n">filter</span><span class="o">{</span><span class="k">case</span> <span class="o">(</span><span class="n">custId</span><span class="o">,</span> <span class="n">tran</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">tran</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="n">toInt</span> <span class="o">==</span> <span class="mi">70</span> <span class="o">&amp;&amp;</span> <span class="n">tran</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="n">toFloat</span> <span class="o">==</span> <span class="mi">0</span><span class="o">}.</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">transByCust: org.apache.spark.rdd.RDD[(Int, Array[String])] = MapPartitionsRDD[6] at flatMapValues at &lt;console&gt;:25</span>
+<span class="go">res4: Array[(Int, Array[String])] = Array((85,Array(2015-03-30, 1:55 PM, 85, 70, 1, 0.00)), (82,Array(2015-03-30, 3:40 AM, 82, 70, 1, 0.00)), (47,Array(2015-03-30, 10:39 PM, 47, 70, 1, 0.00)), (16,Array(2015-03-30, 11:02 AM, 16, 70, 1, 0.00)), (10,Array(2015-03-30, 2:54 PM, 10, 70, 1, 0.00)))</span>
+</pre></div>
+
+<h4>Reducing/Folding values by key</h4>
+<h5>Find the customer who spent the most</h5>
+
+<div class="highlight"><pre><span></span><span class="c1">// foldByKey causes shuffle</span>
+
+<span class="k">val</span> <span class="n">custByTotalPrice</span> <span class="k">=</span> <span class="n">transByCust</span><span class="o">.</span><span class="n">mapValues</span><span class="o">(</span><span class="n">tran</span> <span class="k">=&gt;</span> <span class="n">tran</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="n">toFloat</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">foldByKey</span><span class="o">(</span><span class="mi">0</span><span class="o">)((</span><span class="n">p1</span><span class="o">,</span> <span class="n">p2</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">p1</span> <span class="o">+</span> <span class="n">p2</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">collect</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">custByTotalPrice: Array[(Int, Float)] = Array((34,77332.586), (52,58348.02), (96,36928.57), (4,41801.35), (16,40696.02), (82,58722.58), (66,52130.01), (28,45534.297), (54,36307.043), (80,31794.62), (98,56245.61), (30,19194.91), (14,48658.43), (50,76157.68), (36,25640.04), (24,39375.28), (64,45203.1), (92,43517.883), (74,63748.348), (90,39947.375), (72,32216.129), (70,46806.008), (18,35827.332), (12,35521.35), (38,59110.46), (20,32997.797), (78,48047.53), (10,46120.25), (94,51430.14), (84,53020.617), (100,60120.66), (56,85906.94), (76,100049.0), (22,43987.57), (46,36687.53), (48,17949.852), (32,77805.33), (62,35188.688), (42,30491.92), (40,52212.09), (6,30549.281), (8,38603.812), (86,36925.594), (58,66612.805), (44,31061.988), (88,28122.2), (60,17333.709), (26,74109.66), (68,69252.05), (...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Customer who spent most</span>
+<span class="n">custByTotalPrice</span><span class="o">.</span><span class="n">toSeq</span><span class="o">.</span><span class="n">sortBy</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">_2</span><span class="o">).</span><span class="n">last</span><span class="o">.</span><span class="n">_2</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res29: Float = 100049.0</span>
+</pre></div>
+
+<h4>Merging multiple RDDs</h4>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">compTrans</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">(</span><span class="nc">Array</span><span class="o">(</span><span class="s">&quot;2015-03-30&quot;</span><span class="o">,</span> <span class="s">&quot;11:59 PM&quot;</span><span class="o">,</span> <span class="s">&quot;76&quot;</span><span class="o">,</span> <span class="s">&quot;63&quot;</span><span class="o">,</span> <span class="s">&quot;1&quot;</span><span class="o">,</span> <span class="s">&quot;0.00&quot;</span><span class="o">))</span>
+
+<span class="k">val</span> <span class="n">compTransRDD</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="o">(</span><span class="n">compTrans</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">tran</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">tran</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">toInt</span><span class="o">,</span> <span class="n">tran</span><span class="o">))</span>
+
+
+<span class="n">transByCust</span> <span class="k">=</span> <span class="n">transByCust</span><span class="o">.</span><span class="n">union</span><span class="o">(</span><span class="n">compTransRDD</span><span class="o">)</span>
+<span class="c1">// compTransRDD.count</span>
+<span class="n">transByCust</span><span class="o">.</span><span class="n">filter</span><span class="o">{</span><span class="k">case</span> <span class="o">(</span><span class="n">c</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">t</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">toInt</span> <span class="o">==</span> <span class="mi">76</span> <span class="o">&amp;&amp;</span> <span class="n">t</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="n">toInt</span> <span class="o">==</span> <span class="mi">63</span><span class="o">}.</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">compTrans: Array[Array[String]] = Array(Array(2015-03-30, 11:59 PM, 76, 63, 1, 0.00))</span>
+<span class="go">compTransRDD: org.apache.spark.rdd.RDD[(Int, Array[String])] = MapPartitionsRDD[9] at map at &lt;console&gt;:29</span>
+<span class="go">transByCust: org.apache.spark.rdd.RDD[(Int, Array[String])] = UnionRDD[10] at union at &lt;console&gt;:32</span>
+<span class="go">res5: Array[(Int, Array[String])] = Array((76,Array(2015-03-30, 11:59 PM, 76, 63, 1, 0.00)))</span>
+</pre></div>
+
+<h4>Transforming and aggregatin values</h4>
+<h5><em>aggregateByKey()</em> : similar to <em>foldByKey</em> and <em>reduceByKeyin</em> that it merges values and takes a zero value, but it also transforms values to another type.</h5>
+<h5><a href="https://docs.scala-lang.org/tour/currying.html">Function currying</a> is transforming a function with multiple arguments to a function with single argument.</h5>
+<h5><em>def aggregateByKey[U](zeroValue: U)(seqOp: (U, V) ⇒ U, combOp: (U, U) ⇒ U)(implicit arg0: ClassTag[U]): RDD[(K, U)]</em></h5>
+
+<div class="highlight"><pre><span></span><span class="c1">// Find all products that customers purchased</span>
+
+<span class="k">val</span> <span class="n">products</span> <span class="k">=</span> <span class="n">transByCust</span><span class="o">.</span><span class="n">aggregateByKey</span><span class="o">(</span><span class="nc">List</span><span class="o">[</span><span class="kt">String</span><span class="o">]())((</span><span class="n">prods</span><span class="o">,</span> <span class="n">tran</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">prods</span> <span class="o">:::</span> <span class="nc">List</span><span class="o">(</span><span class="n">tran</span><span class="o">(</span><span class="mi">3</span><span class="o">)),</span> <span class="o">(</span><span class="n">prods1</span><span class="o">,</span> <span class="n">prods2</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">prods1</span> <span class="o">:::</span> <span class="n">prods2</span><span class="o">)</span>
+
+<span class="n">products</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">products: org.apache.spark.rdd.RDD[(Int, List[String])] = ShuffledRDD[635] at aggregateByKey at &lt;console&gt;:151</span>
+<span class="go">res134: Array[(Int, List[String])] = Array((34,List(34, 99, 66, 58, 59, 17, 58, 5, 38, 58, 93, 22, 48, 50)), (52,List(37, 69, 82, 11, 19, 58, 67, 51, 93)), (96,List(37, 31, 17, 88, 97, 81, 58, 78)), (4,List(16, 86, 19, 49, 99, 2, 94, 35, 4, 10, 7)), (16,List(97, 97, 84, 75, 72, 28, 94, 81)), (82,List(57, 44, 51, 57, 41, 15, 99, 28, 81, 65, 97, 100, 90)), (66,List(38, 78, 17, 29, 62, 44, 55, 19, 62, 86, 58)), (28,List(76, 18, 55, 97, 61, 17, 87, 27, 95, 11, 14)), (54,List(78, 57, 51, 4, 98, 46, 47)), (80,List(83, 89, 6, 44, 79, 96, 12)))</span>
+</pre></div>
+
+<h4>Find the number of partitions in RDD</h4>
+
+<div class="highlight"><pre><span></span><span class="n">products</span><span class="o">.</span><span class="n">partitions</span><span class="o">.</span><span class="n">size</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res13: Int = 10</span>
+</pre></div>
+
+<h4>Glom example</h4>
+<h5>glom (the word means to grab) gathers elements of each partition into an array and returns a new RDD with those arrays as elements. The number of elements in the new RDD is equal to the number of its partitions.</h5>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">list</span> <span class="k">=</span> <span class="nc">List</span><span class="o">.</span><span class="n">fill</span><span class="o">(</span><span class="mi">500</span><span class="o">)(</span><span class="n">scala</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Random</span><span class="o">.</span><span class="n">nextInt</span><span class="o">(</span><span class="mi">100</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">glomRdd</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="o">(</span><span class="n">list</span><span class="o">,</span> <span class="mi">30</span><span class="o">).</span><span class="n">glom</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">list: List[Int] = List(66, 67, 38, 86, 78, 12, 49, 76, 15, 36, 18, 40, 28, 87, 91, 16, 91, 46, 98, 45, 85, 24, 35, 12, 90, 85, 32, 40, 41, 43, 23, 16, 23, 54, 54, 72, 99, 91, 72, 0, 59, 89, 44, 57, 53, 89, 19, 89, 97, 16, 67, 10, 40, 15, 47, 50, 70, 46, 31, 62, 70, 98, 88, 37, 30, 51, 82, 25, 54, 54, 37, 41, 1, 72, 78, 74, 23, 35, 67, 68, 98, 93, 6, 19, 24, 32, 0, 0, 99, 5, 41, 14, 24, 66, 60, 35, 10, 74, 36, 20, 67, 78, 63, 60, 45, 31, 76, 77, 71, 0, 52, 68, 71, 91, 74, 45, 64, 20, 71, 16, 53, 61, 80, 79, 36, 56, 11, 40, 17, 7, 54, 89, 7, 71, 36, 67, 93, 13, 78, 1, 47, 94, 6, 91, 48, 61, 42, 7, 16, 23, 55, 99, 11, 66, 38, 97, 57, 63, 48, 57, 9, 11, 63, 65, 72, 13, 20, 31, 27, 66, 48, 95, 34, 85, 96, 64, 53, 59, 96, 22, 48, 44, 97, 61, 46, 68, 25, 1, 7, 13, 96, 90, 55, 4, 2, 63, 69, 15,...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">glomRdd</span><span class="o">.</span><span class="n">count</span>
+<span class="n">glomRdd</span><span class="o">.</span><span class="n">collect</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res4: Array[Array[Int]] = Array(Array(66, 67, 38, 86, 78, 12, 49, 76, 15, 36, 18, 40, 28, 87, 91, 16), Array(91, 46, 98, 45, 85, 24, 35, 12, 90, 85, 32, 40, 41, 43, 23, 16, 23), Array(54, 54, 72, 99, 91, 72, 0, 59, 89, 44, 57, 53, 89, 19, 89, 97, 16), Array(67, 10, 40, 15, 47, 50, 70, 46, 31, 62, 70, 98, 88, 37, 30, 51), Array(82, 25, 54, 54, 37, 41, 1, 72, 78, 74, 23, 35, 67, 68, 98, 93, 6), Array(19, 24, 32, 0, 0, 99, 5, 41, 14, 24, 66, 60, 35, 10, 74, 36, 20), Array(67, 78, 63, 60, 45, 31, 76, 77, 71, 0, 52, 68, 71, 91, 74, 45), Array(64, 20, 71, 16, 53, 61, 80, 79, 36, 56, 11, 40, 17, 7, 54, 89, 7), Array(71, 36, 67, 93, 13, 78, 1, 47, 94, 6, 91, 48, 61, 42, 7, 16, 23), Array(55, 99, 11, 66, 38, 97, 57, 63, 48, 57, 9, 11, 63, 65, 72, 13), Array(20, 31, 27, 66, 48, 95, 34, 85, 96, 64...</span>
+</pre></div>
+
+<h4>Joining data</h4>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">transByProd</span> <span class="k">=</span> <span class="n">transData</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">tran</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">tran</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="n">toInt</span><span class="o">,</span> <span class="n">tran</span><span class="o">))</span>
+
+<span class="k">val</span> <span class="n">totalByProd</span> <span class="k">=</span> <span class="n">transByProd</span><span class="o">.</span><span class="n">mapValues</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="n">t</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="n">toDouble</span><span class="o">).</span><span class="n">reduceByKey</span><span class="o">((</span><span class="n">t1</span><span class="o">,</span> <span class="n">t2</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">t1</span> <span class="o">+</span> <span class="n">t2</span><span class="o">)</span>
+
+<span class="n">totalByProd</span><span class="o">.</span><span class="n">collect</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">transByProd: org.apache.spark.rdd.RDD[(Int, Array[String])] = MapPartitionsRDD[7] at map at &lt;console&gt;:25</span>
+<span class="go">totalByProd: org.apache.spark.rdd.RDD[(Int, Double)] = ShuffledRDD[9] at reduceByKey at &lt;console&gt;:27</span>
+<span class="go">res4: Array[(Int, Double)] = Array((34,62592.43000000001), (52,57708.119999999995), (96,73536.78), (4,63520.21000000001), (16,46664.43000000001), (82,59612.96), (66,39755.84), (28,82055.45999999999), (54,20736.739999999998), (80,34805.73), (98,51227.19), (30,68464.77000000002), (14,53709.75), (50,61318.78), (36,31636.440000000002), (24,46973.67), (64,68147.48000000001), (92,43543.5), (74,32156.14), (90,48601.89), (72,38525.81), (70,27855.89), (18,36973.270000000004), (12,45396.11), (38,55719.08000000001), (78,57093.47), (94,31049.07), (10,47085.59), (84,75192.53), (100,50775.009999999...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">prodFile</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;productFile&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+<span class="n">prodFile</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">prodFile: org.apache.spark.rdd.RDD[String] = /home/ubuntu/test_spark/sia/ch04_data_products.txt MapPartitionsRDD[11] at textFile at &lt;console&gt;:27</span>
+<span class="go">res5: Array[String] = Array(1#ROBITUSSIN PEAK COLD NIGHTTIME COLD PLUS FLU#9721.89#10, 2#Mattel Little Mommy Doctor Doll#6060.78#6, 3#Cute baby doll, battery#1808.79#2, 4#Bear doll#51.06#6, 5#LEGO Legends of Chima#849.36#6)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">prodById</span> <span class="k">=</span> <span class="n">prodFile</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;#&quot;</span><span class="o">)).</span><span class="n">map</span><span class="o">(</span><span class="n">p</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">p</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">toInt</span><span class="o">,</span> <span class="n">p</span><span class="o">))</span>
+<span class="n">prodById</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">prodById: org.apache.spark.rdd.RDD[(Int, Array[String])] = MapPartitionsRDD[13] at map at &lt;console&gt;:25</span>
+<span class="go">res6: Array[(Int, Array[String])] = Array((1,Array(1, ROBITUSSIN PEAK COLD NIGHTTIME COLD PLUS FLU, 9721.89, 10)), (2,Array(2, Mattel Little Mommy Doctor Doll, 6060.78, 6)), (3,Array(3, Cute baby doll, battery, 1808.79, 2)), (4,Array(4, Bear doll, 51.06, 6)), (5,Array(5, LEGO Legends of Chima, 849.36, 6)))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Join totalByProd with prodById to find the details of each product and total sold.</span>
+
+<span class="k">val</span> <span class="n">totalsAndProds</span> <span class="k">=</span> <span class="n">totalByProd</span><span class="o">.</span><span class="n">join</span><span class="o">(</span><span class="n">prodById</span><span class="o">)</span>
+<span class="n">totalsAndProds</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">totalsAndProds: org.apache.spark.rdd.RDD[(Int, (Double, Array[String]))] = MapPartitionsRDD[16] at join at &lt;console&gt;:29</span>
+<span class="go">res7: Array[(Int, (Double, Array[String]))] = Array((34,(62592.43000000001,Array(34, GAM X360 Assassins Creed 3, 6363.95, 9))), (52,(57708.119999999995,Array(52, Essentials Crash Tag Team Racing PSP, 4037.85, 10))), (96,(73536.78,Array(96, chest congestion, 1305.04, 1))), (4,(63520.21000000001,Array(4, Bear doll, 51.06, 6))), (16,(46664.43000000001,Array(16, LEGO Classic, 9933.3, 10))))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Find the products that weren&#39;t sold</span>
+<span class="c1">// leftOuterJoin() or rightOuterJoin()</span>
+
+<span class="k">var</span> <span class="n">prodsAndTotals</span> <span class="k">=</span> <span class="n">prodById</span><span class="o">.</span><span class="n">leftOuterJoin</span><span class="o">(</span><span class="n">totalByProd</span><span class="o">)</span>
+<span class="n">prodsAndTotals</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">prodsAndTotals: org.apache.spark.rdd.RDD[(Int, (Array[String], Option[Double]))] = MapPartitionsRDD[42] at leftOuterJoin at &lt;console&gt;:32</span>
+<span class="go">res19: Array[(Int, (Array[String], Option[Double]))] = Array((34,(Array(34, GAM X360 Assassins Creed 3, 6363.95, 9),Some(62592.43000000001))), (52,(Array(52, Essentials Crash Tag Team Racing PSP, 4037.85, 10),Some(57708.119999999995))))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">var</span> <span class="n">notSoldProds</span> <span class="k">=</span> <span class="n">prodsAndTotals</span>
+    <span class="o">.</span><span class="n">filter</span><span class="o">{</span><span class="k">case</span><span class="o">(</span><span class="n">prodId</span><span class="o">,</span> <span class="n">productTotalTuple</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">productTotalTuple</span><span class="o">.</span><span class="n">_2</span> <span class="o">==</span> <span class="nc">None</span><span class="o">}</span>
+    <span class="o">.</span><span class="n">mapValues</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">_1</span><span class="o">)</span>
+
+    
+<span class="n">notSoldProds</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">notSoldProds: org.apache.spark.rdd.RDD[(Int, Array[String])] = MapPartitionsRDD[44] at mapValues at &lt;console&gt;:29</span>
+<span class="go">res20: Array[(Int, Array[String])] = Array((20,Array(20, LEGO Elves, 4589.79, 4)), (63,Array(63, Pajamas, 8131.85, 3)))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Another way</span>
+
+<span class="k">val</span> <span class="n">notSoldProds1</span> <span class="k">=</span> <span class="n">prodById</span><span class="o">.</span><span class="n">subtractByKey</span><span class="o">(</span><span class="n">totalByProd</span><span class="o">)</span>
+
+<span class="n">notSoldProds1</span><span class="o">.</span><span class="n">count</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">notSoldProds1: org.apache.spark.rdd.RDD[(Int, Array[String])] = SubtractedRDD[22] at subtractByKey at &lt;console&gt;:31</span>
+<span class="go">res12: Long = 4</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Another way</span>
+
+<span class="k">val</span> <span class="n">prodCogroup</span> <span class="k">=</span> <span class="n">totalByProd</span><span class="o">.</span><span class="n">cogroup</span><span class="o">(</span><span class="n">prodById</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">prodCogroup: org.apache.spark.rdd.RDD[(Int, (Iterable[Double], Iterable[Array[String]]))] = MapPartitionsRDD[19] at cogroup at &lt;console&gt;:29</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">notSoldProds2</span> <span class="k">=</span> <span class="n">prodCogroup</span><span class="o">.</span><span class="n">filter</span><span class="o">{</span><span class="k">case</span><span class="o">(</span><span class="n">prodId</span><span class="o">,</span> <span class="n">productTotalTuple</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">productTotalTuple</span><span class="o">.</span><span class="n">_1</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">}</span>
+<span class="n">notSoldProds2</span><span class="o">.</span><span class="n">count</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">notSoldProds2: org.apache.spark.rdd.RDD[(Int, (Iterable[Double], Iterable[Array[String]]))] = MapPartitionsRDD[23] at filter at &lt;console&gt;:27</span>
+<span class="go">res18: Long = 4</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">notSoldProds2</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="n">println</span><span class="o">(</span><span class="n">x</span><span class="o">.</span><span class="n">_2</span><span class="o">.</span><span class="n">_2</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="s">&quot;, &quot;</span><span class="o">)))</span>
+</pre></div>
+
+<h4>Cartesian product</h4>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">c1</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">c2</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">))</span>
+
+<span class="n">c1</span><span class="o">.</span><span class="n">cartesian</span><span class="o">(</span><span class="n">c2</span><span class="o">).</span><span class="n">collect</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">c1: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[24] at parallelize at &lt;console&gt;:25</span>
+<span class="go">c2: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[25] at parallelize at &lt;console&gt;:26</span>
+<span class="go">res20: Array[(Int, Int)] = Array((1,4), (1,5), (1,6), (2,4), (2,5), (2,6), (3,4), (3,5), (3,6))</span>
+</pre></div>
+
+<h4>Sorting data</h4>
+
+<div class="highlight"><pre><span></span><span class="c1">// sortBy()</span>
+
+<span class="k">val</span> <span class="n">sortedProdNames</span> <span class="k">=</span> <span class="n">totalsAndProds</span><span class="o">.</span><span class="n">sortBy</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">_2</span><span class="o">.</span><span class="n">_2</span><span class="o">(</span><span class="mi">1</span><span class="o">))</span>
+
+<span class="n">sortedProdNames</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">sortedProdNames: org.apache.spark.rdd.RDD[(Int, (Double, Array[String]))] = MapPartitionsRDD[38] at sortBy at &lt;console&gt;:29</span>
+<span class="go">res24: Array[(Int, (Double, Array[String]))] = Array((90,(48601.89,Array(90, AMBROSIA TRIFIDA POLLEN, 5887.49, 1))), (94,(31049.07,Array(94, ATOPALM MUSCLE AND JOINT, 1544.25, 7))), (87,(26047.72,Array(87, Acyclovir, 6252.58, 4))), (79,(50917.700000000004,Array(79, Alphanate, 4218.17, 4))), (83,(31498.84,Array(83, Ativan, 9511.99, 9))))</span>
+</pre></div>
+
+<h4>combineByKey()</h4>
+<ul>
+<li>Very versatile and flexible.</li>
+<li>Used to implement <em>aggregateByKey()</em>, <em>foldByKey()</em>, and <em>reduceByKey()</em>.</li>
+</ul>
+
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">createCombiner</span> <span class="k">=</span> <span class="o">(</span><span class="n">t</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">total</span> <span class="k">=</span> <span class="n">t</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="n">toDouble</span>  <span class="c1">// price</span>
+    <span class="k">val</span> <span class="n">q</span> <span class="k">=</span> <span class="n">t</span><span class="o">(</span><span class="mi">4</span><span class="o">).</span><span class="n">toInt</span>  <span class="c1">// quantity</span>
+    <span class="o">(</span><span class="n">total</span><span class="o">/</span><span class="n">q</span><span class="o">,</span> <span class="n">total</span><span class="o">/</span><span class="n">q</span><span class="o">,</span> <span class="n">q</span><span class="o">,</span> <span class="n">total</span><span class="o">)</span>  <span class="c1">// min, max, count, total</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="n">mergeVal</span><span class="k">:</span> <span class="o">((</span><span class="kt">Double</span><span class="o">,</span> <span class="kt">Double</span><span class="o">,</span> <span class="kt">Int</span><span class="o">,</span> <span class="nc">Double</span><span class="o">),</span> <span class="nc">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="k">=&gt;</span>
+    <span class="o">(</span><span class="nc">Double</span><span class="o">,</span> <span class="nc">Double</span><span class="o">,</span> <span class="nc">Int</span><span class="o">,</span> <span class="nc">Double</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+        <span class="k">case</span><span class="o">((</span><span class="n">mn</span><span class="o">,</span> <span class="n">mx</span><span class="o">,</span> <span class="n">c</span><span class="o">,</span> <span class="n">tot</span><span class="o">),</span> <span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+            <span class="k">val</span> <span class="n">total</span> <span class="k">=</span> <span class="n">t</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="n">toDouble</span>
+            <span class="k">val</span> <span class="n">q</span> <span class="k">=</span> <span class="n">t</span><span class="o">(</span><span class="mi">4</span><span class="o">).</span><span class="n">toInt</span>
+            <span class="o">(</span><span class="n">scala</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">min</span><span class="o">(</span><span class="n">mn</span><span class="o">,</span> <span class="n">total</span><span class="o">/</span><span class="n">q</span><span class="o">),</span> <span class="n">scala</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">max</span><span class="o">(</span><span class="n">mx</span><span class="o">,</span> <span class="n">total</span><span class="o">/</span><span class="n">q</span><span class="o">),</span> <span class="n">c</span> <span class="o">+</span> <span class="n">q</span><span class="o">,</span> <span class="n">tot</span> <span class="o">+</span> <span class="n">total</span><span class="o">)</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    
+<span class="k">def</span> <span class="n">mergeComb</span><span class="k">:</span> <span class="o">((</span><span class="kt">Double</span><span class="o">,</span> <span class="kt">Double</span><span class="o">,</span> <span class="kt">Int</span><span class="o">,</span> <span class="nc">Double</span><span class="o">),</span> <span class="o">(</span><span class="nc">Double</span><span class="o">,</span> <span class="nc">Double</span><span class="o">,</span> <span class="nc">Int</span><span class="o">,</span> <span class="nc">Double</span><span class="o">))</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="nc">Double</span><span class="o">,</span> <span class="nc">Double</span><span class="o">,</span> <span class="nc">Int</span><span class="o">,</span> <span class="nc">Double</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">case</span><span class="o">((</span><span class="n">mn1</span><span class="o">,</span> <span class="n">mx1</span><span class="o">,</span> <span class="n">c1</span><span class="o">,</span> <span class="n">tot1</span><span class="o">),</span> <span class="o">(</span><span class="n">mn2</span><span class="o">,</span> <span class="n">mx2</span><span class="o">,</span> <span class="n">c2</span><span class="o">,</span> <span class="n">tot2</span><span class="o">))</span> <span class="k">=&gt;</span> <span class="o">{</span>
+        <span class="o">(</span><span class="n">scala</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">min</span><span class="o">(</span><span class="n">mn1</span><span class="o">,</span> <span class="n">mn2</span><span class="o">),</span> <span class="n">scala</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">max</span><span class="o">(</span><span class="n">mx1</span><span class="o">,</span> <span class="n">mx2</span><span class="o">),</span> <span class="n">c1</span> <span class="o">+</span> <span class="n">c2</span><span class="o">,</span> <span class="n">tot1</span> <span class="o">+</span> <span class="n">tot2</span><span class="o">)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="k">val</span> <span class="n">avgByCust</span> <span class="k">=</span> <span class="n">transByCust</span><span class="o">.</span><span class="n">combineByKey</span><span class="o">(</span><span class="n">createCombiner</span><span class="o">,</span> <span class="n">mergeVal</span><span class="o">,</span> <span class="n">mergeComb</span><span class="o">,</span> <span class="k">new</span> <span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">spark</span><span class="o">.</span><span class="nc">HashPartitioner</span><span class="o">(</span><span class="n">transByCust</span><span class="o">.</span><span class="n">partitioner</span><span class="o">.</span><span class="n">size</span><span class="o">))</span>
+    <span class="o">.</span><span class="n">mapValues</span><span class="o">({</span><span class="k">case</span><span class="o">(</span><span class="n">mn</span><span class="o">,</span> <span class="n">mx</span><span class="o">,</span> <span class="n">cnt</span><span class="o">,</span> <span class="n">tot</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">mn</span><span class="o">,</span> <span class="n">mx</span><span class="o">,</span> <span class="n">cnt</span><span class="o">,</span> <span class="n">tot</span><span class="o">,</span> <span class="n">tot</span><span class="o">/</span><span class="n">cnt</span><span class="o">)})</span>
+    
+<span class="n">avgByCust</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">createCombiner: Array[String] =&gt; (Double, Double, Int, Double)</span>
+<span class="go">mergeVal: ((Double, Double, Int, Double), Array[String]) =&gt; (Double, Double, Int, Double)</span>
+<span class="go">mergeComb: ((Double, Double, Int, Double), (Double, Double, Int, Double)) =&gt; (Double, Double, Int, Double)</span>
+<span class="go">avgByCust: org.apache.spark.rdd.RDD[(Int, (Double, Double, Int, Double, Double))] = MapPartitionsRDD[26] at mapValues at &lt;console&gt;:52</span>
+<span class="go">res11: Array[(Int, (Double, Double, Int, Double, Double))] = Array()</span>
+</pre></div>
+
+<h4>Converting RDD to DF by specifying schema using case class</h4>
+
+<div class="highlight"><pre><span></span><span class="k">case</span> <span class="k">class</span> <span class="nc">Transaction</span><span class="o">(</span><span class="n">date</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">time</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">customerId</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">productId</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">quantity</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">price</span><span class="k">:</span> <span class="kt">Float</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">defined class Transaction</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">transRDD</span> <span class="k">=</span> <span class="n">transData</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">trans</span> <span class="k">=&gt;</span> <span class="nc">Transaction</span><span class="o">(</span><span class="n">trans</span><span class="o">(</span><span class="mi">0</span><span class="o">),</span> <span class="n">trans</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span> <span class="n">trans</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">toInt</span><span class="o">,</span> <span class="n">trans</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="n">toInt</span><span class="o">,</span> <span class="n">trans</span><span class="o">(</span><span class="mi">4</span><span class="o">).</span><span class="n">toInt</span><span class="o">,</span> <span class="n">trans</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="n">toFloat</span><span class="o">))</span>
+<span class="n">transRDD</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">transRDD: org.apache.spark.rdd.RDD[Transaction] = MapPartitionsRDD[17] at map at &lt;console&gt;:27</span>
+<span class="go">res7: Array[Transaction] = Array(Transaction(2015-03-30,6:55 AM,51,68,1,9506.21), Transaction(2015-03-30,7:39 PM,99,86,5,4107.59), Transaction(2015-03-30,11:57 AM,79,58,7,2987.22), Transaction(2015-03-30,12:46 AM,51,50,6,7501.89), Transaction(2015-03-30,11:39 AM,86,24,5,8370.2), Transaction(2015-03-30,10:35 AM,63,19,5,1023.57), Transaction(2015-03-30,2:30 AM,23,77,7,5892.41), Transaction(2015-03-30,7:41 PM,49,58,4,9298.18), Transaction(2015-03-30,9:18 AM,97,86,8,9462.89), Transaction(2015-03-30,10:06 PM,94,26,4,4199.15))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">transDF</span> <span class="k">=</span> <span class="n">transRDD</span><span class="o">.</span><span class="n">toDF</span>
+<span class="n">transDF</span><span class="o">.</span><span class="n">show</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">|      date|    time|customerId|productId|quantity|  price|</span>
+<span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">|2015-03-30| 6:55 AM|        51|       68|       1|9506.21|</span>
+<span class="go">|2015-03-30| 7:39 PM|        99|       86|       5|4107.59|</span>
+<span class="go">|2015-03-30|11:57 AM|        79|       58|       7|2987.22|</span>
+<span class="go">|2015-03-30|12:46 AM|        51|       50|       6|7501.89|</span>
+<span class="go">|2015-03-30|11:39 AM|        86|       24|       5| 8370.2|</span>
+<span class="go">|2015-03-30|10:35 AM|        63|       19|       5|1023.57|</span>
+<span class="go">|2015-03-30| 2:30 AM|        23|       77|       7|5892.41|</span>
+<span class="go">|2015-03-30| 7:41 PM|        49|       58|       4|9298.18|</span>
+<span class="go">|2015-03-30| 9:18 AM|        97|       86|       8|9462.89|</span>
+<span class="go">|2015-03-30|10:06 PM|        94|       26|       4|4199.15|</span>
+<span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">only showing top 10 rows</span>
+
+<span class="go">transDF: org.apache.spark.sql.DataFrame = [date: string, time: string ... 4 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">transDF</span><span class="o">.</span><span class="n">printSchema</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">root</span>
+<span class="go"> |-- date: string (nullable = true)</span>
+<span class="go"> |-- time: string (nullable = true)</span>
+<span class="go"> |-- customerId: integer (nullable = false)</span>
+<span class="go"> |-- productId: integer (nullable = false)</span>
+<span class="go"> |-- quantity: integer (nullable = false)</span>
+<span class="go"> |-- price: float (nullable = false)</span>
+</pre></div>
+
+<h4>Reading directly into DF</h4>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">transDF</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;csv&quot;</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;header&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;delimiter&quot;</span><span class="o">,</span> <span class="s">&quot;#&quot;</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;transactionFile&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+<span class="n">transDF</span><span class="o">.</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+----------+--------+---+---+---+-------+</span>
+<span class="go">|       _c0|     _c1|_c2|_c3|_c4|    _c5|</span>
+<span class="go">+----------+--------+---+---+---+-------+</span>
+<span class="go">|2015-03-30| 6:55 AM| 51| 68|  1|9506.21|</span>
+<span class="go">|2015-03-30| 7:39 PM| 99| 86|  5|4107.59|</span>
+<span class="go">|2015-03-30|11:57 AM| 79| 58|  7|2987.22|</span>
+<span class="go">|2015-03-30|12:46 AM| 51| 50|  6|7501.89|</span>
+<span class="go">|2015-03-30|11:39 AM| 86| 24|  5| 8370.2|</span>
+<span class="go">|2015-03-30|10:35 AM| 63| 19|  5|1023.57|</span>
+<span class="go">|2015-03-30| 2:30 AM| 23| 77|  7|5892.41|</span>
+<span class="go">|2015-03-30| 7:41 PM| 49| 58|  4|9298.18|</span>
+<span class="go">|2015-03-30| 9:18 AM| 97| 86|  8|9462.89|</span>
+<span class="go">|2015-03-30|10:06 PM| 94| 26|  4|4199.15|</span>
+<span class="go">|2015-03-30|10:57 AM| 91| 18|  1|3795.73|</span>
+<span class="go">|2015-03-30| 7:43 AM| 20| 86| 10|1477.35|</span>
+<span class="go">|2015-03-30| 5:58 PM| 38| 39|  6| 1090.0|</span>
+<span class="go">|2015-03-30| 1:08 PM| 46|  6| 10|1014.78|</span>
+<span class="go">|2015-03-30|12:18 AM| 56| 48|  9|8346.42|</span>
+<span class="go">|2015-03-30| 1:18 AM| 11| 58|  4| 364.59|</span>
+<span class="go">|2015-03-30| 3:01 AM| 59|  9|  5|5984.68|</span>
+<span class="go">|2015-03-30|11:44 AM|  8| 35|  6| 1859.2|</span>
+<span class="go">|2015-03-30|12:05 PM| 23|  8|  3|1527.04|</span>
+<span class="go">|2015-03-30| 4:10 AM| 85| 93|  9|3314.71|</span>
+<span class="go">+----------+--------+---+---+---+-------+</span>
+<span class="go">only showing top 20 rows</span>
+
+<span class="go">transDF: org.apache.spark.sql.DataFrame = [_c0: string, _c1: string ... 4 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">transDF</span><span class="o">.</span><span class="n">printSchema</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">root</span>
+<span class="go"> |-- _c0: string (nullable = true)</span>
+<span class="go"> |-- _c1: string (nullable = true)</span>
+<span class="go"> |-- _c2: string (nullable = true)</span>
+<span class="go"> |-- _c3: string (nullable = true)</span>
+<span class="go"> |-- _c4: string (nullable = true)</span>
+<span class="go"> |-- _c5: string (nullable = true)</span>
+</pre></div>
+
+<h5>Specifying schema while reading</h5>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">transDF</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;csv&quot;</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;header&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;delimiter&quot;</span><span class="o">,</span> <span class="s">&quot;#&quot;</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">schema</span><span class="o">(</span><span class="s">&quot;date DATE, time STRING, customerId INT, productId INT, quantity INT, price DOUBLE&quot;</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;transactionFile&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+<span class="n">transDF</span><span class="o">.</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">|      date|    time|customerId|productId|quantity|  price|</span>
+<span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">|2015-03-30| 6:55 AM|        51|       68|       1|9506.21|</span>
+<span class="go">|2015-03-30| 7:39 PM|        99|       86|       5|4107.59|</span>
+<span class="go">|2015-03-30|11:57 AM|        79|       58|       7|2987.22|</span>
+<span class="go">|2015-03-30|12:46 AM|        51|       50|       6|7501.89|</span>
+<span class="go">|2015-03-30|11:39 AM|        86|       24|       5| 8370.2|</span>
+<span class="go">|2015-03-30|10:35 AM|        63|       19|       5|1023.57|</span>
+<span class="go">|2015-03-30| 2:30 AM|        23|       77|       7|5892.41|</span>
+<span class="go">|2015-03-30| 7:41 PM|        49|       58|       4|9298.18|</span>
+<span class="go">|2015-03-30| 9:18 AM|        97|       86|       8|9462.89|</span>
+<span class="go">|2015-03-30|10:06 PM|        94|       26|       4|4199.15|</span>
+<span class="go">|2015-03-30|10:57 AM|        91|       18|       1|3795.73|</span>
+<span class="go">|2015-03-30| 7:43 AM|        20|       86|      10|1477.35|</span>
+<span class="go">|2015-03-30| 5:58 PM|        38|       39|       6| 1090.0|</span>
+<span class="go">|2015-03-30| 1:08 PM|        46|        6|      10|1014.78|</span>
+<span class="go">|2015-03-30|12:18 AM|        56|       48|       9|8346.42|</span>
+<span class="go">|2015-03-30| 1:18 AM|        11|       58|       4| 364.59|</span>
+<span class="go">|2015-03-30| 3:01 AM|        59|        9|       5|5984.68|</span>
+<span class="go">|2015-03-30|11:44 AM|         8|       35|       6| 1859.2|</span>
+<span class="go">|2015-03-30|12:05 PM|        23|        8|       3|1527.04|</span>
+<span class="go">|2015-03-30| 4:10 AM|        85|       93|       9|3314.71|</span>
+<span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">only showing top 20 rows</span>
+
+<span class="go">transDF: org.apache.spark.sql.DataFrame = [date: date, time: string ... 4 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">transDF</span><span class="o">.</span><span class="n">printSchema</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">root</span>
+<span class="go"> |-- date: date (nullable = true)</span>
+<span class="go"> |-- time: string (nullable = true)</span>
+<span class="go"> |-- customerId: integer (nullable = true)</span>
+<span class="go"> |-- productId: integer (nullable = true)</span>
+<span class="go"> |-- quantity: integer (nullable = true)</span>
+<span class="go"> |-- price: double (nullable = true)</span>
+</pre></div>
+
+<h5>Create schema manually</h5>
+
+<div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">org.apache.spark.sql.types._</span>
+
+<span class="k">val</span> <span class="n">schema1</span> <span class="k">=</span> <span class="nc">StructType</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span>
+        <span class="nc">StructField</span><span class="o">(</span><span class="s">&quot;date&quot;</span><span class="o">,</span> <span class="nc">DateType</span><span class="o">,</span> <span class="kc">false</span><span class="o">),</span>
+        <span class="nc">StructField</span><span class="o">(</span><span class="s">&quot;time&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">),</span>
+        <span class="nc">StructField</span><span class="o">(</span><span class="s">&quot;customerId&quot;</span><span class="o">,</span> <span class="nc">IntegerType</span><span class="o">,</span> <span class="kc">false</span><span class="o">),</span>
+        <span class="nc">StructField</span><span class="o">(</span><span class="s">&quot;productId&quot;</span><span class="o">,</span> <span class="nc">IntegerType</span><span class="o">,</span> <span class="kc">false</span><span class="o">),</span>
+        <span class="nc">StructField</span><span class="o">(</span><span class="s">&quot;quantity&quot;</span><span class="o">,</span> <span class="nc">IntegerType</span><span class="o">,</span> <span class="kc">false</span><span class="o">),</span>
+        <span class="nc">StructField</span><span class="o">(</span><span class="s">&quot;price&quot;</span><span class="o">,</span> <span class="nc">FloatType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+    <span class="o">))</span>
+    
+<span class="k">val</span> <span class="n">transDF</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;csv&quot;</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;header&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;delimiter&quot;</span><span class="o">,</span> <span class="s">&quot;#&quot;</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">schema</span><span class="o">(</span><span class="n">schema1</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;transactionFile&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+<span class="n">transDF</span><span class="o">.</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">|      date|    time|customerId|productId|quantity|  price|</span>
+<span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">|2015-03-30| 6:55 AM|        51|       68|       1|9506.21|</span>
+<span class="go">|2015-03-30| 7:39 PM|        99|       86|       5|4107.59|</span>
+<span class="go">|2015-03-30|11:57 AM|        79|       58|       7|2987.22|</span>
+<span class="go">|2015-03-30|12:46 AM|        51|       50|       6|7501.89|</span>
+<span class="go">|2015-03-30|11:39 AM|        86|       24|       5| 8370.2|</span>
+<span class="go">|2015-03-30|10:35 AM|        63|       19|       5|1023.57|</span>
+<span class="go">|2015-03-30| 2:30 AM|        23|       77|       7|5892.41|</span>
+<span class="go">|2015-03-30| 7:41 PM|        49|       58|       4|9298.18|</span>
+<span class="go">|2015-03-30| 9:18 AM|        97|       86|       8|9462.89|</span>
+<span class="go">|2015-03-30|10:06 PM|        94|       26|       4|4199.15|</span>
+<span class="go">|2015-03-30|10:57 AM|        91|       18|       1|3795.73|</span>
+<span class="go">|2015-03-30| 7:43 AM|        20|       86|      10|1477.35|</span>
+<span class="go">|2015-03-30| 5:58 PM|        38|       39|       6| 1090.0|</span>
+<span class="go">|2015-03-30| 1:08 PM|        46|        6|      10|1014.78|</span>
+<span class="go">|2015-03-30|12:18 AM|        56|       48|       9|8346.42|</span>
+<span class="go">|2015-03-30| 1:18 AM|        11|       58|       4| 364.59|</span>
+<span class="go">|2015-03-30| 3:01 AM|        59|        9|       5|5984.68|</span>
+<span class="go">|2015-03-30|11:44 AM|         8|       35|       6| 1859.2|</span>
+<span class="go">|2015-03-30|12:05 PM|        23|        8|       3|1527.04|</span>
+<span class="go">|2015-03-30| 4:10 AM|        85|       93|       9|3314.71|</span>
+<span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">only showing top 20 rows</span>
+
+<span class="go">import org.apache.spark.sql.types._</span>
+<span class="go">schema1: org.apache.spark.sql.types.StructType = StructType(StructField(date,DateType,false), StructField(time,StringType,false), StructField(customerId,IntegerType,false), StructField(productId,IntegerType,false), StructField(quantity,IntegerType,false), StructField(price,FloatType,false))</span>
+<span class="go">transDF: org.apache.spark.sql.DataFrame = [date: date, time: string ... 4 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">transDF</span><span class="o">.</span><span class="n">printSchema</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">root</span>
+<span class="go"> |-- date: date (nullable = true)</span>
+<span class="go"> |-- time: string (nullable = true)</span>
+<span class="go"> |-- customerId: integer (nullable = true)</span>
+<span class="go"> |-- productId: integer (nullable = true)</span>
+<span class="go"> |-- quantity: integer (nullable = true)</span>
+<span class="go"> |-- price: float (nullable = true)</span>
+</pre></div>
+
+<p>Another way to specify schema</p>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">schema2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StructType</span><span class="o">()</span>
+        <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;date&quot;</span><span class="o">,</span> <span class="nc">DateType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;time&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;customerId&quot;</span><span class="o">,</span> <span class="nc">IntegerType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;productId&quot;</span><span class="o">,</span> <span class="nc">IntegerType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;quantity&quot;</span><span class="o">,</span> <span class="nc">IntegerType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;price&quot;</span><span class="o">,</span> <span class="nc">FloatType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+        
+<span class="k">val</span> <span class="n">transDF</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;csv&quot;</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;header&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;delimiter&quot;</span><span class="o">,</span> <span class="s">&quot;#&quot;</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">schema</span><span class="o">(</span><span class="n">schema2</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;transactionFile&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+<span class="n">transDF</span><span class="o">.</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">|      date|    time|customerId|productId|quantity|  price|</span>
+<span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">|2015-03-30| 6:55 AM|        51|       68|       1|9506.21|</span>
+<span class="go">|2015-03-30| 7:39 PM|        99|       86|       5|4107.59|</span>
+<span class="go">|2015-03-30|11:57 AM|        79|       58|       7|2987.22|</span>
+<span class="go">|2015-03-30|12:46 AM|        51|       50|       6|7501.89|</span>
+<span class="go">|2015-03-30|11:39 AM|        86|       24|       5| 8370.2|</span>
+<span class="go">|2015-03-30|10:35 AM|        63|       19|       5|1023.57|</span>
+<span class="go">|2015-03-30| 2:30 AM|        23|       77|       7|5892.41|</span>
+<span class="go">|2015-03-30| 7:41 PM|        49|       58|       4|9298.18|</span>
+<span class="go">|2015-03-30| 9:18 AM|        97|       86|       8|9462.89|</span>
+<span class="go">|2015-03-30|10:06 PM|        94|       26|       4|4199.15|</span>
+<span class="go">|2015-03-30|10:57 AM|        91|       18|       1|3795.73|</span>
+<span class="go">|2015-03-30| 7:43 AM|        20|       86|      10|1477.35|</span>
+<span class="go">|2015-03-30| 5:58 PM|        38|       39|       6| 1090.0|</span>
+<span class="go">|2015-03-30| 1:08 PM|        46|        6|      10|1014.78|</span>
+<span class="go">|2015-03-30|12:18 AM|        56|       48|       9|8346.42|</span>
+<span class="go">|2015-03-30| 1:18 AM|        11|       58|       4| 364.59|</span>
+<span class="go">|2015-03-30| 3:01 AM|        59|        9|       5|5984.68|</span>
+<span class="go">|2015-03-30|11:44 AM|         8|       35|       6| 1859.2|</span>
+<span class="go">|2015-03-30|12:05 PM|        23|        8|       3|1527.04|</span>
+<span class="go">|2015-03-30| 4:10 AM|        85|       93|       9|3314.71|</span>
+<span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">only showing top 20 rows</span>
+
+<span class="go">schema2: org.apache.spark.sql.types.StructType = StructType(StructField(date,DateType,false), StructField(time,StringType,false), StructField(customerId,IntegerType,false), StructField(productId,IntegerType,false), StructField(quantity,IntegerType,false), StructField(price,FloatType,false))</span>
+<span class="go">transDF: org.apache.spark.sql.DataFrame = [date: date, time: string ... 4 more fields]</span>
+</pre></div>
+
+<h5>Another way to specify schema</h5>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">schema3</span> <span class="k">=</span> <span class="nc">StructType</span><span class="o">(</span><span class="nc">StructField</span><span class="o">(</span><span class="s">&quot;date&quot;</span><span class="o">,</span> <span class="nc">DateType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                    <span class="o">::</span> <span class="nc">StructField</span><span class="o">(</span><span class="s">&quot;time&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                    <span class="o">::</span> <span class="nc">StructField</span><span class="o">(</span><span class="s">&quot;customerId&quot;</span><span class="o">,</span> <span class="nc">IntegerType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                    <span class="o">::</span> <span class="nc">StructField</span><span class="o">(</span><span class="s">&quot;productId&quot;</span><span class="o">,</span> <span class="nc">IntegerType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                    <span class="o">::</span> <span class="nc">StructField</span><span class="o">(</span><span class="s">&quot;quantity&quot;</span><span class="o">,</span> <span class="nc">IntegerType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                    <span class="o">::</span> <span class="nc">StructField</span><span class="o">(</span><span class="s">&quot;price&quot;</span><span class="o">,</span> <span class="nc">FloatType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                    <span class="o">::</span> <span class="nc">Nil</span>
+                <span class="o">)</span>
+
+<span class="k">val</span> <span class="n">transDF</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;csv&quot;</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;header&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;delimiter&quot;</span><span class="o">,</span> <span class="s">&quot;#&quot;</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">schema</span><span class="o">(</span><span class="n">schema3</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;transactionFile&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+<span class="n">transDF</span><span class="o">.</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">|      date|    time|customerId|productId|quantity|  price|</span>
+<span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">|2015-03-30| 6:55 AM|        51|       68|       1|9506.21|</span>
+<span class="go">|2015-03-30| 7:39 PM|        99|       86|       5|4107.59|</span>
+<span class="go">|2015-03-30|11:57 AM|        79|       58|       7|2987.22|</span>
+<span class="go">|2015-03-30|12:46 AM|        51|       50|       6|7501.89|</span>
+<span class="go">|2015-03-30|11:39 AM|        86|       24|       5| 8370.2|</span>
+<span class="go">|2015-03-30|10:35 AM|        63|       19|       5|1023.57|</span>
+<span class="go">|2015-03-30| 2:30 AM|        23|       77|       7|5892.41|</span>
+<span class="go">|2015-03-30| 7:41 PM|        49|       58|       4|9298.18|</span>
+<span class="go">|2015-03-30| 9:18 AM|        97|       86|       8|9462.89|</span>
+<span class="go">|2015-03-30|10:06 PM|        94|       26|       4|4199.15|</span>
+<span class="go">|2015-03-30|10:57 AM|        91|       18|       1|3795.73|</span>
+<span class="go">|2015-03-30| 7:43 AM|        20|       86|      10|1477.35|</span>
+<span class="go">|2015-03-30| 5:58 PM|        38|       39|       6| 1090.0|</span>
+<span class="go">|2015-03-30| 1:08 PM|        46|        6|      10|1014.78|</span>
+<span class="go">|2015-03-30|12:18 AM|        56|       48|       9|8346.42|</span>
+<span class="go">|2015-03-30| 1:18 AM|        11|       58|       4| 364.59|</span>
+<span class="go">|2015-03-30| 3:01 AM|        59|        9|       5|5984.68|</span>
+<span class="go">|2015-03-30|11:44 AM|         8|       35|       6| 1859.2|</span>
+<span class="go">|2015-03-30|12:05 PM|        23|        8|       3|1527.04|</span>
+<span class="go">|2015-03-30| 4:10 AM|        85|       93|       9|3314.71|</span>
+<span class="go">+----------+--------+----------+---------+--------+-------+</span>
+<span class="go">only showing top 20 rows</span>
+
+<span class="go">schema3: org.apache.spark.sql.types.StructType = StructType(StructField(date,DateType,false), StructField(time,StringType,false), StructField(customerId,IntegerType,false), StructField(productId,IntegerType,false), StructField(quantity,IntegerType,false), StructField(price,FloatType,false))</span>
+<span class="go">transDF: org.apache.spark.sql.DataFrame = [date: date, time: string ... 4 more fields]</span>
+</pre></div>

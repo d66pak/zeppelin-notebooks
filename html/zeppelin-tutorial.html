@@ -1,0 +1,160 @@
+<link rel="stylesheet" type="text/css" href="style.css">
+<div class="markdown-body">
+<h2>Welcome to Zeppelin.</h2>
+<h5>This is a live tutorial, you can run the code yourself. (Shift-Enter to Run)</h5>
+</div>
+<div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">org.apache.commons.io.IOUtils</span>
+<span class="k">import</span> <span class="nn">java.net.URL</span>
+<span class="k">import</span> <span class="nn">java.nio.charset.Charset</span>
+
+<span class="c1">// Zeppelin creates and injects sc (SparkContext) and sqlContext (HiveContext or SqlContext)</span>
+<span class="c1">// So you don&#39;t need create them manually</span>
+
+<span class="c1">// load bank data</span>
+<span class="k">val</span> <span class="n">bankText</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="o">(</span>
+    <span class="nc">IOUtils</span><span class="o">.</span><span class="n">toString</span><span class="o">(</span>
+        <span class="k">new</span> <span class="nc">URL</span><span class="o">(</span><span class="s">&quot;https://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv&quot;</span><span class="o">),</span>
+        <span class="nc">Charset</span><span class="o">.</span><span class="n">forName</span><span class="o">(</span><span class="s">&quot;utf8&quot;</span><span class="o">)).</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;\n&quot;</span><span class="o">))</span>
+
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Bank</span><span class="o">(</span><span class="n">age</span><span class="k">:</span> <span class="kt">Integer</span><span class="o">,</span> <span class="n">job</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">marital</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">education</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">balance</span><span class="k">:</span> <span class="kt">Integer</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">bank</span> <span class="k">=</span> <span class="n">bankText</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">s</span> <span class="k">=&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;;&quot;</span><span class="o">)).</span><span class="n">filter</span><span class="o">(</span><span class="n">s</span> <span class="k">=&gt;</span> <span class="n">s</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="o">!=</span> <span class="s">&quot;\&quot;age\&quot;&quot;</span><span class="o">).</span><span class="n">map</span><span class="o">(</span>
+    <span class="n">s</span> <span class="k">=&gt;</span> <span class="nc">Bank</span><span class="o">(</span><span class="n">s</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">toInt</span><span class="o">,</span> 
+            <span class="n">s</span><span class="o">(</span><span class="mi">1</span><span class="o">).</span><span class="n">replaceAll</span><span class="o">(</span><span class="s">&quot;\&quot;&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">),</span>
+            <span class="n">s</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">replaceAll</span><span class="o">(</span><span class="s">&quot;\&quot;&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">),</span>
+            <span class="n">s</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="n">replaceAll</span><span class="o">(</span><span class="s">&quot;\&quot;&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">),</span>
+            <span class="n">s</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="n">replaceAll</span><span class="o">(</span><span class="s">&quot;\&quot;&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">).</span><span class="n">toInt</span>
+        <span class="o">)</span>
+<span class="o">).</span><span class="n">toDF</span><span class="o">()</span>
+<span class="n">bank</span><span class="o">.</span><span class="n">registerTempTable</span><span class="o">(</span><span class="s">&quot;bank&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import org.apache.commons.io.IOUtils</span>
+<span class="go">import java.net.URL</span>
+<span class="go">import java.nio.charset.Charset</span>
+<span class="go">bankText: org.apache.spark.rdd.RDD[String] = ParallelCollectionRDD[36] at parallelize at &lt;console&gt;:43</span>
+<span class="go">defined class Bank</span>
+<span class="go">bank: org.apache.spark.sql.DataFrame = [age: int, job: string ... 3 more fields]</span>
+<span class="go">warning: there were 1 deprecation warning(s); re-run with -deprecation for details</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> 
+<span class="k">select</span> <span class="n">age</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">value</span>
+<span class="k">from</span> <span class="n">bank</span> 
+<span class="k">where</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">30</span> 
+<span class="k">group</span> <span class="k">by</span> <span class="n">age</span> 
+<span class="k">order</span> <span class="k">by</span> <span class="n">age</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">age	value</span>
+<span class="go">19	4</span>
+<span class="go">20	3</span>
+<span class="go">21	7</span>
+<span class="go">22	9</span>
+<span class="go">23	20</span>
+<span class="go">24	24</span>
+<span class="go">25	44</span>
+<span class="go">26	77</span>
+<span class="go">27	94</span>
+<span class="go">28	103</span>
+<span class="go">29	97</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> 
+<span class="k">select</span> <span class="n">age</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">value</span> 
+<span class="k">from</span> <span class="n">bank</span> 
+<span class="k">where</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="err">${</span><span class="n">maxAge</span><span class="o">=</span><span class="mi">30</span><span class="err">}</span> 
+<span class="k">group</span> <span class="k">by</span> <span class="n">age</span> 
+<span class="k">order</span> <span class="k">by</span> <span class="n">age</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">age	value</span>
+<span class="go">19	4</span>
+<span class="go">20	3</span>
+<span class="go">21	7</span>
+<span class="go">22	9</span>
+<span class="go">23	20</span>
+<span class="go">24	24</span>
+<span class="go">25	44</span>
+<span class="go">26	77</span>
+<span class="go">27	94</span>
+<span class="go">28	103</span>
+<span class="go">29	97</span>
+<span class="go">30	150</span>
+<span class="go">31	199</span>
+<span class="go">32	224</span>
+<span class="go">33	186</span>
+<span class="go">34	231</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> 
+<span class="k">select</span> <span class="n">age</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">value</span> 
+<span class="k">from</span> <span class="n">bank</span> 
+<span class="k">where</span> <span class="n">marital</span><span class="o">=</span><span class="ss">&quot;${marital=single,single|divorced|married}&quot;</span> 
+<span class="k">group</span> <span class="k">by</span> <span class="n">age</span> 
+<span class="k">order</span> <span class="k">by</span> <span class="n">age</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">age	value</span>
+<span class="go">19	4</span>
+<span class="go">20	3</span>
+<span class="go">21	7</span>
+<span class="go">22	9</span>
+<span class="go">23	17</span>
+<span class="go">24	13</span>
+<span class="go">25	33</span>
+<span class="go">26	56</span>
+<span class="go">27	64</span>
+<span class="go">28	78</span>
+<span class="go">29	56</span>
+<span class="go">30	92</span>
+<span class="go">31	86</span>
+<span class="go">32	105</span>
+<span class="go">33	61</span>
+<span class="go">34	75</span>
+<span class="go">35	46</span>
+<span class="go">36	50</span>
+<span class="go">37	43</span>
+<span class="go">38	44</span>
+<span class="go">39	30</span>
+<span class="go">40	25</span>
+<span class="go">41	19</span>
+<span class="go">42	23</span>
+<span class="go">43	21</span>
+<span class="go">44	20</span>
+<span class="go">45	15</span>
+<span class="go">46	14</span>
+<span class="go">47	12</span>
+<span class="go">48	12</span>
+<span class="go">49	11</span>
+<span class="go">50	8</span>
+<span class="go">51	6</span>
+<span class="go">52	9</span>
+<span class="go">53	4</span>
+<span class="go">55	3</span>
+<span class="go">56	3</span>
+<span class="go">57	2</span>
+<span class="go">58	7</span>
+<span class="go">59	2</span>
+<span class="go">60	5</span>
+<span class="go">66	2</span>
+<span class="go">69	1</span>
+</pre></div>
+
+<div class="markdown-body">
+<h2>Congratulations, it&rsquo;s done.</h2>
+<h5>You can create your own notebook in &lsquo;Notebook&rsquo; menu. Good luck!</h5>
+</div>
+<div class="markdown-body">
+<p>About bank data</p>
+<pre><code>Citation Request:
+  This dataset is public available for research. The details are described in [Moro et al., 2011]. 
+  Please include this citation if you plan to use this database:
+
+  [Moro et al., 2011] S. Moro, R. Laureano and P. Cortez. Using Data Mining for Bank Direct Marketing: An Application of the CRISP-DM Methodology. 
+  In P. Novais et al. (Eds.), Proceedings of the European Simulation and Modelling Conference - ESM&#39;2011, pp. 117-121, Guimarães, Portugal, October, 2011. EUROSIS.
+
+  Available at: [pdf] http://hdl.handle.net/1822/14838
+                [bib] http://www3.dsi.uminho.pt/pcortez/bib/2011-esm-1.txt
+</code></pre>
+</div>

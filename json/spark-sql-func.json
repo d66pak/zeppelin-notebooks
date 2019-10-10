@@ -1,0 +1,2907 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n\n### [Window functions](https://jaceklaskowski.gitbooks.io/mastering-spark-sql/spark-sql-functions-windows.html)",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:13:46.773",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch3\u003e\u003ca href\u003d\"https://jaceklaskowski.gitbooks.io/mastering-spark-sql/spark-sql-functions-windows.html\"\u003eWindow functions\u003c/a\u003e\u003c/h3\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567474298848_-836616472",
+      "id": "20190903-113138_1035639539",
+      "dateCreated": "2019-09-03 11:31:38.848",
+      "dateStarted": "2019-09-03 12:13:46.783",
+      "dateFinished": "2019-09-03 12:13:46.786",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import spark.implicits._\nimport org.apache.spark.sql.functions._\nimport org.apache.spark.sql.expressions.Window",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:13:46.883",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import spark.implicits._\nimport org.apache.spark.sql.functions._\nimport org.apache.spark.sql.expressions.Window\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567474414114_-911437922",
+      "id": "20190903-113334_46711546",
+      "dateCreated": "2019-09-03 11:33:34.114",
+      "dateStarted": "2019-09-03 12:13:46.893",
+      "dateFinished": "2019-09-03 12:13:48.952",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "case class Salary(depName: String, empNo: Long, salary: Long)\n",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:13:48.995",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "defined class Salary\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567474352474_1596734923",
+      "id": "20190903-113232_1065667997",
+      "dateCreated": "2019-09-03 11:32:32.474",
+      "dateStarted": "2019-09-03 12:13:49.009",
+      "dateFinished": "2019-09-03 12:13:49.090",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val empsalary \u003d Seq(\n  Salary(\"sales\", 1, 5000),\n  Salary(\"personnel\", 2, 3900),\n  Salary(\"sales\", 3, 4800),\n  Salary(\"sales\", 4, 4800),\n  Salary(\"sales\", 6, 4500),\n  Salary(\"sales\", 12, 5000),\n  Salary(\"personnel\", 5, 3500),\n  Salary(\"develop\", 7, 4200),\n  Salary(\"develop\", 8, 6000),\n  Salary(\"develop\", 9, 4500),\n  Salary(\"develop\", 10, 5200),\n  Salary(\"develop\", 11, 5200)).toDS",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:13:49.109",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "empsalary: org.apache.spark.sql.Dataset[Salary] \u003d [depName: string, empNo: bigint ... 1 more field]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567474396995_-678413038",
+      "id": "20190903-113316_2137791906",
+      "dateCreated": "2019-09-03 11:33:16.995",
+      "dateStarted": "2019-09-03 12:13:49.119",
+      "dateFinished": "2019-09-03 12:13:49.834",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "empsalary.show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:13:49.919",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+\n|  depName|empNo|salary|\n+---------+-----+------+\n|    sales|    1|  5000|\n|personnel|    2|  3900|\n|    sales|    3|  4800|\n|    sales|    4|  4800|\n|    sales|    6|  4500|\n|    sales|   12|  5000|\n|personnel|    5|  3500|\n|  develop|    7|  4200|\n|  develop|    8|  6000|\n|  develop|    9|  4500|\n|  develop|   10|  5200|\n|  develop|   11|  5200|\n+---------+-----+------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567474538638_896685701",
+      "id": "20190903-113538_1559215215",
+      "dateCreated": "2019-09-03 11:35:38.638",
+      "dateStarted": "2019-09-03 12:13:49.928",
+      "dateFinished": "2019-09-03 12:13:50.502",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val byDepName \u003d Window.partitionBy($\"depName\")",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:13:50.528",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "byDepName: org.apache.spark.sql.expressions.WindowSpec \u003d org.apache.spark.sql.expressions.WindowSpec@75d89b5d\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567474547950_1408841845",
+      "id": "20190903-113547_379612770",
+      "dateCreated": "2019-09-03 11:35:47.950",
+      "dateStarted": "2019-09-03 12:13:50.537",
+      "dateFinished": "2019-09-03 12:13:51.129",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "empsalary.withColumn(\"avg\", avg($\"salary\").over(byDepName)).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:13:51.137",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+------+\n|  depName|empNo|salary|   avg|\n+---------+-----+------+------+\n|  develop|    7|  4200|5020.0|\n|  develop|    8|  6000|5020.0|\n|  develop|    9|  4500|5020.0|\n|  develop|   10|  5200|5020.0|\n|  develop|   11|  5200|5020.0|\n|    sales|    1|  5000|4820.0|\n|    sales|    3|  4800|4820.0|\n|    sales|    4|  4800|4820.0|\n|    sales|    6|  4500|4820.0|\n|    sales|   12|  5000|4820.0|\n|personnel|    2|  3900|3700.0|\n|personnel|    5|  3500|3700.0|\n+---------+-----+------+------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d285",
+            "http://10.130.22.177:4040/jobs/job?id\u003d286",
+            "http://10.130.22.177:4040/jobs/job?id\u003d287",
+            "http://10.130.22.177:4040/jobs/job?id\u003d288",
+            "http://10.130.22.177:4040/jobs/job?id\u003d289"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567474736436_1602075801",
+      "id": "20190903-113856_1410969522",
+      "dateCreated": "2019-09-03 11:38:56.436",
+      "dateStarted": "2019-09-03 12:13:51.147",
+      "dateFinished": "2019-09-03 12:13:52.120",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "empsalary.withColumn(\"avg\", avg(\u0027salary) over byDepName).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:13:52.147",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+------+\n|  depName|empNo|salary|   avg|\n+---------+-----+------+------+\n|  develop|    7|  4200|5020.0|\n|  develop|    8|  6000|5020.0|\n|  develop|    9|  4500|5020.0|\n|  develop|   10|  5200|5020.0|\n|  develop|   11|  5200|5020.0|\n|    sales|    1|  5000|4820.0|\n|    sales|    3|  4800|4820.0|\n|    sales|    4|  4800|4820.0|\n|    sales|    6|  4500|4820.0|\n|    sales|   12|  5000|4820.0|\n|personnel|    2|  3900|3700.0|\n|personnel|    5|  3500|3700.0|\n+---------+-----+------+------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d290",
+            "http://10.130.22.177:4040/jobs/job?id\u003d291",
+            "http://10.130.22.177:4040/jobs/job?id\u003d292",
+            "http://10.130.22.177:4040/jobs/job?id\u003d293",
+            "http://10.130.22.177:4040/jobs/job?id\u003d294"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567474852216_1806037742",
+      "id": "20190903-114052_1389682033",
+      "dateCreated": "2019-09-03 11:40:52.216",
+      "dateStarted": "2019-09-03 12:13:52.156",
+      "dateFinished": "2019-09-03 12:13:53.074",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "empsalary.select(\u0027depName, \u0027empNo, avg(\u0027salary).over(byDepName).as(\"avg\")).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:13:53.157",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+\n|  depName|empNo|   avg|\n+---------+-----+------+\n|  develop|    7|5020.0|\n|  develop|    8|5020.0|\n|  develop|    9|5020.0|\n|  develop|   10|5020.0|\n|  develop|   11|5020.0|\n|    sales|    1|4820.0|\n|    sales|    3|4820.0|\n|    sales|    4|4820.0|\n|    sales|    6|4820.0|\n|    sales|   12|4820.0|\n|personnel|    2|3700.0|\n|personnel|    5|3700.0|\n+---------+-----+------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d295",
+            "http://10.130.22.177:4040/jobs/job?id\u003d296",
+            "http://10.130.22.177:4040/jobs/job?id\u003d297",
+            "http://10.130.22.177:4040/jobs/job?id\u003d298",
+            "http://10.130.22.177:4040/jobs/job?id\u003d299"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567474925568_1524753971",
+      "id": "20190903-114205_1997613089",
+      "dateCreated": "2019-09-03 11:42:05.568",
+      "dateStarted": "2019-09-03 12:13:53.166",
+      "dateFinished": "2019-09-03 12:13:54.159",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Orderby on the DF not window group\nempsalary.withColumn(\"avg\", avg(\u0027salary).over(byDepName)).orderBy(\u0027salary).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:13:54.167",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+------+\n|  depName|empNo|salary|   avg|\n+---------+-----+------+------+\n|personnel|    5|  3500|3700.0|\n|personnel|    2|  3900|3700.0|\n|  develop|    7|  4200|5020.0|\n|  develop|    9|  4500|5020.0|\n|    sales|    6|  4500|4820.0|\n|    sales|    4|  4800|4820.0|\n|    sales|    3|  4800|4820.0|\n|    sales|    1|  5000|4820.0|\n|    sales|   12|  5000|4820.0|\n|  develop|   10|  5200|5020.0|\n|  develop|   11|  5200|5020.0|\n|  develop|    8|  6000|5020.0|\n+---------+-----+------+------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d300"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567475459705_651326657",
+      "id": "20190903-115059_1985286093",
+      "dateCreated": "2019-09-03 11:50:59.705",
+      "dateStarted": "2019-09-03 12:13:54.177",
+      "dateFinished": "2019-09-03 12:13:55.119",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Ordering in window\n\nval byDepNameSalaryDesc \u003d Window.partitionBy(\u0027depName).orderBy(\u0027salary.desc)",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:13:55.178",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "byDepNameSalaryDesc: org.apache.spark.sql.expressions.WindowSpec \u003d org.apache.spark.sql.expressions.WindowSpec@7da730b0\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567476024229_-1740701193",
+      "id": "20190903-120024_966413535",
+      "dateCreated": "2019-09-03 12:00:24.229",
+      "dateStarted": "2019-09-03 12:13:55.188",
+      "dateFinished": "2019-09-03 12:13:55.764",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "empsalary.withColumn(\"avg\", avg(\u0027salary).over(byDepNameSalaryDesc)).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:13:55.788",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+-----------------+\n|  depName|empNo|salary|              avg|\n+---------+-----+------+-----------------+\n|  develop|    8|  6000|           6000.0|\n|  develop|   10|  5200|5466.666666666667|\n|  develop|   11|  5200|5466.666666666667|\n|  develop|    9|  4500|           5225.0|\n|  develop|    7|  4200|           5020.0|\n|    sales|    1|  5000|           5000.0|\n|    sales|   12|  5000|           5000.0|\n|    sales|    3|  4800|           4900.0|\n|    sales|    4|  4800|           4900.0|\n|    sales|    6|  4500|           4820.0|\n|personnel|    2|  3900|           3900.0|\n|personnel|    5|  3500|           3700.0|\n+---------+-----+------+-----------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d301",
+            "http://10.130.22.177:4040/jobs/job?id\u003d302",
+            "http://10.130.22.177:4040/jobs/job?id\u003d303",
+            "http://10.130.22.177:4040/jobs/job?id\u003d304",
+            "http://10.130.22.177:4040/jobs/job?id\u003d305"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567476300306_1155849901",
+      "id": "20190903-120500_1955746235",
+      "dateCreated": "2019-09-03 12:05:00.306",
+      "dateStarted": "2019-09-03 12:13:55.798",
+      "dateFinished": "2019-09-03 12:13:56.742",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Rank (NOTE how the rank values are skipped)\n\nempsalary.withColumn(\"rank\", rank.over(byDepNameSalaryDesc)).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:14:41.846",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+----+\n|  depName|empNo|salary|rank|\n+---------+-----+------+----+\n|  develop|    8|  6000|   1|\n|  develop|   10|  5200|   2|\n|  develop|   11|  5200|   2|\n|  develop|    9|  4500|   4|\n|  develop|    7|  4200|   5|\n|    sales|    1|  5000|   1|\n|    sales|   12|  5000|   1|\n|    sales|    3|  4800|   3|\n|    sales|    4|  4800|   3|\n|    sales|    6|  4500|   5|\n|personnel|    2|  3900|   1|\n|personnel|    5|  3500|   2|\n+---------+-----+------+----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d306",
+            "http://10.130.22.177:4040/jobs/job?id\u003d307",
+            "http://10.130.22.177:4040/jobs/job?id\u003d308",
+            "http://10.130.22.177:4040/jobs/job?id\u003d309",
+            "http://10.130.22.177:4040/jobs/job?id\u003d310"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567476406821_1524221108",
+      "id": "20190903-120646_959563987",
+      "dateCreated": "2019-09-03 12:06:46.821",
+      "dateStarted": "2019-09-03 12:13:56.809",
+      "dateFinished": "2019-09-03 12:13:57.692",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// With dense_rank, rank values are not skipped\n\nempsalary.withColumn(\"rank\", dense_rank.over(byDepNameSalaryDesc)).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:36:12.334",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+----+\n|  depName|empNo|salary|rank|\n+---------+-----+------+----+\n|  develop|    8|  6000|   1|\n|  develop|   10|  5200|   2|\n|  develop|   11|  5200|   2|\n|  develop|    9|  4500|   3|\n|  develop|    7|  4200|   4|\n|    sales|    1|  5000|   1|\n|    sales|   12|  5000|   1|\n|    sales|    3|  4800|   2|\n|    sales|    4|  4800|   2|\n|    sales|    6|  4500|   3|\n|personnel|    2|  3900|   1|\n|personnel|    5|  3500|   2|\n+---------+-----+------+----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d331",
+            "http://10.130.22.177:4040/jobs/job?id\u003d332",
+            "http://10.130.22.177:4040/jobs/job?id\u003d333",
+            "http://10.130.22.177:4040/jobs/job?id\u003d334",
+            "http://10.130.22.177:4040/jobs/job?id\u003d335"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567478082619_1395869409",
+      "id": "20190903-123442_1514595753",
+      "dateCreated": "2019-09-03 12:34:42.619",
+      "dateStarted": "2019-09-03 12:35:10.110",
+      "dateFinished": "2019-09-03 12:35:11.045",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n### Frame",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:25:56.691",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch3\u003eFrame\u003c/h3\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567476551611_-1511274704",
+      "id": "20190903-120911_484260844",
+      "dateCreated": "2019-09-03 12:09:11.611",
+      "dateStarted": "2019-09-03 12:25:56.692",
+      "dateFinished": "2019-09-03 12:25:56.694",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Max of salary, frame start \u003d one row prior to current row, frame end \u003d current row\n\nempsalary.withColumn(\"max\", max(\u0027salary).over(\n    Window.partitionBy(\u0027depName).orderBy(\u0027salary).rowsBetween(-1, Window.currentRow))).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:43:12.032",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+----+\n|  depName|empNo|salary| max|\n+---------+-----+------+----+\n|  develop|    7|  4200|4200|\n|  develop|    9|  4500|4500|\n|  develop|   10|  5200|5200|\n|  develop|   11|  5200|5200|\n|  develop|    8|  6000|6000|\n|    sales|    6|  4500|4500|\n|    sales|    3|  4800|4800|\n|    sales|    4|  4800|4800|\n|    sales|    1|  5000|5000|\n|    sales|   12|  5000|5000|\n|personnel|    5|  3500|3500|\n|personnel|    2|  3900|3900|\n+---------+-----+------+----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d429",
+            "http://10.130.22.177:4040/jobs/job?id\u003d430",
+            "http://10.130.22.177:4040/jobs/job?id\u003d431",
+            "http://10.130.22.177:4040/jobs/job?id\u003d432",
+            "http://10.130.22.177:4040/jobs/job?id\u003d433"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567489419044_2094821170",
+      "id": "20190903-154339_56449531",
+      "dateCreated": "2019-09-03 15:43:39.044",
+      "dateStarted": "2019-09-03 16:43:12.069",
+      "dateFinished": "2019-09-03 16:43:12.973",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Max of salary, frame start \u003d one row prior to current row, frame end \u003d one row following current row \n\nempsalary.withColumn(\"max\", max(\u0027salary).over(\n    Window.partitionBy(\u0027depName).orderBy(\u0027salary).rowsBetween(-1, 1))).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:43:55.040",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+----+\n|  depName|empNo|salary| max|\n+---------+-----+------+----+\n|  develop|    7|  4200|4500|\n|  develop|    9|  4500|5200|\n|  develop|   10|  5200|5200|\n|  develop|   11|  5200|6000|\n|  develop|    8|  6000|6000|\n|    sales|    6|  4500|4800|\n|    sales|    3|  4800|4800|\n|    sales|    4|  4800|5000|\n|    sales|    1|  5000|5000|\n|    sales|   12|  5000|5000|\n|personnel|    5|  3500|3900|\n|personnel|    2|  3900|3900|\n+---------+-----+------+----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d434",
+            "http://10.130.22.177:4040/jobs/job?id\u003d435",
+            "http://10.130.22.177:4040/jobs/job?id\u003d436",
+            "http://10.130.22.177:4040/jobs/job?id\u003d437",
+            "http://10.130.22.177:4040/jobs/job?id\u003d438"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567492387312_-1442175281",
+      "id": "20190903-163307_645109847",
+      "dateCreated": "2019-09-03 16:33:07.312",
+      "dateStarted": "2019-09-03 16:43:55.076",
+      "dateFinished": "2019-09-03 16:43:55.970",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Max of salary, frame start \u003d all rows prior to current row, frame end \u003d current row\n\nempsalary.withColumn(\"max\", max(\u0027salary).over(\n    Window.partitionBy(\u0027depName).orderBy(\u0027salary).rowsBetween(Window.unboundedPreceding, Window.currentRow))).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:44:14.403",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+----+\n|  depName|empNo|salary| max|\n+---------+-----+------+----+\n|  develop|    7|  4200|4200|\n|  develop|    9|  4500|4500|\n|  develop|   10|  5200|5200|\n|  develop|   11|  5200|5200|\n|  develop|    8|  6000|6000|\n|    sales|    6|  4500|4500|\n|    sales|    3|  4800|4800|\n|    sales|    4|  4800|4800|\n|    sales|    1|  5000|5000|\n|    sales|   12|  5000|5000|\n|personnel|    5|  3500|3500|\n|personnel|    2|  3900|3900|\n+---------+-----+------+----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d439",
+            "http://10.130.22.177:4040/jobs/job?id\u003d440",
+            "http://10.130.22.177:4040/jobs/job?id\u003d441",
+            "http://10.130.22.177:4040/jobs/job?id\u003d442",
+            "http://10.130.22.177:4040/jobs/job?id\u003d443"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567492531444_845078328",
+      "id": "20190903-163531_548178339",
+      "dateCreated": "2019-09-03 16:35:31.444",
+      "dateStarted": "2019-09-03 16:44:14.439",
+      "dateFinished": "2019-09-03 16:44:15.341",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Max of salary, frame start \u003d current row, frame end \u003d all rows following current row \n\nempsalary.withColumn(\"max\", max(\u0027salary).over(\n    Window.partitionBy(\u0027depName).orderBy(\u0027salary).rowsBetween(Window.currentRow, Window.unboundedFollowing))).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:44:57.432",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+----+\n|  depName|empNo|salary| max|\n+---------+-----+------+----+\n|  develop|    7|  4200|6000|\n|  develop|    9|  4500|6000|\n|  develop|   10|  5200|6000|\n|  develop|   11|  5200|6000|\n|  develop|    8|  6000|6000|\n|    sales|    6|  4500|5000|\n|    sales|    3|  4800|5000|\n|    sales|    4|  4800|5000|\n|    sales|    1|  5000|5000|\n|    sales|   12|  5000|5000|\n|personnel|    5|  3500|3900|\n|personnel|    2|  3900|3900|\n+---------+-----+------+----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d444",
+            "http://10.130.22.177:4040/jobs/job?id\u003d445",
+            "http://10.130.22.177:4040/jobs/job?id\u003d446",
+            "http://10.130.22.177:4040/jobs/job?id\u003d447",
+            "http://10.130.22.177:4040/jobs/job?id\u003d448"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567492607049_396065336",
+      "id": "20190903-163647_1958899819",
+      "dateCreated": "2019-09-03 16:36:47.049",
+      "dateStarted": "2019-09-03 16:44:57.479",
+      "dateFinished": "2019-09-03 16:44:58.383",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Max of salary, frame start \u003d all rows prior to current row, frame end \u003d all rows following current row \n\nempsalary.withColumn(\"max\", max(\u0027salary).over(\n    Window.partitionBy(\u0027depName).orderBy(\u0027salary).rowsBetween(Window.unboundedPreceding, Window.unboundedFollowing))).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:45:25.734",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+----+\n|  depName|empNo|salary| max|\n+---------+-----+------+----+\n|  develop|    7|  4200|6000|\n|  develop|    9|  4500|6000|\n|  develop|   10|  5200|6000|\n|  develop|   11|  5200|6000|\n|  develop|    8|  6000|6000|\n|    sales|    6|  4500|5000|\n|    sales|    3|  4800|5000|\n|    sales|    4|  4800|5000|\n|    sales|    1|  5000|5000|\n|    sales|   12|  5000|5000|\n|personnel|    5|  3500|3900|\n|personnel|    2|  3900|3900|\n+---------+-----+------+----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d449",
+            "http://10.130.22.177:4040/jobs/job?id\u003d450",
+            "http://10.130.22.177:4040/jobs/job?id\u003d451",
+            "http://10.130.22.177:4040/jobs/job?id\u003d452",
+            "http://10.130.22.177:4040/jobs/job?id\u003d453"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567492688713_-203553326",
+      "id": "20190903-163808_697766327",
+      "dateCreated": "2019-09-03 16:38:08.713",
+      "dateStarted": "2019-09-03 16:45:25.770",
+      "dateFinished": "2019-09-03 16:45:26.680",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Same as above\n\n// Max of salary, frame start \u003d one row prior to current row, frame end \u003d one row following current row \n\nempsalary.withColumn(\"max\", max(\u0027salary).over(\n    Window.partitionBy(\u0027depName).orderBy(\u0027salary.desc))).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:47:02.848",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+----+\n|  depName|empNo|salary| max|\n+---------+-----+------+----+\n|  develop|    8|  6000|6000|\n|  develop|   10|  5200|6000|\n|  develop|   11|  5200|6000|\n|  develop|    9|  4500|6000|\n|  develop|    7|  4200|6000|\n|    sales|    1|  5000|5000|\n|    sales|   12|  5000|5000|\n|    sales|    3|  4800|5000|\n|    sales|    4|  4800|5000|\n|    sales|    6|  4500|5000|\n|personnel|    2|  3900|3900|\n|personnel|    5|  3500|3900|\n+---------+-----+------+----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d459",
+            "http://10.130.22.177:4040/jobs/job?id\u003d460",
+            "http://10.130.22.177:4040/jobs/job?id\u003d461",
+            "http://10.130.22.177:4040/jobs/job?id\u003d462",
+            "http://10.130.22.177:4040/jobs/job?id\u003d463"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567492754286_-2124863645",
+      "id": "20190903-163914_323853766",
+      "dateCreated": "2019-09-03 16:39:14.286",
+      "dateStarted": "2019-09-03 16:47:02.885",
+      "dateFinished": "2019-09-03 16:47:03.780",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n#### Note: I don\u0027t understand the below behavior\n\n**Update**\n\n* Frame or Window is determined by the field mentioned in orderBy()\n* Result (max in the below case) is determined by comparing the current row with the previous row\n* So, if you want to find max of salary withing a window order salary in desc order\n* if you want to find min of salary withing a window order salary in asc order",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 17:09:40.947",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eNote: I don\u0027t understand the below behavior\u003c/h4\u003e\n\u003cp\u003e\u003cstrong\u003eUpdate\u003c/strong\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eFrame or Window is determined by the field mentioned in orderBy()\u003c/li\u003e\n\u003cli\u003eResult (max in the below case) is determined by comparing the current row with the previous row\u003c/li\u003e\n\u003cli\u003eSo, if you want to find max of salary withing a window order salary in desc order\u003c/li\u003e\n\u003cli\u003eif you want to find min of salary withing a window order salary in asc order\u003c/li\u003e\n\u003c/ul\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567493441987_1202374296",
+      "id": "20190903-165041_1793820648",
+      "dateCreated": "2019-09-03 16:50:41.987",
+      "dateStarted": "2019-09-03 17:09:40.948",
+      "dateFinished": "2019-09-03 17:09:40.953",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// NOTE: I don\u0027t understand this\n\nempsalary.withColumn(\"max\", max(\u0027salary).over(\n    Window.partitionBy(\u0027depName).orderBy(\u0027salary.asc))).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:49:27.277",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+----+\n|  depName|empNo|salary| max|\n+---------+-----+------+----+\n|  develop|    7|  4200|4200|\n|  develop|    9|  4500|4500|\n|  develop|   10|  5200|5200|\n|  develop|   11|  5200|5200|\n|  develop|    8|  6000|6000|\n|    sales|    6|  4500|4500|\n|    sales|    3|  4800|4800|\n|    sales|    4|  4800|4800|\n|    sales|    1|  5000|5000|\n|    sales|   12|  5000|5000|\n|personnel|    5|  3500|3500|\n|personnel|    2|  3900|3900|\n+---------+-----+------+----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d484",
+            "http://10.130.22.177:4040/jobs/job?id\u003d485",
+            "http://10.130.22.177:4040/jobs/job?id\u003d486",
+            "http://10.130.22.177:4040/jobs/job?id\u003d487",
+            "http://10.130.22.177:4040/jobs/job?id\u003d488"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567493287351_-1427585013",
+      "id": "20190903-164807_825854602",
+      "dateCreated": "2019-09-03 16:48:07.351",
+      "dateStarted": "2019-09-03 16:49:27.314",
+      "dateFinished": "2019-09-03 16:49:28.263",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n#### Looks like it compares the previous value to find the current result",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:58:47.721",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eLooks like it compares the previous value to find the current result\u003c/h4\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567493881862_1096490497",
+      "id": "20190903-165801_253782314",
+      "dateCreated": "2019-09-03 16:58:01.862",
+      "dateStarted": "2019-09-03 16:58:47.722",
+      "dateFinished": "2019-09-03 16:58:47.724",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "empsalary.withColumn(\"max\", max(\u0027salary).over(\n    Window.partitionBy(\u0027depName).orderBy(\u0027empNo))).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:56:44.956",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+----+\n|  depName|empNo|salary| max|\n+---------+-----+------+----+\n|  develop|    7|  4200|4200|\n|  develop|    8|  6000|6000|\n|  develop|    9|  4500|6000|\n|  develop|   10|  5200|6000|\n|  develop|   11|  5200|6000|\n|    sales|    1|  5000|5000|\n|    sales|    3|  4800|5000|\n|    sales|    4|  4800|5000|\n|    sales|    6|  4500|5000|\n|    sales|   12|  5000|5000|\n|personnel|    2|  3900|3900|\n|personnel|    5|  3500|3900|\n+---------+-----+------+----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d494",
+            "http://10.130.22.177:4040/jobs/job?id\u003d495",
+            "http://10.130.22.177:4040/jobs/job?id\u003d496",
+            "http://10.130.22.177:4040/jobs/job?id\u003d497",
+            "http://10.130.22.177:4040/jobs/job?id\u003d498"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567493787397_935096677",
+      "id": "20190903-165627_686211101",
+      "dateCreated": "2019-09-03 16:56:27.397",
+      "dateStarted": "2019-09-03 16:56:44.995",
+      "dateFinished": "2019-09-03 16:56:45.909",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n#### frame is determined by the field mentioned in orderBy()",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 17:01:08.185",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eframe is determined by the field mentioned in orderBy()\u003c/h4\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567494027314_1140381474",
+      "id": "20190903-170027_1926233000",
+      "dateCreated": "2019-09-03 17:00:27.314",
+      "dateStarted": "2019-09-03 17:01:08.185",
+      "dateFinished": "2019-09-03 17:01:08.194",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "empsalary.withColumn(\"max\", max(\u0027salary).over(\n    Window.partitionBy(\u0027depName).orderBy(\u0027empNo).rangeBetween(-1, Window.currentRow))).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 17:00:00.327",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+----+\n|  depName|empNo|salary| max|\n+---------+-----+------+----+\n|  develop|    7|  4200|4200|\n|  develop|    8|  6000|6000|\n|  develop|    9|  4500|6000|\n|  develop|   10|  5200|5200|\n|  develop|   11|  5200|5200|\n|    sales|    1|  5000|5000|\n|    sales|    3|  4800|4800|\n|    sales|    4|  4800|4800|\n|    sales|    6|  4500|4500|\n|    sales|   12|  5000|5000|\n|personnel|    2|  3900|3900|\n|personnel|    5|  3500|3500|\n+---------+-----+------+----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d504",
+            "http://10.130.22.177:4040/jobs/job?id\u003d505",
+            "http://10.130.22.177:4040/jobs/job?id\u003d506",
+            "http://10.130.22.177:4040/jobs/job?id\u003d507",
+            "http://10.130.22.177:4040/jobs/job?id\u003d508"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567493505870_-72719865",
+      "id": "20190903-165145_768593438",
+      "dateCreated": "2019-09-03 16:51:45.870",
+      "dateStarted": "2019-09-03 17:00:00.368",
+      "dateFinished": "2019-09-03 17:00:01.267",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val dataset \u003d Seq(\n  (\"Thin\",       \"cell phone\", 6000),\n  (\"Normal\",     \"tablet\",     1500),\n  (\"Mini\",       \"tablet\",     5500),\n  (\"Ultra thin\", \"cell phone\", 5000),\n  (\"Very thin\",  \"cell phone\", 6000),\n  (\"Big\",        \"tablet\",     2500),\n  (\"Bendable\",   \"cell phone\", 3000),\n  (\"Foldable\",   \"cell phone\", 3000),\n  (\"Pro\",        \"tablet\",     4500),\n  (\"Pro2\",       \"tablet\",     6500))\n  .toDF(\"product\", \"category\", \"revenue\")",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:26:13.873",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "dataset: org.apache.spark.sql.DataFrame \u003d [product: string, category: string ... 1 more field]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567477556679_-1804197783",
+      "id": "20190903-122556_1870493264",
+      "dateCreated": "2019-09-03 12:25:56.679",
+      "dateStarted": "2019-09-03 12:26:13.887",
+      "dateFinished": "2019-09-03 12:26:14.595",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "dataset.show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:26:25.136",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+----------+-------+\n|   product|  category|revenue|\n+----------+----------+-------+\n|      Thin|cell phone|   6000|\n|    Normal|    tablet|   1500|\n|      Mini|    tablet|   5500|\n|Ultra thin|cell phone|   5000|\n| Very thin|cell phone|   6000|\n|       Big|    tablet|   2500|\n|  Bendable|cell phone|   3000|\n|  Foldable|cell phone|   3000|\n|       Pro|    tablet|   4500|\n|      Pro2|    tablet|   6500|\n+----------+----------+-------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567477573873_-1014253721",
+      "id": "20190903-122613_1589698933",
+      "dateCreated": "2019-09-03 12:26:13.873",
+      "dateStarted": "2019-09-03 12:26:25.149",
+      "dateFinished": "2019-09-03 12:26:25.736",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\nFind the best selling and 2nd best selling product in each category",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:27:49.736",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eFind the best selling and 2nd best selling product in each category\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567477585136_741245530",
+      "id": "20190903-122625_1673400140",
+      "dateCreated": "2019-09-03 12:26:25.136",
+      "dateStarted": "2019-09-03 12:27:49.736",
+      "dateFinished": "2019-09-03 12:27:49.739",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val byCategoryRevenueDesc \u003d Window.partitionBy(\u0027category).orderBy(\u0027revenue.desc)",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:33:22.993",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "byCategoryRevenueDesc: org.apache.spark.sql.expressions.WindowSpec \u003d org.apache.spark.sql.expressions.WindowSpec@4462f528\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567477669722_-1925321365",
+      "id": "20190903-122749_1980150991",
+      "dateCreated": "2019-09-03 12:27:49.722",
+      "dateStarted": "2019-09-03 12:33:23.007",
+      "dateFinished": "2019-09-03 12:33:23.598",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val ranked \u003d dataset.withColumn(\"dense_rank\", dense_rank.over(byCategoryRevenueDesc))",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 15:35:03.983",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "ranked: org.apache.spark.sql.DataFrame \u003d [product: string, category: string ... 2 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567477874169_998777920",
+      "id": "20190903-123114_36172322",
+      "dateCreated": "2019-09-03 12:31:14.169",
+      "dateStarted": "2019-09-03 15:35:04.009",
+      "dateFinished": "2019-09-03 15:35:04.651",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "ranked.show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 15:35:12.960",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+----------+-------+----------+\n|   product|  category|revenue|dense_rank|\n+----------+----------+-------+----------+\n|      Pro2|    tablet|   6500|         1|\n|      Mini|    tablet|   5500|         2|\n|       Pro|    tablet|   4500|         3|\n|       Big|    tablet|   2500|         4|\n|    Normal|    tablet|   1500|         5|\n|      Thin|cell phone|   6000|         1|\n| Very thin|cell phone|   6000|         1|\n|Ultra thin|cell phone|   5000|         2|\n|  Bendable|cell phone|   3000|         3|\n|  Foldable|cell phone|   3000|         3|\n+----------+----------+-------+----------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d373",
+            "http://10.130.22.177:4040/jobs/job?id\u003d374",
+            "http://10.130.22.177:4040/jobs/job?id\u003d375",
+            "http://10.130.22.177:4040/jobs/job?id\u003d376",
+            "http://10.130.22.177:4040/jobs/job?id\u003d377"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567477950694_-1952583000",
+      "id": "20190903-123230_1703884805",
+      "dateCreated": "2019-09-03 12:32:30.694",
+      "dateStarted": "2019-09-03 15:35:12.985",
+      "dateFinished": "2019-09-03 15:35:13.878",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "dataset.withColumn(\"percent_rank\", percent_rank.over(byCategoryRevenueDesc)).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 15:34:46.958",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+----------+-------+------------+\n|   product|  category|revenue|percent_rank|\n+----------+----------+-------+------------+\n|      Pro2|    tablet|   6500|         0.0|\n|      Mini|    tablet|   5500|        0.25|\n|       Pro|    tablet|   4500|         0.5|\n|       Big|    tablet|   2500|        0.75|\n|    Normal|    tablet|   1500|         1.0|\n|      Thin|cell phone|   6000|         0.0|\n| Very thin|cell phone|   6000|         0.0|\n|Ultra thin|cell phone|   5000|         0.5|\n|  Bendable|cell phone|   3000|        0.75|\n|  Foldable|cell phone|   3000|        0.75|\n+----------+----------+-------+------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d368",
+            "http://10.130.22.177:4040/jobs/job?id\u003d369",
+            "http://10.130.22.177:4040/jobs/job?id\u003d370",
+            "http://10.130.22.177:4040/jobs/job?id\u003d371",
+            "http://10.130.22.177:4040/jobs/job?id\u003d372"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567488815105_-179862593",
+      "id": "20190903-153335_1220651971",
+      "dateCreated": "2019-09-03 15:33:35.105",
+      "dateStarted": "2019-09-03 15:34:46.993",
+      "dateFinished": "2019-09-03 15:34:47.983",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "ranked.where(\u0027rank \u003c\u003d 2).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:34:20.982",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+----------+-------+----+\n|   product|  category|revenue|rank|\n+----------+----------+-------+----+\n|      Pro2|    tablet|   6500|   1|\n|      Mini|    tablet|   5500|   2|\n|      Thin|cell phone|   6000|   1|\n| Very thin|cell phone|   6000|   1|\n|Ultra thin|cell phone|   5000|   2|\n+----------+----------+-------+----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d326",
+            "http://10.130.22.177:4040/jobs/job?id\u003d327",
+            "http://10.130.22.177:4040/jobs/job?id\u003d328",
+            "http://10.130.22.177:4040/jobs/job?id\u003d329",
+            "http://10.130.22.177:4040/jobs/job?id\u003d330"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567477959263_-1651501245",
+      "id": "20190903-123239_173241931",
+      "dateCreated": "2019-09-03 12:32:39.263",
+      "dateStarted": "2019-09-03 12:34:20.997",
+      "dateFinished": "2019-09-03 12:34:21.904",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\nRevenue difference per category",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:42:44.617",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eRevenue difference per category\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567478043080_2093339791",
+      "id": "20190903-123403_2131939473",
+      "dateCreated": "2019-09-03 12:34:03.080",
+      "dateStarted": "2019-09-03 12:42:44.618",
+      "dateFinished": "2019-09-03 12:42:44.620",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "dataset.withColumn(\"max\", max(\u0027revenue).over(byCategoryRevenueDesc)).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:43:32.032",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+----------+-------+----+\n|   product|  category|revenue| max|\n+----------+----------+-------+----+\n|      Pro2|    tablet|   6500|6500|\n|      Mini|    tablet|   5500|6500|\n|       Pro|    tablet|   4500|6500|\n|       Big|    tablet|   2500|6500|\n|    Normal|    tablet|   1500|6500|\n|      Thin|cell phone|   6000|6000|\n| Very thin|cell phone|   6000|6000|\n|Ultra thin|cell phone|   5000|6000|\n|  Bendable|cell phone|   3000|6000|\n|  Foldable|cell phone|   3000|6000|\n+----------+----------+-------+----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d336",
+            "http://10.130.22.177:4040/jobs/job?id\u003d337",
+            "http://10.130.22.177:4040/jobs/job?id\u003d338",
+            "http://10.130.22.177:4040/jobs/job?id\u003d339",
+            "http://10.130.22.177:4040/jobs/job?id\u003d340"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567478564600_270274388",
+      "id": "20190903-124244_1407268550",
+      "dateCreated": "2019-09-03 12:42:44.600",
+      "dateStarted": "2019-09-03 12:43:32.051",
+      "dateFinished": "2019-09-03 12:43:33.007",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val diffColumn \u003d max(\u0027revenue).over(byCategoryRevenueDesc) - \u0027revenue",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:45:40.611",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "diffColumn: org.apache.spark.sql.Column \u003d (max(revenue) OVER (PARTITION BY category ORDER BY revenue DESC NULLS LAST unspecifiedframe$()) - revenue)\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567478612032_217003307",
+      "id": "20190903-124332_225086838",
+      "dateCreated": "2019-09-03 12:43:32.032",
+      "dateStarted": "2019-09-03 12:45:40.632",
+      "dateFinished": "2019-09-03 12:45:41.249",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "dataset.select($\"*\", diffColumn.as(\"revenue_diff\")).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:47:03.367",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+----------+-------+------------+\n|   product|  category|revenue|revenue_diff|\n+----------+----------+-------+------------+\n|      Pro2|    tablet|   6500|           0|\n|      Mini|    tablet|   5500|        1000|\n|       Pro|    tablet|   4500|        2000|\n|       Big|    tablet|   2500|        4000|\n|    Normal|    tablet|   1500|        5000|\n|      Thin|cell phone|   6000|           0|\n| Very thin|cell phone|   6000|           0|\n|Ultra thin|cell phone|   5000|        1000|\n|  Bendable|cell phone|   3000|        3000|\n|  Foldable|cell phone|   3000|        3000|\n+----------+----------+-------+------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d341",
+            "http://10.130.22.177:4040/jobs/job?id\u003d342",
+            "http://10.130.22.177:4040/jobs/job?id\u003d343",
+            "http://10.130.22.177:4040/jobs/job?id\u003d344",
+            "http://10.130.22.177:4040/jobs/job?id\u003d345"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567478740611_965886140",
+      "id": "20190903-124540_31648519",
+      "dateCreated": "2019-09-03 12:45:40.611",
+      "dateStarted": "2019-09-03 12:47:03.385",
+      "dateFinished": "2019-09-03 12:47:04.388",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "dataset.withColumn(\"revenue_diff\", diffColumn).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:47:56.032",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+----------+-------+------------+\n|   product|  category|revenue|revenue_diff|\n+----------+----------+-------+------------+\n|      Pro2|    tablet|   6500|           0|\n|      Mini|    tablet|   5500|        1000|\n|       Pro|    tablet|   4500|        2000|\n|       Big|    tablet|   2500|        4000|\n|    Normal|    tablet|   1500|        5000|\n|      Thin|cell phone|   6000|           0|\n| Very thin|cell phone|   6000|           0|\n|Ultra thin|cell phone|   5000|        1000|\n|  Bendable|cell phone|   3000|        3000|\n|  Foldable|cell phone|   3000|        3000|\n+----------+----------+-------+------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d346",
+            "http://10.130.22.177:4040/jobs/job?id\u003d347",
+            "http://10.130.22.177:4040/jobs/job?id\u003d348",
+            "http://10.130.22.177:4040/jobs/job?id\u003d349",
+            "http://10.130.22.177:4040/jobs/job?id\u003d350"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567478823367_863354267",
+      "id": "20190903-124703_1434561742",
+      "dateCreated": "2019-09-03 12:47:03.367",
+      "dateStarted": "2019-09-03 12:47:56.050",
+      "dateFinished": "2019-09-03 12:47:56.967",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n#### lead",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 12:51:25.688",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003elead\u003c/h4\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567478876032_954378662",
+      "id": "20190903-124756_2048071346",
+      "dateCreated": "2019-09-03 12:47:56.032",
+      "dateStarted": "2019-09-03 12:51:25.688",
+      "dateFinished": "2019-09-03 12:51:25.691",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val pairs \u003d for {\n    x \u003c- 1 to 5\n    y \u003c- 1 to 2\n} yield (x, 10 * x * y)\n\nval ds \u003d pairs.toDF(\"ns\", \"tens\")\nds.show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 13:00:58.444",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---+----+\n| ns|tens|\n+---+----+\n|  1|  10|\n|  1|  20|\n|  2|  20|\n|  2|  40|\n|  3|  30|\n|  3|  60|\n|  4|  40|\n|  4|  80|\n|  5|  50|\n|  5| 100|\n+---+----+\n\npairs: scala.collection.immutable.IndexedSeq[(Int, Int)] \u003d Vector((1,10), (1,20), (2,20), (2,40), (3,30), (3,60), (4,40), (4,80), (5,50), (5,100))\nds: org.apache.spark.sql.DataFrame \u003d [ns: int, tens: int]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567479085669_1280804613",
+      "id": "20190903-125125_1385468677",
+      "dateCreated": "2019-09-03 12:51:25.669",
+      "dateStarted": "2019-09-03 13:00:58.471",
+      "dateFinished": "2019-09-03 13:00:59.324",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val overNs \u003d Window.partitionBy(\u0027ns).orderBy(\u0027tens)\nds.withColumn(\"lead\", lead(\u0027tens, 1).over(overNs)).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 14:46:01.857",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---+----+----+\n| ns|tens|lead|\n+---+----+----+\n|  1|  10|  20|\n|  1|  20|null|\n|  3|  30|  60|\n|  3|  60|null|\n|  5|  50| 100|\n|  5| 100|null|\n|  4|  40|  80|\n|  4|  80|null|\n|  2|  20|  40|\n|  2|  40|null|\n+---+----+----+\n\noverNs: org.apache.spark.sql.expressions.WindowSpec \u003d org.apache.spark.sql.expressions.WindowSpec@5f5b22e9\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d351",
+            "http://10.130.22.177:4040/jobs/job?id\u003d352",
+            "http://10.130.22.177:4040/jobs/job?id\u003d353",
+            "http://10.130.22.177:4040/jobs/job?id\u003d354",
+            "http://10.130.22.177:4040/jobs/job?id\u003d355"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567479658444_-681243529",
+      "id": "20190903-130058_602073616",
+      "dateCreated": "2019-09-03 13:00:58.444",
+      "dateStarted": "2019-09-03 14:46:01.877",
+      "dateFinished": "2019-09-03 14:46:02.971",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n#### Running total",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 14:48:44.984",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eRunning total\u003c/h4\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567485948089_1489915983",
+      "id": "20190903-144548_1276574538",
+      "dateCreated": "2019-09-03 14:45:48.089",
+      "dateStarted": "2019-09-03 14:48:44.984",
+      "dateFinished": "2019-09-03 14:48:44.986",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val sales \u003d Seq(\n  (0, 0, 0, 5),\n  (1, 0, 1, 3),\n  (2, 0, 2, 1),\n  (3, 1, 0, 2),\n  (4, 2, 0, 8),\n  (5, 2, 2, 8))\n  .toDF(\"id\", \"orderID\", \"prodID\", \"orderQty\")",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 14:48:56.446",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "sales: org.apache.spark.sql.DataFrame \u003d [id: int, orderID: int ... 2 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567486124961_1391841671",
+      "id": "20190903-144844_34193605",
+      "dateCreated": "2019-09-03 14:48:44.962",
+      "dateStarted": "2019-09-03 14:48:56.476",
+      "dateFinished": "2019-09-03 14:48:57.191",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "sales.show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 14:49:05.540",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---+-------+------+--------+\n| id|orderID|prodID|orderQty|\n+---+-------+------+--------+\n|  0|      0|     0|       5|\n|  1|      0|     1|       3|\n|  2|      0|     2|       1|\n|  3|      1|     0|       2|\n|  4|      2|     0|       8|\n|  5|      2|     2|       8|\n+---+-------+------+--------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567486136446_313941086",
+      "id": "20190903-144856_1051383965",
+      "dateCreated": "2019-09-03 14:48:56.446",
+      "dateStarted": "2019-09-03 14:49:05.563",
+      "dateFinished": "2019-09-03 14:49:06.150",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val byId \u003d Window.orderBy(\u0027id)",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 14:58:05.989",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "byId: org.apache.spark.sql.expressions.WindowSpec \u003d org.apache.spark.sql.expressions.WindowSpec@3bc13d2f\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567486145541_327183630",
+      "id": "20190903-144905_2098922222",
+      "dateCreated": "2019-09-03 14:49:05.541",
+      "dateStarted": "2019-09-03 14:58:06.012",
+      "dateFinished": "2019-09-03 14:58:06.576",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "sales.withColumn(\"running_total\", sum(\u0027orderQty).over(byId)).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 14:58:13.768",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---+-------+------+--------+-------------+\n| id|orderID|prodID|orderQty|running_total|\n+---+-------+------+--------+-------------+\n|  0|      0|     0|       5|            5|\n|  1|      0|     1|       3|            8|\n|  2|      0|     2|       1|            9|\n|  3|      1|     0|       2|           11|\n|  4|      2|     0|       8|           19|\n|  5|      2|     2|       8|           27|\n+---+-------+------+--------+-------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d357"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567486175575_268250934",
+      "id": "20190903-144935_44740561",
+      "dateCreated": "2019-09-03 14:49:35.575",
+      "dateStarted": "2019-09-03 14:58:13.792",
+      "dateFinished": "2019-09-03 14:58:14.502",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val byOrderId \u003d Window.partitionBy(\u0027orderID)\nsales.withColumn(\"running_total_per_order\", sum(\u0027orderQty).over(byOrderId)).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 14:59:58.428",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---+-------+------+--------+-----------------------+\n| id|orderID|prodID|orderQty|running_total_per_order|\n+---+-------+------+--------+-----------------------+\n|  3|      1|     0|       2|                      2|\n|  4|      2|     0|       8|                     16|\n|  5|      2|     2|       8|                     16|\n|  0|      0|     0|       5|                      9|\n|  1|      0|     1|       3|                      9|\n|  2|      0|     2|       1|                      9|\n+---+-------+------+--------+-----------------------+\n\nbyOrderId: org.apache.spark.sql.expressions.WindowSpec \u003d org.apache.spark.sql.expressions.WindowSpec@647a9e69\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d358",
+            "http://10.130.22.177:4040/jobs/job?id\u003d359",
+            "http://10.130.22.177:4040/jobs/job?id\u003d360",
+            "http://10.130.22.177:4040/jobs/job?id\u003d361",
+            "http://10.130.22.177:4040/jobs/job?id\u003d362"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567486277622_-1380250948",
+      "id": "20190903-145117_321405456",
+      "dateCreated": "2019-09-03 14:51:17.622",
+      "dateStarted": "2019-09-03 14:59:58.459",
+      "dateFinished": "2019-09-03 14:59:59.525",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n#### row_number : Sequential number within window partition",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 15:30:08.259",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003erow_number : Sequential number within window partition\u003c/h4\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567486798428_1312844823",
+      "id": "20190903-145958_56089951",
+      "dateCreated": "2019-09-03 14:59:58.428",
+      "dateStarted": "2019-09-03 15:30:08.260",
+      "dateFinished": "2019-09-03 15:30:08.263",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "empsalary.withColumn(\"row_number\", row_number.over(byDepNameSalaryDesc)).show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 15:31:31.578",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------+-----+------+----------+\n|  depName|empNo|salary|row_number|\n+---------+-----+------+----------+\n|  develop|    8|  6000|         1|\n|  develop|   10|  5200|         2|\n|  develop|   11|  5200|         3|\n|  develop|    9|  4500|         4|\n|  develop|    7|  4200|         5|\n|    sales|    1|  5000|         1|\n|    sales|   12|  5000|         2|\n|    sales|    3|  4800|         3|\n|    sales|    4|  4800|         4|\n|    sales|    6|  4500|         5|\n|personnel|    2|  3900|         1|\n|personnel|    5|  3500|         2|\n+---------+-----+------+----------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d363",
+            "http://10.130.22.177:4040/jobs/job?id\u003d364",
+            "http://10.130.22.177:4040/jobs/job?id\u003d365",
+            "http://10.130.22.177:4040/jobs/job?id\u003d366",
+            "http://10.130.22.177:4040/jobs/job?id\u003d367"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567488608222_-1773813369",
+      "id": "20190903-153008_1199310925",
+      "dateCreated": "2019-09-03 15:30:08.222",
+      "dateStarted": "2019-09-03 15:31:31.606",
+      "dateFinished": "2019-09-03 15:31:32.624",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n### [Another example](https://deannaschneider.wordpress.com/2018/11/05/window-functions-in-scala/)",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:03:37.866",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch3\u003e\u003ca href\u003d\"https://deannaschneider.wordpress.com/2018/11/05/window-functions-in-scala/\"\u003eAnother example\u003c/a\u003e\u003c/h3\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567488691578_-929445095",
+      "id": "20190903-153131_1166305051",
+      "dateCreated": "2019-09-03 15:31:31.578",
+      "dateStarted": "2019-09-03 16:03:37.867",
+      "dateFinished": "2019-09-03 16:03:37.871",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val testDF \u003d Seq(\n(1525567980,28.9, \"Ashland\"),\n(1525569900,28.4, \"Bayfield\"),\n(1525571580,28.9, \"Bayfield\"),\n(1525575120,28.9, \"Ashland\"),\n(1525578780,28.0, \"Ashland\"),\n(1525582320,28.0, \"Bayfield\"),\n(1525585980,28.0, \"Bayfield\"),\n(1525589580,28.0, \"Ashland\"),\n(1525591440,28.4, \"Bayfield\"),\n(1525593180,28.0, \"Ashland\"),\n(1525596780,28.0, \"Bayfield\"),\n(1525600380,28.9, \"Bayfield\")\n).toDF(\"uxt\", \"Temp\", \"City\")",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:03:58.152",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "testDF: org.apache.spark.sql.DataFrame \u003d [uxt: int, Temp: double ... 1 more field]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567490605248_-2047803277",
+      "id": "20190903-160325_1276173506",
+      "dateCreated": "2019-09-03 16:03:25.248",
+      "dateStarted": "2019-09-03 16:03:58.180",
+      "dateFinished": "2019-09-03 16:03:58.920",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "testDF.show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:04:06.107",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+----+--------+\n|       uxt|Temp|    City|\n+----------+----+--------+\n|1525567980|28.9| Ashland|\n|1525569900|28.4|Bayfield|\n|1525571580|28.9|Bayfield|\n|1525575120|28.9| Ashland|\n|1525578780|28.0| Ashland|\n|1525582320|28.0|Bayfield|\n|1525585980|28.0|Bayfield|\n|1525589580|28.0| Ashland|\n|1525591440|28.4|Bayfield|\n|1525593180|28.0| Ashland|\n|1525596780|28.0|Bayfield|\n|1525600380|28.9|Bayfield|\n+----------+----+--------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567490638152_267208572",
+      "id": "20190903-160358_1449123761",
+      "dateCreated": "2019-09-03 16:03:58.152",
+      "dateStarted": "2019-09-03 16:04:06.135",
+      "dateFinished": "2019-09-03 16:04:06.709",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val testWithDates \u003d testDF.withColumn(\"Date\", to_timestamp(from_unixtime(\u0027uxt)))",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:05:02.269",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "testWithDates: org.apache.spark.sql.DataFrame \u003d [uxt: int, Temp: double ... 2 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567490646107_-889803947",
+      "id": "20190903-160406_16795279",
+      "dateCreated": "2019-09-03 16:04:06.107",
+      "dateStarted": "2019-09-03 16:05:02.302",
+      "dateFinished": "2019-09-03 16:05:02.914",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "testWithDates.show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:05:10.275",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+----+--------+-------------------+\n|       uxt|Temp|    City|               Date|\n+----------+----+--------+-------------------+\n|1525567980|28.9| Ashland|2018-05-06 10:53:00|\n|1525569900|28.4|Bayfield|2018-05-06 11:25:00|\n|1525571580|28.9|Bayfield|2018-05-06 11:53:00|\n|1525575120|28.9| Ashland|2018-05-06 12:52:00|\n|1525578780|28.0| Ashland|2018-05-06 13:53:00|\n|1525582320|28.0|Bayfield|2018-05-06 14:52:00|\n|1525585980|28.0|Bayfield|2018-05-06 15:53:00|\n|1525589580|28.0| Ashland|2018-05-06 16:53:00|\n|1525591440|28.4|Bayfield|2018-05-06 17:24:00|\n|1525593180|28.0| Ashland|2018-05-06 17:53:00|\n|1525596780|28.0|Bayfield|2018-05-06 18:53:00|\n|1525600380|28.9|Bayfield|2018-05-06 19:53:00|\n+----------+----+--------+-------------------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567490702269_-928977337",
+      "id": "20190903-160502_1492553007",
+      "dateCreated": "2019-09-03 16:05:02.269",
+      "dateStarted": "2019-09-03 16:05:10.305",
+      "dateFinished": "2019-09-03 16:05:10.905",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Create a window or frame of 1 hr (3600 secs) prior to each row\n\nval oneHrPriorFrame \u003d Window.orderBy(\u0027uxt).rangeBetween(-3600, Window.currentRow)",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:09:21.309",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "oneHrPriorFrame: org.apache.spark.sql.expressions.WindowSpec \u003d org.apache.spark.sql.expressions.WindowSpec@4da5a054\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567490710275_-1960748611",
+      "id": "20190903-160510_1339962369",
+      "dateCreated": "2019-09-03 16:05:10.275",
+      "dateStarted": "2019-09-03 16:09:21.340",
+      "dateFinished": "2019-09-03 16:09:21.922",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val byRange \u003d testWithDates\n    .withColumn(\"avgTemp\", avg(\u0027Temp).over(oneHrPriorFrame))\n    .withColumn(\"minTemp\", min(\u0027Temp).over(oneHrPriorFrame))\n    .withColumn(\"maxTemp\", max(\u0027Temp).over(oneHrPriorFrame))\n    .withColumn(\"rowCount\", count(\u0027Temp).over(oneHrPriorFrame))\n    .withColumn(\"frameStart\", \u0027uxt - 3600)\n    .withColumn(\"startDate\", to_timestamp(\u0027frameStart))",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:15:32.935",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "byRange: org.apache.spark.sql.DataFrame \u003d [uxt: int, Temp: double ... 8 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567490961310_-1782637",
+      "id": "20190903-160921_1084133287",
+      "dateCreated": "2019-09-03 16:09:21.310",
+      "dateStarted": "2019-09-03 16:15:32.965",
+      "dateFinished": "2019-09-03 16:15:33.746",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "byRange.show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:15:41.628",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+----+--------+-------------------+------------------+-------+-------+--------+----------+-------------------+\n|       uxt|Temp|    City|               Date|           avgTemp|minTemp|maxTemp|rowCount|frameStart|          startDate|\n+----------+----+--------+-------------------+------------------+-------+-------+--------+----------+-------------------+\n|1525567980|28.9| Ashland|2018-05-06 10:53:00|              28.9|   28.9|   28.9|       1|1525564380|2018-05-06 09:53:00|\n|1525569900|28.4|Bayfield|2018-05-06 11:25:00|             28.65|   28.4|   28.9|       2|1525566300|2018-05-06 10:25:00|\n|1525571580|28.9|Bayfield|2018-05-06 11:53:00| 28.73333333333333|   28.4|   28.9|       3|1525567980|2018-05-06 10:53:00|\n|1525575120|28.9| Ashland|2018-05-06 12:52:00|              28.9|   28.9|   28.9|       2|1525571520|2018-05-06 11:52:00|\n|1525578780|28.0| Ashland|2018-05-06 13:53:00|              28.0|   28.0|   28.0|       1|1525575180|2018-05-06 12:53:00|\n|1525582320|28.0|Bayfield|2018-05-06 14:52:00|              28.0|   28.0|   28.0|       2|1525578720|2018-05-06 13:52:00|\n|1525585980|28.0|Bayfield|2018-05-06 15:53:00|              28.0|   28.0|   28.0|       1|1525582380|2018-05-06 14:53:00|\n|1525589580|28.0| Ashland|2018-05-06 16:53:00|              28.0|   28.0|   28.0|       2|1525585980|2018-05-06 15:53:00|\n|1525591440|28.4|Bayfield|2018-05-06 17:24:00|              28.2|   28.0|   28.4|       2|1525587840|2018-05-06 16:24:00|\n|1525593180|28.0| Ashland|2018-05-06 17:53:00|28.133333333333336|   28.0|   28.4|       3|1525589580|2018-05-06 16:53:00|\n|1525596780|28.0|Bayfield|2018-05-06 18:53:00|              28.0|   28.0|   28.0|       2|1525593180|2018-05-06 17:53:00|\n|1525600380|28.9|Bayfield|2018-05-06 19:53:00|             28.45|   28.0|   28.9|       2|1525596780|2018-05-06 18:53:00|\n+----------+----+--------+-------------------+------------------+-------+-------+--------+----------+-------------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d378"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567491332935_861089340",
+      "id": "20190903-161532_1229627191",
+      "dateCreated": "2019-09-03 16:15:32.935",
+      "dateStarted": "2019-09-03 16:15:41.659",
+      "dateFinished": "2019-09-03 16:15:42.458",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// 2 hr window per city\n\nval twoHrWindowByCity \u003d Window.partitionBy(\u0027City).orderBy(\u0027uxt).rangeBetween(-7200, Window.currentRow)",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:26:59.501",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "twoHrWindowByCity: org.apache.spark.sql.expressions.WindowSpec \u003d org.apache.spark.sql.expressions.WindowSpec@7a5d5e82\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567491341628_705398957",
+      "id": "20190903-161541_712377573",
+      "dateCreated": "2019-09-03 16:15:41.628",
+      "dateStarted": "2019-09-03 16:26:59.532",
+      "dateFinished": "2019-09-03 16:27:00.117",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val byCity \u003d testWithDates\n    .withColumn(\"avgTemp\", avg(\u0027Temp).over(twoHrWindowByCity))\n    .withColumn(\"minTemp\", min(\u0027Temp).over(twoHrWindowByCity))\n    .withColumn(\"maxTemp\", max(\u0027Temp).over(twoHrWindowByCity))\n    .withColumn(\"rowCount\", count(\u0027Temp).over(twoHrWindowByCity))\n    .withColumn(\"frameStart\", \u0027uxt - 3600)\n    .withColumn(\"startDate\", to_timestamp(\u0027frameStart))",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:27:02.898",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "byCity: org.apache.spark.sql.DataFrame \u003d [uxt: int, Temp: double ... 8 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567491890037_-1051366013",
+      "id": "20190903-162450_667571371",
+      "dateCreated": "2019-09-03 16:24:50.038",
+      "dateStarted": "2019-09-03 16:27:02.933",
+      "dateFinished": "2019-09-03 16:27:03.714",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "byCity.show",
+      "user": "deepak",
+      "dateUpdated": "2019-09-03 16:27:11.301",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+----+--------+-------------------+-------+-------+-------+--------+----------+-------------------+\n|       uxt|Temp|    City|               Date|avgTemp|minTemp|maxTemp|rowCount|frameStart|          startDate|\n+----------+----+--------+-------------------+-------+-------+-------+--------+----------+-------------------+\n|1525567980|28.9| Ashland|2018-05-06 10:53:00|   28.9|   28.9|   28.9|       1|1525564380|2018-05-06 09:53:00|\n|1525575120|28.9| Ashland|2018-05-06 12:52:00|   28.9|   28.9|   28.9|       2|1525571520|2018-05-06 11:52:00|\n|1525578780|28.0| Ashland|2018-05-06 13:53:00|  28.45|   28.0|   28.9|       2|1525575180|2018-05-06 12:53:00|\n|1525589580|28.0| Ashland|2018-05-06 16:53:00|   28.0|   28.0|   28.0|       1|1525585980|2018-05-06 15:53:00|\n|1525593180|28.0| Ashland|2018-05-06 17:53:00|   28.0|   28.0|   28.0|       2|1525589580|2018-05-06 16:53:00|\n|1525569900|28.4|Bayfield|2018-05-06 11:25:00|   28.4|   28.4|   28.4|       1|1525566300|2018-05-06 10:25:00|\n|1525571580|28.9|Bayfield|2018-05-06 11:53:00|  28.65|   28.4|   28.9|       2|1525567980|2018-05-06 10:53:00|\n|1525582320|28.0|Bayfield|2018-05-06 14:52:00|   28.0|   28.0|   28.0|       1|1525578720|2018-05-06 13:52:00|\n|1525585980|28.0|Bayfield|2018-05-06 15:53:00|   28.0|   28.0|   28.0|       2|1525582380|2018-05-06 14:53:00|\n|1525591440|28.4|Bayfield|2018-05-06 17:24:00|   28.2|   28.0|   28.4|       2|1525587840|2018-05-06 16:24:00|\n|1525596780|28.0|Bayfield|2018-05-06 18:53:00|   28.2|   28.0|   28.4|       2|1525593180|2018-05-06 17:53:00|\n|1525600380|28.9|Bayfield|2018-05-06 19:53:00|  28.45|   28.0|   28.9|       2|1525596780|2018-05-06 18:53:00|\n+----------+----+--------+-------------------+-------+-------+-------+--------+----------+-------------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d379",
+            "http://10.130.22.177:4040/jobs/job?id\u003d380",
+            "http://10.130.22.177:4040/jobs/job?id\u003d381",
+            "http://10.130.22.177:4040/jobs/job?id\u003d382",
+            "http://10.130.22.177:4040/jobs/job?id\u003d383"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567491976525_1399279371",
+      "id": "20190903-162616_1858465170",
+      "dateCreated": "2019-09-03 16:26:16.525",
+      "dateStarted": "2019-09-03 16:27:11.335",
+      "dateFinished": "2019-09-03 16:27:12.440",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "user": "deepak",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1567492031301_2105668398",
+      "id": "20190903-162711_1427051936",
+      "dateCreated": "2019-09-03 16:27:11.301",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "window-functions",
+  "id": "2EM51BJMZ",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {
+    "md:shared_process": [],
+    "sh:shared_process": [],
+    "spark:shared_process": []
+  },
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}

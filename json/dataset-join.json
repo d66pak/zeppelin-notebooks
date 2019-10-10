@@ -1,0 +1,705 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n\nDataSet join",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 14:58:28.879",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eDataSet join\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567054672809_-1859848239",
+      "id": "20190829-145752_681217578",
+      "dateCreated": "2019-08-29 14:57:52.809",
+      "dateStarted": "2019-08-29 14:58:28.879",
+      "dateFinished": "2019-08-29 14:58:28.884",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "case class Person(familyId: Long, name: String, cityId: Long)\ncase class City(cityId: Long, name: String)\n\nval family \u003d Seq(\n  Person(0, \"Agata\", 0),\n  Person(1, \"Iweta\", 0),\n  Person(2, \"Patryk\", 2),\n  Person(3, \"Maksym\", 0))\n\nval cities \u003d Seq(\n  City(0, \"Warsaw\"),\n  City(1, \"Washington\"),\n  City(2, \"Sopot\"))",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:23:42.139",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "defined class Person\ndefined class City\nfamily: Seq[Person] \u003d List(Person(0,Agata,0), Person(1,Iweta,0), Person(2,Patryk,2), Person(3,Maksym,0))\ncities: Seq[City] \u003d List(City(0,Warsaw), City(1,Washington), City(2,Sopot))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567054708874_-399929409",
+      "id": "20190829-145828_1308337555",
+      "dateCreated": "2019-08-29 14:58:28.874",
+      "dateStarted": "2019-08-29 15:23:42.150",
+      "dateFinished": "2019-08-29 15:23:42.323",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val familyDS \u003d family.toDS\nval cityDS \u003d cities.toDS",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:23:46.279",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "familyDS: org.apache.spark.sql.Dataset[Person] \u003d [familyId: bigint, name: string ... 1 more field]\ncityDS: org.apache.spark.sql.Dataset[City] \u003d [cityId: bigint, name: string]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567054745807_1303666361",
+      "id": "20190829-145905_2005680092",
+      "dateCreated": "2019-08-29 14:59:05.807",
+      "dateStarted": "2019-08-29 15:23:46.286",
+      "dateFinished": "2019-08-29 15:23:47.440",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val cityFamily \u003d cityDS.join(familyDS, cityDS(\"cityId\") \u003d\u003d\u003d familyDS(\"cityId\"), \"left\")",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:26:48.594",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "cityFamily: org.apache.spark.sql.DataFrame \u003d [cityId: bigint, name: string ... 3 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567055057735_663963244",
+      "id": "20190829-150417_244727474",
+      "dateCreated": "2019-08-29 15:04:17.735",
+      "dateStarted": "2019-08-29 15:26:21.533",
+      "dateFinished": "2019-08-29 15:26:22.150",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "cityFamily.show(20)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:26:25.003",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+------+----------+--------+------+------+\n|cityId|      name|familyId|  name|cityId|\n+------+----------+--------+------+------+\n|     0|    Warsaw|       3|Maksym|     0|\n|     0|    Warsaw|       1| Iweta|     0|\n|     0|    Warsaw|       0| Agata|     0|\n|     1|Washington|    null|  null|  null|\n|     2|     Sopot|       2|Patryk|     2|\n+------+----------+--------+------+------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d209",
+            "http://10.130.22.177:4040/jobs/job?id\u003d210",
+            "http://10.130.22.177:4040/jobs/job?id\u003d211"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567055207203_1050206216",
+      "id": "20190829-150647_1270848662",
+      "dateCreated": "2019-08-29 15:06:47.203",
+      "dateStarted": "2019-08-29 15:26:25.010",
+      "dateFinished": "2019-08-29 15:26:25.539",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "cityDS.join(familyDS, cityDS(\"cityId\") \u003d\u003d\u003d familyDS(\"cityId\"), \"left\").select(cityDS(\"cityId\"), cityDS(\"name\"), $\"familyId\", familyDS(\"name\").as(\"fname\"), familyDS(\"cityId\").as(\"fcityId\")).show(20)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:47:39.793",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+------+----------+--------+------+-------+\n|cityId|      name|familyId| fname|fcityId|\n+------+----------+--------+------+-------+\n|     0|    Warsaw|       3|Maksym|      0|\n|     0|    Warsaw|       1| Iweta|      0|\n|     0|    Warsaw|       0| Agata|      0|\n|     1|Washington|    null|  null|   null|\n|     2|     Sopot|       2|Patryk|      2|\n+------+----------+--------+------+-------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d227",
+            "http://10.130.22.177:4040/jobs/job?id\u003d228",
+            "http://10.130.22.177:4040/jobs/job?id\u003d229"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567056661377_-212639364",
+      "id": "20190829-153101_1633422107",
+      "dateCreated": "2019-08-29 15:31:01.377",
+      "dateStarted": "2019-08-29 15:47:39.804",
+      "dateFinished": "2019-08-29 15:47:40.554",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val joined \u003d cityDS.join(familyDS, cityDS(\"cityId\") \u003d\u003d\u003d familyDS(\"cityId\"), \"left\").select(cityDS(\"cityId\"), cityDS(\"name\"), $\"familyId\", familyDS(\"name\").as(\"fname\"), familyDS(\"cityId\").as(\"fcityId\"))",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:48:16.633",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "joined: org.apache.spark.sql.DataFrame \u003d [cityId: bigint, name: string ... 3 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567057685379_443183183",
+      "id": "20190829-154805_1035730899",
+      "dateCreated": "2019-08-29 15:48:05.379",
+      "dateStarted": "2019-08-29 15:48:16.645",
+      "dateFinished": "2019-08-29 15:48:17.339",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val cityDF \u003d cities.toDF\nval familyDF \u003d family.toDF",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:51:13.636",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "cityDF: org.apache.spark.sql.DataFrame \u003d [cityId: bigint, name: string]\nfamilyDF: org.apache.spark.sql.DataFrame \u003d [familyId: bigint, name: string ... 1 more field]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567057843478_1917113107",
+      "id": "20190829-155043_1968672914",
+      "dateCreated": "2019-08-29 15:50:43.478",
+      "dateStarted": "2019-08-29 15:51:13.650",
+      "dateFinished": "2019-08-29 15:51:14.766",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val joinedDF \u003d cityDF.join(familyDF, Seq(\"cityId\"), \"left\")",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:56:05.502",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "joinedDF: org.apache.spark.sql.DataFrame \u003d [cityId: bigint, name: string ... 2 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567057877038_-1629288768",
+      "id": "20190829-155117_1347205771",
+      "dateCreated": "2019-08-29 15:51:17.038",
+      "dateStarted": "2019-08-29 15:56:05.514",
+      "dateFinished": "2019-08-29 15:56:06.072",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "joinedDF.show(20)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:56:18.742",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+------+----------+--------+------+\n|cityId|      name|familyId|  name|\n+------+----------+--------+------+\n|     0|    Warsaw|       3|Maksym|\n|     0|    Warsaw|       1| Iweta|\n|     0|    Warsaw|       0| Agata|\n|     1|Washington|    null|  null|\n|     2|     Sopot|       2|Patryk|\n+------+----------+--------+------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d236",
+            "http://10.130.22.177:4040/jobs/job?id\u003d237",
+            "http://10.130.22.177:4040/jobs/job?id\u003d238"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567058168971_642606118",
+      "id": "20190829-155608_151058897",
+      "dateCreated": "2019-08-29 15:56:08.971",
+      "dateStarted": "2019-08-29 15:56:18.755",
+      "dateFinished": "2019-08-29 15:56:19.295",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "joinedDF.select($\"cityDF.name\")",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:56:55.107",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "org.apache.spark.sql.AnalysisException: cannot resolve \u0027`cityDF.name`\u0027 given input columns: [cityId, name, familyId, name];;\n\u0027Project [\u0027cityDF.name]\n+- Project [cityId#10732L, name#10733, familyId#10740L, name#10741]\n   +- Join LeftOuter, (cityId#10732L \u003d cityId#10742L)\n      :- LocalRelation [cityId#10732L, name#10733]\n      +- LocalRelation [familyId#10740L, name#10741, cityId#10742L]\n\n  at org.apache.spark.sql.catalyst.analysis.package$AnalysisErrorAt.failAnalysis(package.scala:42)\n  at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1$$anonfun$apply$3.applyOrElse(CheckAnalysis.scala:110)\n  at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1$$anonfun$apply$3.applyOrElse(CheckAnalysis.scala:107)\n  at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$transformUp$1.apply(TreeNode.scala:278)\n  at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$transformUp$1.apply(TreeNode.scala:278)\n  at org.apache.spark.sql.catalyst.trees.CurrentOrigin$.withOrigin(TreeNode.scala:70)\n  at org.apache.spark.sql.catalyst.trees.TreeNode.transformUp(TreeNode.scala:277)\n  at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$transformExpressionsUp$1.apply(QueryPlan.scala:93)\n  at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$transformExpressionsUp$1.apply(QueryPlan.scala:93)\n  at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$1.apply(QueryPlan.scala:105)\n  at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$1.apply(QueryPlan.scala:105)\n  at org.apache.spark.sql.catalyst.trees.CurrentOrigin$.withOrigin(TreeNode.scala:70)\n  at org.apache.spark.sql.catalyst.plans.QueryPlan.transformExpression$1(QueryPlan.scala:104)\n  at org.apache.spark.sql.catalyst.plans.QueryPlan.org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$1(QueryPlan.scala:116)\n  at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$1$2.apply(QueryPlan.scala:121)\n  at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:234)\n  at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:234)\n  at scala.collection.mutable.ResizableArray$class.foreach(ResizableArray.scala:59)\n  at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:48)\n  at scala.collection.TraversableLike$class.map(TraversableLike.scala:234)\n  at scala.collection.AbstractTraversable.map(Traversable.scala:104)\n  at org.apache.spark.sql.catalyst.plans.QueryPlan.org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$1(QueryPlan.scala:121)\n  at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$2.apply(QueryPlan.scala:126)\n  at org.apache.spark.sql.catalyst.trees.TreeNode.mapProductIterator(TreeNode.scala:187)\n  at org.apache.spark.sql.catalyst.plans.QueryPlan.mapExpressions(QueryPlan.scala:126)\n  at org.apache.spark.sql.catalyst.plans.QueryPlan.transformExpressionsUp(QueryPlan.scala:93)\n  at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1.apply(CheckAnalysis.scala:107)\n  at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1.apply(CheckAnalysis.scala:85)\n  at org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:127)\n  at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$class.checkAnalysis(CheckAnalysis.scala:85)\n  at org.apache.spark.sql.catalyst.analysis.Analyzer.checkAnalysis(Analyzer.scala:95)\n  at org.apache.spark.sql.catalyst.analysis.Analyzer$$anonfun$executeAndCheck$1.apply(Analyzer.scala:108)\n  at org.apache.spark.sql.catalyst.analysis.Analyzer$$anonfun$executeAndCheck$1.apply(Analyzer.scala:105)\n  at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper$.markInAnalyzer(AnalysisHelper.scala:201)\n  at org.apache.spark.sql.catalyst.analysis.Analyzer.executeAndCheck(Analyzer.scala:105)\n  at org.apache.spark.sql.execution.QueryExecution.analyzed$lzycompute(QueryExecution.scala:57)\n  at org.apache.spark.sql.execution.QueryExecution.analyzed(QueryExecution.scala:55)\n  at org.apache.spark.sql.execution.QueryExecution.assertAnalyzed(QueryExecution.scala:47)\n  at org.apache.spark.sql.Dataset$.ofRows(Dataset.scala:79)\n  at org.apache.spark.sql.Dataset.org$apache$spark$sql$Dataset$$withPlan(Dataset.scala:3407)\n  at org.apache.spark.sql.Dataset.select(Dataset.scala:1335)\n  ... 125 elided\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567058182571_-1773647673",
+      "id": "20190829-155622_203402567",
+      "dateCreated": "2019-08-29 15:56:22.571",
+      "dateStarted": "2019-08-29 15:56:55.121",
+      "dateFinished": "2019-08-29 15:56:56.135",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "joined.groupBy($\"cityId\").count.show(20)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:48:57.421",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+------+-----+\n|cityId|count|\n+------+-----+\n|     0|    3|\n|     1|    1|\n|     2|    1|\n+------+-----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d230",
+            "http://10.130.22.177:4040/jobs/job?id\u003d231",
+            "http://10.130.22.177:4040/jobs/job?id\u003d232",
+            "http://10.130.22.177:4040/jobs/job?id\u003d233",
+            "http://10.130.22.177:4040/jobs/job?id\u003d234",
+            "http://10.130.22.177:4040/jobs/job?id\u003d235"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567057700507_-762828359",
+      "id": "20190829-154820_1258559686",
+      "dateCreated": "2019-08-29 15:48:20.507",
+      "dateStarted": "2019-08-29 15:48:57.434",
+      "dateFinished": "2019-08-29 15:48:58.406",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val cityFamilyJoinWith \u003d cityDS.joinWith(familyDS, cityDS(\"id\") \u003d\u003d\u003d familyDS(\"cityID\"), \"left\")",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:13:27.410",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "cityFamilyJoinWith: org.apache.spark.sql.Dataset[(City, Person)] \u003d [_1: struct\u003cid: bigint, name: string\u003e, _2: struct\u003cid: bigint, name: string ... 1 more field\u003e]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1567055402433_1679679659",
+      "id": "20190829-151002_191298145",
+      "dateCreated": "2019-08-29 15:10:02.433",
+      "dateStarted": "2019-08-29 15:13:27.416",
+      "dateFinished": "2019-08-29 15:13:28.010",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "cityDS.join(familyDS, Seq(\"cityId\"), \"left\").show(20)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:40:56.271",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+------+----------+--------+------+\n|cityId|      name|familyId|  name|\n+------+----------+--------+------+\n|     0|    Warsaw|       3|Maksym|\n|     0|    Warsaw|       1| Iweta|\n|     0|    Warsaw|       0| Agata|\n|     1|Washington|    null|  null|\n|     2|     Sopot|       2|Patryk|\n+------+----------+--------+------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d212",
+            "http://10.130.22.177:4040/jobs/job?id\u003d213",
+            "http://10.130.22.177:4040/jobs/job?id\u003d214"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567057227251_-849852569",
+      "id": "20190829-154027_367859573",
+      "dateCreated": "2019-08-29 15:40:27.251",
+      "dateStarted": "2019-08-29 15:40:56.280",
+      "dateFinished": "2019-08-29 15:40:56.923",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "cityFamilyJoinWith.show(20)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-29 15:13:44.310",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------------+--------------+\n|             _1|            _2|\n+---------------+--------------+\n|    [0, Warsaw]|[3, Maksym, 0]|\n|    [0, Warsaw]| [1, Iweta, 0]|\n|    [0, Warsaw]| [0, Agata, 0]|\n|[1, Washington]|          null|\n|     [2, Sopot]|[2, Patryk, 2]|\n+---------------+--------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d203",
+            "http://10.130.22.177:4040/jobs/job?id\u003d204",
+            "http://10.130.22.177:4040/jobs/job?id\u003d205"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1567055607410_862995275",
+      "id": "20190829-151327_1734345629",
+      "dateCreated": "2019-08-29 15:13:27.410",
+      "dateStarted": "2019-08-29 15:13:44.320",
+      "dateFinished": "2019-08-29 15:13:44.938",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "user": "deepak",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1567056024036_1040081334",
+      "id": "20190829-152024_264042704",
+      "dateCreated": "2019-08-29 15:20:24.037",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "mapr/ds_df_join",
+  "id": "2ENVMT4XB",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {
+    "md:shared_process": [],
+    "sh:shared_process": [],
+    "spark:shared_process": []
+  },
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}

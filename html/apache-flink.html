@@ -1,0 +1,468 @@
+<link rel="stylesheet" type="text/css" href="style.css">
+<div class="markdown-body">
+<h3>Intro</h3>
+<p>This notebook is an example of how to use <strong>Apache Flink</strong> for processing simple data sets. We will take an open airline data set from <a href="http://stat-computing.org">stat-computing.org</a> and find out who was the most popular carrier during 1998-2000 years. Next we will build a chart that shows flights distribution by months and look how it changes from year to year. We will use Zeppelin <code>%table</code> display system to build charts.</p>
+</div>
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="n">md</span>
+<span class="o">##</span><span class="k">#</span> <span class="nc">Getting</span> <span class="n">the</span> <span class="n">data</span>
+<span class="nc">First</span> <span class="n">we</span> <span class="n">need</span> <span class="n">to</span> <span class="n">download</span> <span class="n">and</span> <span class="n">unpack</span> <span class="n">the</span> <span class="n">data</span><span class="o">.</span> <span class="nc">We</span> <span class="n">will</span> <span class="n">get</span> <span class="n">three</span> <span class="n">big</span> <span class="n">data</span> <span class="n">sets</span> <span class="k">with</span> <span class="n">flight</span> <span class="n">details</span> <span class="o">(</span><span class="n">one</span> <span class="n">pack</span> <span class="k">for</span> <span class="n">each</span> <span class="n">year</span><span class="o">)</span> <span class="n">and</span> <span class="n">a</span> <span class="n">small</span> <span class="n">one</span> <span class="k">with</span> <span class="n">carriers</span> <span class="n">names</span><span class="o">.</span> <span class="nc">In</span> <span class="n">total</span> <span class="n">we</span> <span class="n">will</span> <span class="n">get</span> <span class="k">for</span> <span class="n">about</span> <span class="mi">1</span><span class="o">,</span><span class="mi">5</span> <span class="nc">GB</span> <span class="n">of</span> <span class="n">data</span><span class="o">.</span> <span class="nc">To</span> <span class="n">be</span> <span class="n">able</span> <span class="n">to</span> <span class="n">process</span> <span class="n">such</span> <span class="n">amount</span> <span class="n">of</span> <span class="n">data</span> <span class="n">it</span> <span class="n">is</span> <span class="n">recommended</span> <span class="n">to</span> <span class="n">increase</span> <span class="n">`shell.command.timeout.millisecs`</span> <span class="n">value</span> <span class="n">in</span> <span class="n">`%sh`</span> <span class="n">interpreter</span> <span class="n">settings</span> <span class="n">up</span> <span class="n">to</span> <span class="n">several</span> <span class="n">minutes</span><span class="o">.</span> <span class="nc">You</span> <span class="n">can</span> <span class="n">find</span> <span class="n">interpreters</span> <span class="n">configuration</span> <span class="n">by</span> <span class="n">clicking</span> <span class="n">on</span> <span class="n">`Interpreter`</span> <span class="n">in</span> <span class="n">a</span> <span class="n">drop</span><span class="o">-</span><span class="n">down</span> <span class="n">menu</span> <span class="n">from</span> <span class="n">the</span> <span class="n">top</span> <span class="n">right</span> <span class="n">corner</span> <span class="n">of</span> <span class="n">the</span> <span class="nc">Zeppelin</span> <span class="n">web</span><span class="o">-</span><span class="n">ui</span><span class="o">.</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">&lt;div class=&quot;markdown-body&quot;&gt;</span>
+<span class="go">&lt;h3&gt;Getting the data&lt;/h3&gt;</span>
+<span class="go">&lt;p&gt;First we need to download and unpack the data. We will get three big data sets with flight details (one pack for each year) and a small one with carriers names. In total we will get for about 1,5 GB of data. To be able to process such amount of data it is recommended to increase &lt;code&gt;shell.command.timeout.millisecs&lt;/code&gt; value in &lt;code&gt;%sh&lt;/code&gt; interpreter settings up to several minutes. You can find interpreters configuration by clicking on &lt;code&gt;Interpreter&lt;/code&gt; in a drop-down menu from the top right corner of the Zeppelin web-ui.&lt;/p&gt;</span>
+<span class="go">&lt;/div&gt;</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>%sh
+
+rm /tmp/flights98.csv.bz2
+curl -o /tmp/flights98.csv.bz2 <span class="s2">&quot;http://stat-computing.org/dataexpo/2009/1998.csv.bz2&quot;</span>
+rm /tmp/flights98.csv
+bzip2 -d /tmp/flights98.csv.bz2
+chmod <span class="m">666</span> /tmp/flights98.csv
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">rm: cannot remove &#39;/tmp/flights98.csv.bz2&#39;: No such file or directory</span>
+<span class="go">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span>
+<span class="go">                                 Dload  Upload   Total   Spent    Left  Speed</span>
+
+<span class="go">  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0</span>
+<span class="go">  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0</span>
+<span class="go">  0 73.1M    0 64295    0     0  51646      0  0:24:44  0:00:01  0:24:43 51642</span>
+<span class="go">  0 73.1M    0  358k    0     0   160k      0  0:07:47  0:00:02  0:07:45  160k</span>
+<span class="go">  1 73.1M    1 1209k    0     0   373k      0  0:03:20  0:00:03  0:03:17  373k</span>
+<span class="go">  4 73.1M    4 3204k    0     0   773k      0  0:01:36  0:00:04  0:01:32  773k</span>
+<span class="go">  7 73.1M    7 5508k    0     0  1071k      0  0:01:09  0:00:05  0:01:04 1145k</span>
+<span class="go"> 10 73.1M   10 7875k    0     0  1280k      0  0:00:58  0:00:06  0:00:52 1592k</span>
+<span class="go"> 13 73.1M   13 10.1M    0     0  1458k      0  0:00:51  0:00:07  0:00:44 2049k</span>
+<span class="go"> 17 73.1M   17 12.7M    0     0  1608k      0  0:00:46  0:00:08  0:00:38 2422k</span>
+<span class="go"> 20 73.1M   20 14.9M    0     0  1671k      0  0:00:44  0:00:09  0:00:35 2413k</span>
+<span class="go"> 23 73.1M   23 17.1M    0     0  1728k      0  0:00:43  0:00:10  0:00:33 2403k</span>
+<span class="go"> 26 73.1M   26 19.4M    0     0  1787k      0  0:00:41  0:00:11  0:00:30 2411k</span>
+<span class="go"> 29 73.1M   29 21.7M    0     0  1837k      0  0:00:40  0:00:12  0:00:28 2379k</span>
+<span class="go"> 32 73.1M   32 24.1M    0     0  1879k      0  0:00:39  0:00:13  0:00:26 2322k</span>
+<span class="go"> 36 73.1M   36 26.4M    0     0  1916k      0  0:00:39  0:00:14  0:00:25 2365k</span>
+<span class="go"> 39 73.1M   39 28.5M    0     0  1930k      0  0:00:38  0:00:15  0:00:23 2341k</span>
+<span class="go"> 41 73.1M   41 30.6M    0     0  1943k      0  0:00:38  0:00:16  0:00:22 2292k</span>
+<span class="go"> 44 73.1M   44 32.6M    0     0  1947k      0  0:00:38  0:00:17  0:00:21 2215k</span>
+<span class="go"> 47 73.1M   47 34.6M    0     0  1952k      0  0:00:38  0:00:18  0:00:20 2145k</span>
+<span class="go"> 50 73.1M   50 36.6M    0     0  1960k      0  0:00:38  0:00:19  0:00:19 2082k</span>
+<span class="go"> 52 73.1M   52 38.3M    0     0  1947k      0  0:00:38  0:00:20  0:00:18 1998k</span>
+<span class="go"> 55 73.1M   55 40.4M    0     0  1956k      0  0:00:38  0:00:21  0:00:17 1996k</span>
+<span class="go"> 57 73.1M   57 42.2M    0     0  1951k      0  0:00:38  0:00:22  0:00:16 1965k</span>
+<span class="go"> 60 73.1M   60 44.0M    0     0  1948k      0  0:00:38  0:00:23  0:00:15 1932k</span>
+<span class="go"> 62 73.1M   62 45.4M    0     0  1927k      0  0:00:38  0:00:24  0:00:14 1803k</span>
+<span class="go"> 63 73.1M   63 46.5M    0     0  1896k      0  0:00:39  0:00:25  0:00:14 1688k</span>
+<span class="go"> 65 73.1M   65 47.7M    0     0  1868k      0  0:00:40  0:00:26  0:00:14 1496k</span>
+<span class="go"> 66 73.1M   66 48.8M    0     0  1843k      0  0:00:40  0:00:27  0:00:13 1363k</span>
+<span class="go"> 68 73.1M   68 50.0M    0     0  1820k      0  0:00:41  0:00:28  0:00:13 1227k</span>
+<span class="go"> 69 73.1M   69 51.1M    0     0  1786k      0  0:00:41  0:00:29  0:00:12 1126k</span>
+<span class="go"> 71 73.1M   71 52.0M    0     0  1769k      0  0:00:42  0:00:30  0:00:12 1131k</span>
+<span class="go"> 72 73.1M   72 53.0M    0     0  1744k      0  0:00:42  0:00:31  0:00:11 1098k</span>
+<span class="go"> 73 73.1M   73 54.0M    0     0  1723k      0  0:00:43  0:00:32  0:00:11 1070k</span>
+<span class="go"> 75 73.1M   75 55.1M    0     0  1702k      0  0:00:43  0:00:33  0:00:10 1040k</span>
+<span class="go"> 76 73.1M   76 56.0M    0     0  1681k      0  0:00:44  0:00:34  0:00:10 1048k</span>
+<span class="go"> 77 73.1M   77 56.9M    0     0  1659k      0  0:00:45  0:00:35  0:00:10  993k</span>
+<span class="go"> 79 73.1M   79 57.8M    0     0  1638k      0  0:00:45  0:00:36  0:00:09  972k</span>
+<span class="go"> 80 73.1M   80 58.7M    0     0  1618k      0  0:00:46  0:00:37  0:00:09  946k</span>
+<span class="go"> 81 73.1M   81 59.6M    0     0  1600k      0  0:00:46  0:00:38  0:00:08  921k</span>
+<span class="go"> 82 73.1M   82 60.5M    0     0  1582k      0  0:00:47  0:00:39  0:00:08  906k</span>
+<span class="go"> 83 73.1M   83 61.4M    0     0  1566k      0  0:00:47  0:00:40  0:00:07  917k</span>
+<span class="go"> 85 73.1M   85 62.1M    0     0  1546k      0  0:00:48  0:00:41  0:00:07  887k</span>
+<span class="go"> 86 73.1M   86 63.0M    0     0  1532k      0  0:00:48  0:00:42  0:00:06  892k</span>
+<span class="go"> 87 73.1M   87 63.9M    0     0  1517k      0  0:00:49  0:00:43  0:00:06  882k</span>
+<span class="go"> 88 73.1M   88 64.8M    0     0  1503k      0  0:00:49  0:00:44  0:00:05  878k</span>
+<span class="go"> 89 73.1M   89 65.6M    0     0  1489k      0  0:00:50  0:00:45  0:00:05  872k</span>
+<span class="go"> 91 73.1M   91 66.5M    0     0  1477k      0  0:00:50  0:00:46  0:00:04  904k</span>
+<span class="go"> 92 73.1M   92 67.4M    0     0  1465k      0  0:00:51  0:00:47  0:00:04  897k</span>
+<span class="go"> 93 73.1M   93 68.2M    0     0  1451k      0  0:00:51  0:00:48  0:00:03  889k</span>
+<span class="go"> 94 73.1M   94 69.2M    0     0  1441k      0  0:00:51  0:00:49  0:00:02  897k</span>
+<span class="go"> 95 73.1M   95 70.1M    0     0  1430k      0  0:00:52  0:00:50  0:00:02  904k</span>
+<span class="go"> 97 73.1M   97 71.0M    0     0  1421k      0  0:00:52  0:00:51  0:00:01  910k</span>
+<span class="go"> 98 73.1M   98 71.9M    0     0  1413k      0  0:00:52  0:00:52 --:--:--  923k</span>
+<span class="go"> 99 73.1M   99 72.8M    0     0  1403k      0  0:00:53  0:00:53 --:--:--  941k</span>
+<span class="go">100 73.1M  100 73.1M    0     0  1401k      0  0:00:53  0:00:53 --:--:--  941k</span>
+<span class="go">rm: cannot remove &#39;/tmp/flights98.csv&#39;: No such file or directory</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>%sh
+
+rm /tmp/flights99.csv.bz2
+curl -o /tmp/flights99.csv.bz2 <span class="s2">&quot;http://stat-computing.org/dataexpo/2009/1999.csv.bz2&quot;</span>
+rm /tmp/flights99.csv
+bzip2 -d /tmp/flights99.csv.bz2
+chmod <span class="m">666</span> /tmp/flights99.csv
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">rm: cannot remove &#39;/tmp/flights99.csv.bz2&#39;: No such file or directory</span>
+<span class="go">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span>
+<span class="go">                                 Dload  Upload   Total   Spent    Left  Speed</span>
+
+<span class="go">  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0</span>
+<span class="go">  0 75.7M    0  5520    0     0   9851      0  2:14:25 --:--:--  2:14:25  9839</span>
+<span class="go">  0 75.7M    0 88819    0     0  64302      0  0:20:35  0:00:01  0:20:34 64268</span>
+<span class="go">  0 75.7M    0  181k    0     0  25316      0  0:52:18  0:00:07  0:52:11 25316</span>
+<span class="go">  0 75.7M    0  548k    0     0  67331      0  0:19:39  0:00:08  0:19:31 67327</span>
+<span class="go">  1 75.7M    1  817k    0     0  89344      0  0:14:49  0:00:09  0:14:40 89337</span>
+<span class="go">  1 75.7M    1 1042k    0     0   100k      0  0:12:54  0:00:10  0:12:44  105k</span>
+<span class="go">  3 75.7M    3 2461k    0     0   218k      0  0:05:55  0:00:11  0:05:44  239k</span>
+<span class="go">  6 75.7M    6 5069k    0     0   412k      0  0:03:08  0:00:12  0:02:56  985k</span>
+<span class="go"> 11 75.7M   11 9165k    0     0   690k      0  0:01:52  0:00:13  0:01:39 1744k</span>
+<span class="go"> 14 75.7M   14 11.2M    0     0   796k      0  0:01:37  0:00:14  0:01:23 2109k</span>
+<span class="go"> 19 75.7M   19 14.8M    0     0   995k      0  0:01:17  0:00:15  0:01:02 2910k</span>
+<span class="go"> 24 75.7M   24 18.6M    0     0  1174k      0  0:01:06  0:00:16  0:00:50 3331k</span>
+<span class="go"> 29 75.7M   29 22.5M    0     0  1338k      0  0:00:57  0:00:17  0:00:40 3613k</span>
+<span class="go"> 35 75.7M   35 26.5M    0     0  1486k      0  0:00:52  0:00:18  0:00:34 3603k</span>
+<span class="go"> 40 75.7M   40 30.3M    0     0  1610k      0  0:00:48  0:00:19  0:00:29 4025k</span>
+<span class="go"> 45 75.7M   45 34.2M    0     0  1731k      0  0:00:44  0:00:20  0:00:24 3980k</span>
+<span class="go"> 50 75.7M   50 38.2M    0     0  1840k      0  0:00:42  0:00:21  0:00:21 4011k</span>
+<span class="go"> 55 75.7M   55 42.2M    0     0  1940k      0  0:00:39  0:00:22  0:00:17 4020k</span>
+<span class="go"> 60 75.7M   60 46.2M    0     0  2032k      0  0:00:38  0:00:23  0:00:15 4026k</span>
+<span class="go"> 65 75.7M   65 49.9M    0     0  2106k      0  0:00:36  0:00:24  0:00:12 4017k</span>
+<span class="go"> 70 75.7M   70 53.5M    0     0  2169k      0  0:00:35  0:00:25  0:00:10 3945k</span>
+<span class="go"> 75 75.7M   75 57.2M    0     0  2229k      0  0:00:34  0:00:26  0:00:08 3884k</span>
+<span class="go"> 80 75.7M   80 61.1M    0     0  2293k      0  0:00:33  0:00:27  0:00:06 3868k</span>
+<span class="go"> 86 75.7M   86 65.5M    0     0  2372k      0  0:00:32  0:00:28  0:00:04 3956k</span>
+<span class="go"> 92 75.7M   92 70.4M    0     0  2464k      0  0:00:31  0:00:29  0:00:02 4200k</span>
+<span class="go">100 75.7M  100 75.7M    0     0  2565k      0  0:00:30  0:00:30 --:--:-- 4585k</span>
+<span class="go">rm: cannot remove &#39;/tmp/flights99.csv&#39;: No such file or directory</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>%sh
+
+rm /tmp/flights00.csv.bz2
+curl -o /tmp/flights00.csv.bz2 <span class="s2">&quot;http://stat-computing.org/dataexpo/2009/2000.csv.bz2&quot;</span>
+rm /tmp/flights00.csv
+bzip2 -d /tmp/flights00.csv.bz2
+chmod <span class="m">666</span> /tmp/flights00.csv
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">rm: cannot remove &#39;/tmp/flights00.csv.bz2&#39;: No such file or directory</span>
+<span class="go">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span>
+<span class="go">                                 Dload  Upload   Total   Spent    Left  Speed</span>
+
+<span class="go">  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0</span>
+<span class="go">  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0</span>
+<span class="go">  0 78.7M    0  5520    0     0   3016      0  7:36:06  0:00:01  7:36:05  3014</span>
+<span class="go">  0 78.7M    0 39987    0     0  15337      0  1:29:41  0:00:02  1:29:39 15332</span>
+<span class="go">  0 78.7M    0 87755    0     0  24531      0  0:56:04  0:00:03  0:56:01 24526</span>
+<span class="go">  0 78.7M    0  157k    0     0  33950      0  0:40:31  0:00:04  0:40:27 33944</span>
+<span class="go">  0 78.7M    0  221k    0     0  40878      0  0:33:39  0:00:05  0:33:34 53734</span>
+<span class="go">  0 78.7M    0  308k    0     0  47250      0  0:29:06  0:00:06  0:29:00 63943</span>
+<span class="go">  0 78.7M    0  398k    0     0  52806      0  0:26:03  0:00:07  0:25:56 71903</span>
+<span class="go">  0 78.7M    0  437k    0     0  36667      0  0:37:31  0:00:12  0:37:19 41697</span>
+<span class="go">  0 78.7M    0  703k    0     0  57158      0  0:24:04  0:00:12  0:23:52 71137</span>
+<span class="go">  1 78.7M    1  851k    0     0  64259      0  0:21:24  0:00:13  0:21:11 80471</span>
+<span class="go">  1 78.7M    1 1171k    0     0  82442      0  0:16:41  0:00:14  0:16:27  109k</span>
+<span class="go">  1 78.7M    1 1546k    0     0  79861      0  0:17:13  0:00:19  0:16:54 97134</span>
+<span class="go">  3 78.7M    3 3181k    0     0   154k      0  0:08:41  0:00:20  0:08:21  327k</span>
+<span class="go">  4 78.7M    4 3466k    0     0   160k      0  0:08:21  0:00:21  0:08:00  308k</span>
+<span class="go">  4 78.7M    4 3565k    0     0   136k      0  0:09:50  0:00:26  0:09:24  216k</span>
+<span class="go">  8 78.7M    8 7196k    0     0   270k      0  0:04:57  0:00:26  0:04:31  501k</span>
+<span class="go"> 10 78.7M   10 8459k    0     0   307k      0  0:04:22  0:00:27  0:03:55  894k</span>
+<span class="go"> 11 78.7M   11 9386k    0     0   327k      0  0:04:06  0:00:28  0:03:38  768k</span>
+<span class="go"> 15 78.7M   15 11.9M    0     0   413k      0  0:03:14  0:00:29  0:02:45 1093k</span>
+<span class="go"> 18 78.7M   18 14.5M    0     0   487k      0  0:02:45  0:00:30  0:02:15 2553k</span>
+<span class="go"> 22 78.7M   22 17.7M    0     0   574k      0  0:02:20  0:00:31  0:01:49 2195k</span>
+<span class="go"> 25 78.7M   25 19.9M    0     0   626k      0  0:02:08  0:00:32  0:01:36 2375k</span>
+<span class="go"> 28 78.7M   28 22.1M    0     0   676k      0  0:01:59  0:00:33  0:01:26 2726k</span>
+<span class="go"> 31 78.7M   31 24.7M    0     0   734k      0  0:01:49  0:00:34  0:01:15 2643k</span>
+<span class="go"> 34 78.7M   34 27.3M    0     0   789k      0  0:01:42  0:00:35  0:01:07 2638k</span>
+<span class="go"> 38 78.7M   38 30.0M    0     0   841k      0  0:01:35  0:00:36  0:00:59 2513k</span>
+<span class="go"> 40 78.7M   40 32.1M    0     0   874k      0  0:01:32  0:00:37  0:00:55 2457k</span>
+<span class="go"> 43 78.7M   43 34.1M    0     0   906k      0  0:01:28  0:00:38  0:00:50 2445k</span>
+<span class="go"> 45 78.7M   45 35.7M    0     0   925k      0  0:01:27  0:00:39  0:00:48 2250k</span>
+<span class="go"> 47 78.7M   47 37.4M    0     0   946k      0  0:01:25  0:00:40  0:00:45 2062k</span>
+<span class="go"> 49 78.7M   49 39.3M    0     0   968k      0  0:01:23  0:00:41  0:00:42 1907k</span>
+<span class="go"> 52 78.7M   52 41.0M    0     0   987k      0  0:01:21  0:00:42  0:00:39 1859k</span>
+<span class="go"> 54 78.7M   54 42.5M    0     0  1000k      0  0:01:20  0:00:43  0:00:37 1729k</span>
+<span class="go"> 55 78.7M   55 43.9M    0     0  1008k      0  0:01:19  0:00:44  0:00:35 1651k</span>
+<span class="go"> 57 78.7M   57 45.4M    0     0  1020k      0  0:01:18  0:00:45  0:00:33 1625k</span>
+<span class="go"> 59 78.7M   59 46.6M    0     0  1027k      0  0:01:18  0:00:46  0:00:32 1512k</span>
+<span class="go"> 60 78.7M   60 47.7M    0     0  1027k      0  0:01:18  0:00:47  0:00:31 1376k</span>
+<span class="go"> 61 78.7M   61 48.6M    0     0  1024k      0  0:01:18  0:00:48  0:00:30 1236k</span>
+<span class="go"> 62 78.7M   62 49.5M    0     0  1020k      0  0:01:18  0:00:49  0:00:29 1125k</span>
+<span class="go"> 64 78.7M   64 50.4M    0     0  1021k      0  0:01:18  0:00:50  0:00:28 1027k</span>
+<span class="go"> 65 78.7M   65 51.3M    0     0  1018k      0  0:01:19  0:00:51  0:00:28  941k</span>
+<span class="go"> 66 78.7M   66 52.1M    0     0  1016k      0  0:01:19  0:00:52  0:00:27  910k</span>
+<span class="go"> 67 78.7M   67 53.0M    0     0  1014k      0  0:01:19  0:00:53  0:00:26  909k</span>
+<span class="go"> 68 78.7M   68 53.7M    0     0  1006k      0  0:01:20  0:00:54  0:00:26  868k</span>
+<span class="go"> 69 78.7M   69 54.6M    0     0  1006k      0  0:01:20  0:00:55  0:00:25  858k</span>
+<span class="go"> 70 78.7M   70 55.3M    0     0  1002k      0  0:01:20  0:00:56  0:00:24  831k</span>
+<span class="go"> 71 78.7M   71 56.1M    0     0   998k      0  0:01:20  0:00:57  0:00:23  807k</span>
+<span class="go"> 72 78.7M   72 56.9M    0     0   994k      0  0:01:21  0:00:58  0:00:23  787k</span>
+<span class="go"> 73 78.7M   73 57.6M    0     0   991k      0  0:01:21  0:00:59  0:00:22  823k</span>
+<span class="go"> 74 78.7M   74 58.4M    0     0   988k      0  0:01:21  0:01:00  0:00:21  784k</span>
+<span class="go"> 75 78.7M   75 59.2M    0     0   985k      0  0:01:21  0:01:01  0:00:20  791k</span>
+<span class="go"> 76 78.7M   76 60.0M    0     0   982k      0  0:01:22  0:01:02  0:00:20  797k</span>
+<span class="go"> 77 78.7M   77 60.8M    0     0   980k      0  0:01:22  0:01:03  0:00:19  808k</span>
+<span class="go"> 78 78.7M   78 61.6M    0     0   977k      0  0:01:22  0:01:04  0:00:18  812k</span>
+<span class="go"> 79 78.7M   79 62.4M    0     0   975k      0  0:01:22  0:01:05  0:00:17  824k</span>
+<span class="go"> 80 78.7M   80 63.4M    0     0   976k      0  0:01:22  0:01:06  0:00:16  870k</span>
+<span class="go"> 82 78.7M   82 64.9M    0     0   984k      0  0:01:21  0:01:07  0:00:14 1006k</span>
+<span class="go"> 85 78.7M   85 66.9M    0     0  1000k      0  0:01:20  0:01:08  0:00:12 1254k</span>
+<span class="go"> 88 78.7M   88 69.4M    0     0  1022k      0  0:01:18  0:01:09  0:00:09 1602k</span>
+<span class="go"> 92 78.7M   92 72.5M    0     0  1053k      0  0:01:16  0:01:10  0:00:06 2064k</span>
+<span class="go"> 96 78.7M   96 76.1M    0     0  1089k      0  0:01:13  0:01:11  0:00:02 2600k</span>
+<span class="go">100 78.7M  100 78.7M    0     0  1116k      0  0:01:12  0:01:12 --:--:-- 3022k</span>
+<span class="go">rm: cannot remove &#39;/tmp/flights00.csv&#39;: No such file or directory</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>%sh
+
+rm /tmp/carriers.csv
+curl -o /tmp/carriers.csv <span class="s2">&quot;http://stat-computing.org/dataexpo/2009/carriers.csv&quot;</span>
+chmod <span class="m">666</span> /tmp/carriers.csv
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">rm: cannot remove &#39;/tmp/carriers.csv&#39;: No such file or directory</span>
+<span class="go">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span>
+<span class="go">                                 Dload  Upload   Total   Spent    Left  Speed</span>
+
+<span class="go">  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0</span>
+<span class="go">  9 43758    9  4140    0     0   7588      0  0:00:05 --:--:--  0:00:05  7582</span>
+<span class="go">100 43758  100 43758    0     0  46357      0 --:--:-- --:--:-- --:--:-- 46353</span>
+</pre></div>
+
+<div class="markdown-body">
+<h3>Preparing the data</h3>
+<p>The <code>flights&lt;YY&gt;.csv</code> contains various data but we only need the information about the year, the month and the carrier who served the flight. Let&rsquo;s retrieve this information and create <code>DataSets</code>.</p>
+</div>
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="n">flink</span>
+
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Flight</span><span class="o">(</span><span class="n">year</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">month</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">carrierCode</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Carrier</span><span class="o">(</span><span class="n">code</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">flights98</span> <span class="k">=</span> <span class="n">benv</span><span class="o">.</span><span class="n">readCsvFile</span><span class="o">[</span><span class="kt">Flight</span><span class="o">](</span><span class="s">&quot;/tmp/flights98.csv&quot;</span><span class="o">,</span> <span class="n">ignoreFirstLine</span> <span class="k">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">includedFields</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">8</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">flights99</span> <span class="k">=</span> <span class="n">benv</span><span class="o">.</span><span class="n">readCsvFile</span><span class="o">[</span><span class="kt">Flight</span><span class="o">](</span><span class="s">&quot;/tmp/flights99.csv&quot;</span><span class="o">,</span> <span class="n">ignoreFirstLine</span> <span class="k">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">includedFields</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">8</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">flights00</span> <span class="k">=</span> <span class="n">benv</span><span class="o">.</span><span class="n">readCsvFile</span><span class="o">[</span><span class="kt">Flight</span><span class="o">](</span><span class="s">&quot;/tmp/flights00.csv&quot;</span><span class="o">,</span> <span class="n">ignoreFirstLine</span> <span class="k">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">includedFields</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">8</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">flights</span> <span class="k">=</span> <span class="n">flights98</span><span class="o">.</span><span class="n">union</span><span class="o">(</span><span class="n">flights99</span><span class="o">).</span><span class="n">union</span><span class="o">(</span><span class="n">flights00</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">carriers</span> <span class="k">=</span> <span class="n">benv</span><span class="o">.</span><span class="n">readCsvFile</span><span class="o">[</span><span class="kt">Carrier</span><span class="o">](</span><span class="s">&quot;/tmp/carriers.csv&quot;</span><span class="o">,</span> <span class="n">ignoreFirstLine</span> <span class="k">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">quoteCharacter</span> <span class="k">=</span> <span class="sc">&#39;&quot;&#39;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">defined class Flight</span>
+<span class="go">defined class Carrier</span>
+<span class="go">flights98: org.apache.flink.api.scala.DataSet[Flight] = org.apache.flink.api.scala.DataSet@7cd81fd5</span>
+<span class="go">flights99: org.apache.flink.api.scala.DataSet[Flight] = org.apache.flink.api.scala.DataSet@58242e79</span>
+<span class="go">flights00: org.apache.flink.api.scala.DataSet[Flight] = org.apache.flink.api.scala.DataSet@13f866c0</span>
+<span class="go">flights: org.apache.flink.api.scala.DataSet[Flight] = org.apache.flink.api.scala.DataSet@2aad2530</span>
+<span class="go">carriers: org.apache.flink.api.scala.DataSet[Carrier] = org.apache.flink.api.scala.DataSet@148c977b</span>
+</pre></div>
+
+<div class="markdown-body">
+<h3>Choosing the carrier</h3>
+<p>Now we will search for the most popular carrier during the whole time period.</p>
+</div>
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="n">flink</span>
+
+<span class="k">import</span> <span class="nn">org.apache.flink.api.common.operators.Order</span>
+<span class="k">import</span> <span class="nn">org.apache.flink.api.java.aggregation.Aggregations</span>
+
+<span class="k">case</span> <span class="k">class</span> <span class="nc">CarrierFlightsCount</span><span class="o">(</span><span class="n">carrierCode</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">count</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">CountByMonth</span><span class="o">(</span><span class="n">month</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">count</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">carriersFlights</span> <span class="k">=</span> <span class="n">flights</span>
+  <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">f</span> <span class="k">=&gt;</span> <span class="nc">CarrierFlightsCount</span><span class="o">(</span><span class="n">f</span><span class="o">.</span><span class="n">carrierCode</span><span class="o">,</span> <span class="mi">1</span><span class="o">))</span>
+  <span class="o">.</span><span class="n">groupBy</span><span class="o">(</span><span class="s">&quot;carrierCode&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">sum</span><span class="o">(</span><span class="s">&quot;count&quot;</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">maxFlights</span> <span class="k">=</span> <span class="n">carriersFlights</span>
+  <span class="o">.</span><span class="n">aggregate</span><span class="o">(</span><span class="nc">Aggregations</span><span class="o">.</span><span class="nc">MAX</span><span class="o">,</span> <span class="s">&quot;count&quot;</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">bestCarrier</span> <span class="k">=</span> <span class="n">carriersFlights</span>
+  <span class="o">.</span><span class="n">join</span><span class="o">(</span><span class="n">maxFlights</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">where</span><span class="o">(</span><span class="s">&quot;count&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">equalTo</span><span class="o">(</span><span class="s">&quot;count&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">_1</span><span class="o">)</span>
+  
+<span class="k">val</span> <span class="n">carrierName</span> <span class="k">=</span> <span class="n">bestCarrier</span>
+  <span class="o">.</span><span class="n">join</span><span class="o">(</span><span class="n">carriers</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">where</span><span class="o">(</span><span class="s">&quot;carrierCode&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">equalTo</span><span class="o">(</span><span class="s">&quot;code&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">_2</span><span class="o">.</span><span class="n">name</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">collect</span>
+  <span class="o">.</span><span class="n">head</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import org.apache.flink.api.common.operators.Order</span>
+<span class="go">import org.apache.flink.api.java.aggregation.Aggregations</span>
+<span class="go">defined class CarrierFlightsCount</span>
+<span class="go">defined class CountByMonth</span>
+<span class="go">carriersFlights: org.apache.flink.api.scala.AggregateDataSet[CarrierFlightsCount] = org.apache.flink.api.scala.AggregateDataSet@2c59be0b</span>
+<span class="go">maxFlights: org.apache.flink.api.scala.AggregateDataSet[CarrierFlightsCount] = org.apache.flink.api.scala.AggregateDataSet@53e5fad9</span>
+<span class="go">bestCarrier: org.apache.flink.api.scala.DataSet[CarrierFlightsCount] = org.apache.flink.api.scala.DataSet@64b7b1b3</span>
+<span class="go">carrierName: String = Delta Air Lines Inc.</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="n">flink</span>
+
+<span class="n">println</span><span class="o">(</span><span class="s">s&quot;&quot;&quot;The most popular carrier is:</span>
+<span class="si">$carrierName</span><span class="s"></span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">The most popular carrier is:</span>
+<span class="go">Delta Air Lines Inc.</span>
+</pre></div>
+
+<div class="markdown-body">
+<h3>Calculating flights</h3>
+<p>The last step is to filter <strong>Delta Air Lines</strong> flights and group them by months.</p>
+</div>
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="n">flink</span>
+
+<span class="k">def</span> <span class="n">countFlightsPerMonth</span><span class="o">(</span><span class="n">flights</span><span class="k">:</span> <span class="kt">DataSet</span><span class="o">[</span><span class="kt">Flight</span><span class="o">],</span>
+                         <span class="n">carrier</span><span class="k">:</span> <span class="kt">DataSet</span><span class="o">[</span><span class="kt">CarrierFlightsCount</span><span class="o">])</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">carrierFlights</span> <span class="k">=</span> <span class="n">flights</span>
+    <span class="o">.</span><span class="n">join</span><span class="o">(</span><span class="n">carrier</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">where</span><span class="o">(</span><span class="s">&quot;carrierCode&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">equalTo</span><span class="o">(</span><span class="s">&quot;carrierCode&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">_1</span><span class="o">)</span>
+    
+  <span class="n">carrierFlights</span>
+    <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">flight</span> <span class="k">=&gt;</span> <span class="nc">CountByMonth</span><span class="o">(</span><span class="n">flight</span><span class="o">.</span><span class="n">month</span><span class="o">,</span> <span class="mi">1</span><span class="o">))</span>
+    <span class="o">.</span><span class="n">groupBy</span><span class="o">(</span><span class="s">&quot;month&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">sum</span><span class="o">(</span><span class="s">&quot;count&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">sortPartition</span><span class="o">(</span><span class="s">&quot;month&quot;</span><span class="o">,</span> <span class="nc">Order</span><span class="o">.</span><span class="nc">ASCENDING</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="k">val</span> <span class="n">bestCarrierFlights_98</span> <span class="k">=</span> <span class="n">countFlightsPerMonth</span><span class="o">(</span><span class="n">flights98</span><span class="o">,</span> <span class="n">bestCarrier</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">bestCarrierFlights_99</span> <span class="k">=</span> <span class="n">countFlightsPerMonth</span><span class="o">(</span><span class="n">flights99</span><span class="o">,</span> <span class="n">bestCarrier</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">bestCarrierFlights_00</span> <span class="k">=</span> <span class="n">countFlightsPerMonth</span><span class="o">(</span><span class="n">flights00</span><span class="o">,</span> <span class="n">bestCarrier</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">countFlightsPerMonth: (flights: org.apache.flink.api.scala.DataSet[Flight], carrier: org.apache.flink.api.scala.DataSet[CarrierFlightsCount])org.apache.flink.api.scala.DataSet[CountByMonth]</span>
+<span class="go">bestCarrierFlights_98: org.apache.flink.api.scala.DataSet[CountByMonth] = org.apache.flink.api.scala.PartitionSortedDataSet@2aa64309</span>
+<span class="go">bestCarrierFlights_99: org.apache.flink.api.scala.DataSet[CountByMonth] = org.apache.flink.api.scala.PartitionSortedDataSet@35fe60c4</span>
+<span class="go">bestCarrierFlights_00: org.apache.flink.api.scala.DataSet[CountByMonth] = org.apache.flink.api.scala.PartitionSortedDataSet@4621410f</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="n">flink</span>
+
+<span class="k">def</span> <span class="n">monthAsString</span><span class="o">(</span><span class="n">month</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="n">month</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="mi">1</span> <span class="k">=&gt;</span> <span class="s">&quot;Jan&quot;</span>
+    <span class="k">case</span> <span class="mi">2</span> <span class="k">=&gt;</span> <span class="s">&quot;Feb&quot;</span>
+    <span class="k">case</span> <span class="mi">3</span> <span class="k">=&gt;</span> <span class="s">&quot;Mar&quot;</span>
+    <span class="k">case</span> <span class="mi">4</span> <span class="k">=&gt;</span> <span class="s">&quot;Apr&quot;</span>
+    <span class="k">case</span> <span class="mi">5</span> <span class="k">=&gt;</span> <span class="s">&quot;May&quot;</span>
+    <span class="k">case</span> <span class="mi">6</span> <span class="k">=&gt;</span> <span class="s">&quot;Jun&quot;</span>
+    <span class="k">case</span> <span class="mi">7</span> <span class="k">=&gt;</span> <span class="s">&quot;Jul&quot;</span>
+    <span class="k">case</span> <span class="mi">8</span> <span class="k">=&gt;</span> <span class="s">&quot;Aug&quot;</span>
+    <span class="k">case</span> <span class="mi">9</span> <span class="k">=&gt;</span> <span class="s">&quot;Sept&quot;</span>
+    <span class="k">case</span> <span class="mi">10</span> <span class="k">=&gt;</span> <span class="s">&quot;Oct&quot;</span>
+    <span class="k">case</span> <span class="mi">11</span> <span class="k">=&gt;</span> <span class="s">&quot;Nov&quot;</span>
+    <span class="k">case</span> <span class="mi">12</span> <span class="k">=&gt;</span> <span class="s">&quot;Dec&quot;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">// We should put all the results into a common DataFrame</span>
+<span class="c1">// to show them in a common picture</span>
+<span class="k">val</span> <span class="n">bestCarrierFlights</span> <span class="k">=</span> <span class="n">bestCarrierFlights_98</span>
+  <span class="o">.</span><span class="n">join</span><span class="o">(</span><span class="n">bestCarrierFlights_99</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">where</span><span class="o">(</span><span class="s">&quot;month&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">equalTo</span><span class="o">(</span><span class="s">&quot;month&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">tuple</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">tuple</span><span class="o">.</span><span class="n">_1</span><span class="o">.</span><span class="n">month</span><span class="o">,</span> <span class="n">tuple</span><span class="o">.</span><span class="n">_1</span><span class="o">.</span><span class="n">count</span><span class="o">,</span> <span class="n">tuple</span><span class="o">.</span><span class="n">_2</span><span class="o">.</span><span class="n">count</span><span class="o">))</span>
+  <span class="o">.</span><span class="n">join</span><span class="o">(</span><span class="n">bestCarrierFlights_00</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">where</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">equalTo</span><span class="o">(</span><span class="s">&quot;month&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">tuple</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">tuple</span><span class="o">.</span><span class="n">_1</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span> <span class="n">tuple</span><span class="o">.</span><span class="n">_1</span><span class="o">.</span><span class="n">_2</span><span class="o">,</span> <span class="n">tuple</span><span class="o">.</span><span class="n">_1</span><span class="o">.</span><span class="n">_3</span><span class="o">,</span> <span class="n">tuple</span><span class="o">.</span><span class="n">_2</span><span class="o">.</span><span class="n">count</span><span class="o">))</span>
+  <span class="o">.</span><span class="n">collect</span>
+  
+<span class="k">var</span> <span class="n">flightsByMonthTable</span> <span class="k">=</span> <span class="s">s&quot;Month\t1998\t1999\t2000\n&quot;</span>
+<span class="n">bestCarrierFlights</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="n">data</span> <span class="k">=&gt;</span> <span class="n">flightsByMonthTable</span> <span class="o">+=</span> <span class="s">s&quot;</span><span class="si">${</span><span class="n">monthAsString</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="n">_1</span><span class="o">)</span><span class="si">}</span><span class="s">\t</span><span class="si">${</span><span class="n">data</span><span class="o">.</span><span class="n">_2</span><span class="si">}</span><span class="s">\t</span><span class="si">${</span><span class="n">data</span><span class="o">.</span><span class="n">_3</span><span class="si">}</span><span class="s">\t</span><span class="si">${</span><span class="n">data</span><span class="o">.</span><span class="n">_4</span><span class="si">}</span><span class="s">\n&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">monthAsString: (month: Int)String</span>
+<span class="go">bestCarrierFlights: Seq[(Int, Int, Int, Int)] = Buffer((1,78523,77745,78055), (2,71101,70498,71090), (3,78906,77812,78453), (4,75726,75343,75247), (5,77937,77226,76797), (6,75432,75840,74846), (7,77521,77264,75776), (8,78104,78141,77654), (9,74840,75067,73696), (10,76145,77829,77425), (11,73552,74411,73659), (12,77308,76954,75331))</span>
+<span class="go">flightsByMonthTable: String = </span>
+<span class="go">&quot;Month	1998	1999	2000</span>
+<span class="go">&quot;</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="n">flink</span>
+
+<span class="n">println</span><span class="o">(</span><span class="s">s&quot;&quot;&quot;%table</span>
+<span class="si">$flightsByMonthTable</span><span class="s"></span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">Month	1998	1999	2000</span>
+<span class="go">Jan	78523	77745	78055</span>
+<span class="go">Feb	71101	70498	71090</span>
+<span class="go">Mar	78906	77812	78453</span>
+<span class="go">Apr	75726	75343	75247</span>
+<span class="go">May	77937	77226	76797</span>
+<span class="go">Jun	75432	75840	74846</span>
+<span class="go">Jul	77521	77264	75776</span>
+<span class="go">Aug	78104	78141	77654</span>
+<span class="go">Sept	74840	75067	73696</span>
+<span class="go">Oct	76145	77829	77425</span>
+<span class="go">Nov	73552	74411	73659</span>
+<span class="go">Dec	77308	76954	75331</span>
+</pre></div>
+
+<div class="markdown-body">
+<h3>Results</h3>
+<p>Looking at this chart we can say that February is the most unpopular month, but this is only because it has less days (28 or 29) than the other months (30 or 31). To receive more fair picture we should calculate the average flights count per day for each month.</p>
+</div>
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="n">flink</span>
+
+<span class="k">def</span> <span class="n">daysInMonth</span><span class="o">(</span><span class="n">month</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">year</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="n">month</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="mi">1</span> <span class="k">=&gt;</span> <span class="mi">31</span>
+    <span class="k">case</span> <span class="mi">2</span> <span class="k">=&gt;</span> <span class="k">if</span> <span class="o">(</span><span class="n">year</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="mi">29</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="mi">28</span>
+    <span class="o">}</span>
+    <span class="k">case</span> <span class="mi">3</span> <span class="k">=&gt;</span> <span class="mi">31</span>
+    <span class="k">case</span> <span class="mi">4</span> <span class="k">=&gt;</span> <span class="mi">30</span>
+    <span class="k">case</span> <span class="mi">5</span> <span class="k">=&gt;</span> <span class="mi">31</span>
+    <span class="k">case</span> <span class="mi">6</span> <span class="k">=&gt;</span> <span class="mi">30</span>
+    <span class="k">case</span> <span class="mi">7</span> <span class="k">=&gt;</span> <span class="mi">31</span>
+    <span class="k">case</span> <span class="mi">8</span> <span class="k">=&gt;</span> <span class="mi">31</span>
+    <span class="k">case</span> <span class="mi">9</span> <span class="k">=&gt;</span> <span class="mi">30</span>
+    <span class="k">case</span> <span class="mi">10</span> <span class="k">=&gt;</span> <span class="mi">31</span>
+    <span class="k">case</span> <span class="mi">11</span> <span class="k">=&gt;</span> <span class="mi">30</span>
+    <span class="k">case</span> <span class="mi">12</span> <span class="k">=&gt;</span> <span class="mi">31</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+
+<span class="k">var</span> <span class="n">flightsByDayTable</span> <span class="k">=</span> <span class="s">s&quot;Month\t1998\t1999\t2000\n&quot;</span>
+
+<span class="n">bestCarrierFlights</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="n">data</span> <span class="k">=&gt;</span> <span class="n">flightsByDayTable</span> <span class="o">+=</span> <span class="s">s&quot;</span><span class="si">${</span><span class="n">monthAsString</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="n">_1</span><span class="o">)</span><span class="si">}</span><span class="s">\t</span><span class="si">${</span><span class="n">data</span><span class="o">.</span><span class="n">_2</span><span class="o">/</span><span class="n">daysInMonth</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span><span class="mi">1998</span><span class="o">)</span><span class="si">}</span><span class="s">\t</span><span class="si">${</span><span class="n">data</span><span class="o">.</span><span class="n">_3</span><span class="o">/</span><span class="n">daysInMonth</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span><span class="mi">1999</span><span class="o">)</span><span class="si">}</span><span class="s">\t</span><span class="si">${</span><span class="n">data</span><span class="o">.</span><span class="n">_4</span><span class="o">/</span><span class="n">daysInMonth</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span><span class="mi">2000</span><span class="o">)</span><span class="si">}</span><span class="s">\n&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">daysInMonth: (month: Int, year: Int)Int</span>
+<span class="go">flightsByDayTable: String = </span>
+<span class="go">&quot;Month	1998	1999	2000</span>
+<span class="go">&quot;</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="n">flink</span>
+
+<span class="n">println</span><span class="o">(</span><span class="s">s&quot;&quot;&quot;%table</span>
+<span class="si">$flightsByDayTable</span><span class="s"></span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">Month	1998	1999	2000</span>
+<span class="go">Jan	2533	2507	2517</span>
+<span class="go">Feb	2539	2517	2451</span>
+<span class="go">Mar	2545	2510	2530</span>
+<span class="go">Apr	2524	2511	2508</span>
+<span class="go">May	2514	2491	2477</span>
+<span class="go">Jun	2514	2528	2494</span>
+<span class="go">Jul	2500	2492	2444</span>
+<span class="go">Aug	2519	2520	2504</span>
+<span class="go">Sept	2494	2502	2456</span>
+<span class="go">Oct	2456	2510	2497</span>
+<span class="go">Nov	2451	2480	2455</span>
+<span class="go">Dec	2493	2482	2430</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>%flink
+</pre></div>

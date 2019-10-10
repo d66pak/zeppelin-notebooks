@@ -1,0 +1,639 @@
+<link rel="stylesheet" type="text/css" href="style.css">
+<h2>ACM generate XML from customer sales gz files</h2>
+
+<div class="highlight"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">version</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res1: String = 2.4.0</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">z</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="s">&quot;acm&quot;</span><span class="o">,</span> <span class="s">&quot;/home/ubuntu/test_spark/acm-xml/&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>%sh
+
+ls -l <span class="o">{</span>acm<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">total 8</span>
+<span class="go">-rw-r--r-- 1 ubuntu ubuntu 597 Jul 17 09:26 customer_sales_20190716032832_00.gz</span>
+<span class="go">-rw-r--r-- 1 ubuntu ubuntu 512 Jul 17 09:26 customer_sales_20190716034903_00.gz</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Read into DF</span>
+
+<span class="k">val</span> <span class="n">df_raw</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;json&quot;</span><span class="o">).</span><span class="n">load</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;acm&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">df_raw: org.apache.spark.sql.DataFrame = [address: string, barcode: string ... 27 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">df_raw</span><span class="o">.</span><span class="n">printSchema</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">root</span>
+<span class="go"> |-- address: string (nullable = true)</span>
+<span class="go"> |-- barcode: string (nullable = true)</span>
+<span class="go"> |-- canContact: long (nullable = true)</span>
+<span class="go"> |-- channelCode: string (nullable = true)</span>
+<span class="go"> |-- city: string (nullable = true)</span>
+<span class="go"> |-- country: string (nullable = true)</span>
+<span class="go"> |-- customerId: long (nullable = true)</span>
+<span class="go"> |-- emailAddress: string (nullable = true)</span>
+<span class="go"> |-- faceValueFees: long (nullable = true)</span>
+<span class="go"> |-- firstName: string (nullable = true)</span>
+<span class="go"> |-- lastName: string (nullable = true)</span>
+<span class="go"> |-- orderId: string (nullable = true)</span>
+<span class="go"> |-- orderlineId: string (nullable = true)</span>
+<span class="go"> |-- phoneNumber: string (nullable = true)</span>
+<span class="go"> |-- postcode: string (nullable = true)</span>
+<span class="go"> |-- price: long (nullable = true)</span>
+<span class="go"> |-- priceNet: long (nullable = true)</span>
+<span class="go"> |-- priceTypeName: string (nullable = true)</span>
+<span class="go"> |-- productId: string (nullable = true)</span>
+<span class="go"> |-- productWhen: string (nullable = true)</span>
+<span class="go"> |-- productWhere: string (nullable = true)</span>
+<span class="go"> |-- productWho: string (nullable = true)</span>
+<span class="go"> |-- quantity: long (nullable = true)</span>
+<span class="go"> |-- row: string (nullable = true)</span>
+<span class="go"> |-- salutation: string (nullable = true)</span>
+<span class="go"> |-- seat: string (nullable = true)</span>
+<span class="go"> |-- section: string (nullable = true)</span>
+<span class="go"> |-- state: string (nullable = true)</span>
+<span class="go"> |-- transactionDateTime: string (nullable = true)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">df_raw</span><span class="o">.</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-------------------+--------------------+----------+-----------+---------+---------+----------+--------------------+-------------+---------+--------+--------------+----------------+-----------+--------+-----+--------+--------------------+-------------+--------------------+------------+---------------+--------+---+----------+----+---------+-----+--------------------+</span>
+<span class="go">|            address|             barcode|canContact|channelCode|     city|  country|customerId|        emailAddress|faceValueFees|firstName|lastName|       orderId|     orderlineId|phoneNumber|postcode|price|priceNet|       priceTypeName|    productId|         productWhen|productWhere|     productWho|quantity|row|salutation|seat|  section|state| transactionDateTime|</span>
+<span class="go">+-------------------+--------------------+----------+-----------+---------+---------+----------+--------------------+-------------+---------+--------+--------------+----------------+-----------+--------+-----+--------+--------------------+-------------+--------------------+------------+---------------+--------+---+----------+----+---------+-----+--------------------+</span>
+<span class="go">|170 Charles Street |93cd75aad9623ef24...|         0|          M|   Seddon|Australia|  14589260|olivia.goodman@me...|          420|   OLIVIA| GOODMAN|20190716,19657|20190716,19657,1| 0403339261|    3011| 4570|    4570|Adult - My Ticket...|  EVAM2019950|Sat 30 Nov 2019 7...|   Playhouse|HUMANS BY CIRCA|       1|  A|        MS|  20|SSTALLS-2|  VIC|2019-07-16T03:27:59Z|</span>
+<span class="go">|170 Charles Street |653ab073d4005721f...|         0|          M|   Seddon|Australia|  14589260|olivia.goodman@me...|          420|   OLIVIA| GOODMAN|20190716,19657|20190716,19657,1| 0403339261|    3011| 4570|    4570|Adult - My Ticket...|  EVAM2019950|Sat 30 Nov 2019 7...|   Playhouse|HUMANS BY CIRCA|       1|  A|        MS|  21|SSTALLS-2|  VIC|2019-07-16T03:27:59Z|</span>
+<span class="go">|170 Charles Street |0841c8fce610978e3...|         0|          M|   Seddon|Australia|  14589260|olivia.goodman@me...|          400|   OLIVIA| GOODMAN|20190716,19657|20190716,19657,1| 0403339261|    3011| 3570|    3570|Junior (3 to 16 y...|  EVAM2019950|Sat 30 Nov 2019 7...|   Playhouse|HUMANS BY CIRCA|       1|  A|        MS|  22|SSTALLS-2|  VIC|2019-07-16T03:27:59Z|</span>
+<span class="go">|  20 Cusdin Street |21b528c39a9526965...|         0|          W|Glen Iris|Australia|   9007250|rodw@actionalumin...|          510|      Rod|  Walker|20190716,20663|20190716,20663,1| 0439660998|    3146| 9720|    9720|               Admit|EVAM2019912DC|Thu 24 Oct 2019 8...|  Hamer Hall| DAVID CAMPBELL|       1|  P|        Mr|  28|  SSTALLS|  VIC|2019-07-16T03:48:45Z|</span>
+<span class="go">|  20 Cusdin Street |c7e40b36bfebbb4e4...|         0|          W|Glen Iris|Australia|   9007250|rodw@actionalumin...|          510|      Rod|  Walker|20190716,20663|20190716,20663,1| 0439660998|    3146| 9720|    9720|               Admit|EVAM2019912DC|Thu 24 Oct 2019 8...|  Hamer Hall| DAVID CAMPBELL|       1|  P|        Mr|  29|  SSTALLS|  VIC|2019-07-16T03:48:45Z|</span>
+<span class="go">+-------------------+--------------------+----------+-----------+---------+---------+----------+--------------------+-------------+---------+--------+--------------+----------------+-----------+--------+-----+--------+--------------------+-------------+--------------------+------------+---------------+--------+---+----------+----+---------+-----+--------------------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">df_raw</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res56: Array[org.apache.spark.sql.Row] = Array([170 Charles Street ,93cd75aad9623ef242f808665d2f2be0a8d912c4,0,M,Seddon,Australia,14589260,olivia.goodman@me.com,420,OLIVIA,GOODMAN,20190716,19657,20190716,19657,1,0403339261,3011,4570,4570,Adult - My Ticketek Presale,EVAM2019950,Sat 30 Nov 2019 7:30pm,Playhouse,HUMANS BY CIRCA,1,A,MS,20,SSTALLS-2,VIC,2019-07-16T03:27:59Z], [170 Charles Street ,653ab073d4005721f029d29b44cc45b75a0e0d7c,0,M,Seddon,Australia,14589260,olivia.goodman@me.com,420,OLIVIA,GOODMAN,20190716,19657,20190716,19657,1,0403339261,3011,4570,4570,Adult - My Ticketek Presale,EVAM2019950,Sat 30 Nov 2019 7:30pm,Playhouse,HUMANS BY CIRCA,1,A,MS,21,SSTALLS-2,VIC,2019-07-16T03:27:59Z])</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// groupby address</span>
+
+<span class="n">df_raw</span><span class="o">.</span><span class="n">groupByKey</span><span class="o">(</span><span class="n">r</span> <span class="k">=&gt;</span> <span class="n">r</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="mi">0</span><span class="o">)).</span><span class="n">keys</span><span class="o">.</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-------------------+</span>
+<span class="go">|              value|</span>
+<span class="go">+-------------------+</span>
+<span class="go">|170 Charles Street |</span>
+<span class="go">|  20 Cusdin Street |</span>
+<span class="go">+-------------------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">case</span> <span class="k">class</span> <span class="nc">CustomerSales</span><span class="o">(</span><span class="n">address</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">barcode</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">canContact</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">channelCode</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">city</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">country</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">customerId</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">emailAddress</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">faceValueFees</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">firstName</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">lastName</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">orderId</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">orderlineId</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">phoneNumber</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">postcode</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">price</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">priceNet</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">priceTypeName</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">productId</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">productWhen</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">productWhere</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">productWho</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">quantity</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">row</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">salutation</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">seat</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">section</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">state</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">transactionDateTime</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">defined class CustomerSales</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">ds</span> <span class="k">=</span> <span class="n">spark</span>
+             <span class="o">.</span><span class="n">read</span>
+             <span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;json&quot;</span><span class="o">)</span>
+             <span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;acm&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+             <span class="o">.</span><span class="n">as</span><span class="o">[</span><span class="kt">CustomerSales</span><span class="o">]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">ds: org.apache.spark.sql.Dataset[CustomerSales] = [address: string, barcode: string ... 27 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">printSchema</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">root</span>
+<span class="go"> |-- address: string (nullable = true)</span>
+<span class="go"> |-- barcode: string (nullable = true)</span>
+<span class="go"> |-- canContact: long (nullable = true)</span>
+<span class="go"> |-- channelCode: string (nullable = true)</span>
+<span class="go"> |-- city: string (nullable = true)</span>
+<span class="go"> |-- country: string (nullable = true)</span>
+<span class="go"> |-- customerId: long (nullable = true)</span>
+<span class="go"> |-- emailAddress: string (nullable = true)</span>
+<span class="go"> |-- faceValueFees: long (nullable = true)</span>
+<span class="go"> |-- firstName: string (nullable = true)</span>
+<span class="go"> |-- lastName: string (nullable = true)</span>
+<span class="go"> |-- orderId: string (nullable = true)</span>
+<span class="go"> |-- orderlineId: string (nullable = true)</span>
+<span class="go"> |-- phoneNumber: string (nullable = true)</span>
+<span class="go"> |-- postcode: string (nullable = true)</span>
+<span class="go"> |-- price: long (nullable = true)</span>
+<span class="go"> |-- priceNet: long (nullable = true)</span>
+<span class="go"> |-- priceTypeName: string (nullable = true)</span>
+<span class="go"> |-- productId: string (nullable = true)</span>
+<span class="go"> |-- productWhen: string (nullable = true)</span>
+<span class="go"> |-- productWhere: string (nullable = true)</span>
+<span class="go"> |-- productWho: string (nullable = true)</span>
+<span class="go"> |-- quantity: long (nullable = true)</span>
+<span class="go"> |-- row: string (nullable = true)</span>
+<span class="go"> |-- salutation: string (nullable = true)</span>
+<span class="go"> |-- seat: string (nullable = true)</span>
+<span class="go"> |-- section: string (nullable = true)</span>
+<span class="go"> |-- state: string (nullable = true)</span>
+<span class="go"> |-- transactionDateTime: string (nullable = true)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-------------------+--------------------+----------+-----------+---------+---------+----------+--------------------+-------------+---------+--------+--------------+----------------+-----------+--------+-----+--------+--------------------+-------------+--------------------+------------+---------------+--------+---+----------+----+---------+-----+--------------------+</span>
+<span class="go">|            address|             barcode|canContact|channelCode|     city|  country|customerId|        emailAddress|faceValueFees|firstName|lastName|       orderId|     orderlineId|phoneNumber|postcode|price|priceNet|       priceTypeName|    productId|         productWhen|productWhere|     productWho|quantity|row|salutation|seat|  section|state| transactionDateTime|</span>
+<span class="go">+-------------------+--------------------+----------+-----------+---------+---------+----------+--------------------+-------------+---------+--------+--------------+----------------+-----------+--------+-----+--------+--------------------+-------------+--------------------+------------+---------------+--------+---+----------+----+---------+-----+--------------------+</span>
+<span class="go">|170 Charles Street |93cd75aad9623ef24...|         0|          M|   Seddon|Australia|  14589260|olivia.goodman@me...|          420|   OLIVIA| GOODMAN|20190716,19657|20190716,19657,1| 0403339261|    3011| 4570|    4570|Adult - My Ticket...|  EVAM2019950|Sat 30 Nov 2019 7...|   Playhouse|HUMANS BY CIRCA|       1|  A|        MS|  20|SSTALLS-2|  VIC|2019-07-16T03:27:59Z|</span>
+<span class="go">|170 Charles Street |653ab073d4005721f...|         0|          M|   Seddon|Australia|  14589260|olivia.goodman@me...|          420|   OLIVIA| GOODMAN|20190716,19657|20190716,19657,1| 0403339261|    3011| 4570|    4570|Adult - My Ticket...|  EVAM2019950|Sat 30 Nov 2019 7...|   Playhouse|HUMANS BY CIRCA|       1|  A|        MS|  21|SSTALLS-2|  VIC|2019-07-16T03:27:59Z|</span>
+<span class="go">|170 Charles Street |0841c8fce610978e3...|         0|          M|   Seddon|Australia|  14589260|olivia.goodman@me...|          400|   OLIVIA| GOODMAN|20190716,19657|20190716,19657,1| 0403339261|    3011| 3570|    3570|Junior (3 to 16 y...|  EVAM2019950|Sat 30 Nov 2019 7...|   Playhouse|HUMANS BY CIRCA|       1|  A|        MS|  22|SSTALLS-2|  VIC|2019-07-16T03:27:59Z|</span>
+<span class="go">|  20 Cusdin Street |21b528c39a9526965...|         0|          W|Glen Iris|Australia|   9007250|rodw@actionalumin...|          510|      Rod|  Walker|20190716,20663|20190716,20663,1| 0439660998|    3146| 9720|    9720|               Admit|EVAM2019912DC|Thu 24 Oct 2019 8...|  Hamer Hall| DAVID CAMPBELL|       1|  P|        Mr|  28|  SSTALLS|  VIC|2019-07-16T03:48:45Z|</span>
+<span class="go">|  20 Cusdin Street |c7e40b36bfebbb4e4...|         0|          W|Glen Iris|Australia|   9007250|rodw@actionalumin...|          510|      Rod|  Walker|20190716,20663|20190716,20663,1| 0439660998|    3146| 9720|    9720|               Admit|EVAM2019912DC|Thu 24 Oct 2019 8...|  Hamer Hall| DAVID CAMPBELL|       1|  P|        Mr|  29|  SSTALLS|  VIC|2019-07-16T03:48:45Z|</span>
+<span class="go">+-------------------+--------------------+----------+-----------+---------+---------+----------+--------------------+-------------+---------+--------+--------------+----------------+-----------+--------+-----+--------+--------------------+-------------+--------------------+------------+---------------+--------+---+----------+----+---------+-----+--------------------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Group by address</span>
+
+<span class="n">ds</span><span class="o">.</span><span class="n">groupByKey</span><span class="o">(</span><span class="n">cs</span> <span class="k">=&gt;</span> <span class="n">cs</span><span class="o">.</span><span class="n">address</span><span class="o">).</span><span class="n">keys</span><span class="o">.</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-------------------+</span>
+<span class="go">|              value|</span>
+<span class="go">+-------------------+</span>
+<span class="go">|170 Charles Street |</span>
+<span class="go">|  20 Cusdin Street |</span>
+<span class="go">+-------------------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Group by multiple keys</span>
+
+<span class="n">ds</span><span class="o">.</span><span class="n">groupByKey</span><span class="o">(</span><span class="n">cs</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">cs</span><span class="o">.</span><span class="n">address</span><span class="o">,</span> <span class="n">cs</span><span class="o">.</span><span class="n">customerId</span><span class="o">)).</span><span class="n">keys</span><span class="o">.</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-------------------+--------+</span>
+<span class="go">|                 _1|      _2|</span>
+<span class="go">+-------------------+--------+</span>
+<span class="go">|170 Charles Street |14589260|</span>
+<span class="go">|  20 Cusdin Street | 9007250|</span>
+<span class="go">+-------------------+--------+</span>
+
+<span class="go">grouped: Unit = ()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">grouped1</span> <span class="k">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">groupByKey</span><span class="o">(</span><span class="n">cs</span> <span class="k">=&gt;</span> <span class="o">(</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">customerId</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">orderlineId</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">firstName</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">lastName</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">address</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">city</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">state</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">postcode</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">country</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">phoneNumber</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">emailAddress</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">transactionDateTime</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">channelCode</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">canContact</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">productId</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">productWho</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">productWhere</span><span class="o">,</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">productWhen</span>
+    <span class="o">))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">grouped1: org.apache.spark.sql.KeyValueGroupedDataset[(Long, String, String, String, String, String, String, String, String, String, String, String, String, Long, String, String, String, String),CustomerSales] = KeyValueGroupedDataset: [key: [_1: bigint, _2: string ... 16 more field(s)], value: [address: string, barcode: string ... 27 more field(s)]]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Enough to group by orderlineId, customerID</span>
+<span class="c1">// NOTE: also repartitioning to optimize (might not be needed)</span>
+<span class="c1">// Also, maintaining 1 partition as its a very small dataset</span>
+<span class="k">val</span> <span class="n">grouped</span> <span class="k">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">repartition</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;orderlineId&quot;</span><span class="o">).</span><span class="n">groupByKey</span><span class="o">(</span><span class="n">cs</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">cs</span><span class="o">.</span><span class="n">orderlineId</span><span class="o">,</span> <span class="n">cs</span><span class="o">.</span><span class="n">customerId</span><span class="o">,</span> <span class="n">cs</span><span class="o">.</span><span class="n">productId</span><span class="o">))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">grouped: org.apache.spark.sql.KeyValueGroupedDataset[(String, Long, String),CustomerSales] = KeyValueGroupedDataset: [key: [_1: string, _2: bigint ... 1 more field(s)], value: [address: string, barcode: string ... 27 more field(s)]]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">grouped</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+----------------+--------+-------------+</span>
+<span class="go">|              _1|      _2|           _3|</span>
+<span class="go">+----------------+--------+-------------+</span>
+<span class="go">|20190716,20663,1| 9007250|EVAM2019912DC|</span>
+<span class="go">|20190716,19657,1|14589260|  EVAM2019950|</span>
+<span class="go">+----------------+--------+-------------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Create schema as per XML output</span>
+
+<span class="k">import</span> <span class="nn">org.apache.spark.sql.types._</span>
+
+<span class="k">val</span> <span class="n">schema</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StructType</span><span class="o">()</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;import_account_id&quot;</span><span class="o">,</span> <span class="nc">LongType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;import_ref_no&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;fname&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;lname&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;street1&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;city&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;state&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;postal_code&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;country&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;phone&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;eaddress&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;order_dt&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;mos&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;opt_in&quot;</span><span class="o">,</span> <span class="nc">BooleanType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                          <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;event&quot;</span><span class="o">,</span> <span class="nc">MapType</span><span class="o">(</span>
+                                <span class="nc">StringType</span><span class="o">,</span>
+                                <span class="k">new</span> <span class="nc">StructType</span><span class="o">()</span>
+                                             <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;perf_code&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                                             <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;perf_name&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                                             <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;perf_dt&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                                             <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;venue&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                                             <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;seat_info&quot;</span><span class="o">,</span> <span class="nc">ArrayType</span><span class="o">(</span>
+                                                    <span class="k">new</span> <span class="nc">StructType</span><span class="o">()</span>
+                                                                 <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;section&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                                                                 <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;row&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                                                                 <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;seat&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                                                                 <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;sale_refund&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                                                                 <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;price_type&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                                                                 <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;gross_price&quot;</span><span class="o">,</span> <span class="nc">LongType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                                                                 <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">&quot;barcode&quot;</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+                                                 <span class="o">),</span> <span class="kc">false</span><span class="o">)</span>
+                                                     
+                              <span class="o">),</span> <span class="kc">false</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import org.apache.spark.sql.types._</span>
+<span class="go">schema: org.apache.spark.sql.types.StructType = StructType(StructField(import_account_id,LongType,false), StructField(import_ref_no,StringType,false), StructField(fname,StringType,false), StructField(lname,StringType,false), StructField(street1,StringType,false), StructField(city,StringType,false), StructField(state,StringType,false), StructField(postal_code,StringType,false), StructField(country,StringType,false), StructField(phone,StringType,false), StructField(eaddress,StringType,false), StructField(order_dt,StringType,false), StructField(mos,StringType,false), StructField(opt_in,BooleanType,false), StructField(event,MapType(StringType,StructType(StructField(perf_code,StringType,false), StructField(perf_name,StringType,false), StructField(perf_dt,S...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">case</span> <span class="k">class</span> <span class="nc">SeatInfo</span><span class="o">(</span><span class="k">val</span> <span class="n">section</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">row</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">seat</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">sale_refund</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">price_type</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">gross_price</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="k">val</span> <span class="n">barcode</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Event</span><span class="o">(</span><span class="k">val</span> <span class="n">perf_code</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">perf_name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">perf_dt</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">venue</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">seat_info</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">SeatInfo</span><span class="o">])</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Client</span><span class="o">(</span><span class="k">val</span> <span class="n">import_account_id</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="k">val</span> <span class="n">import_ref_no</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">fname</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">lname</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">street1</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">city</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">state</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">postal_code</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">country</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">phone</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">eaddress</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">order_dt</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">mos</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">opt_in</span><span class="k">:</span> <span class="kt">Boolean</span><span class="o">,</span> <span class="k">val</span> <span class="n">event</span><span class="k">:</span> <span class="kt">Event</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">defined class SeatInfo</span>
+<span class="go">defined class Event</span>
+<span class="go">defined class Client</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">case</span> <span class="k">class</span> <span class="nc">TestXml</span><span class="o">(</span><span class="k">val</span> <span class="n">import_account_id</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="k">val</span> <span class="n">import_ref_no</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">defined class TestXml</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">clientMapper</span><span class="o">(</span><span class="n">k</span><span class="k">:</span> <span class="o">(</span><span class="kt">String</span><span class="o">,</span> <span class="kt">Long</span><span class="o">,</span> <span class="nc">String</span><span class="o">),</span> <span class="n">vals</span><span class="k">:</span> <span class="kt">Iterator</span><span class="o">[</span><span class="kt">CustomerSales</span><span class="o">])</span><span class="k">:</span> <span class="kt">Iterator</span><span class="o">[</span><span class="kt">Client</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">oid</span> <span class="k">=</span> <span class="n">k</span><span class="o">.</span><span class="n">_1</span>
+    <span class="k">val</span> <span class="n">cid</span> <span class="k">=</span> <span class="n">k</span><span class="o">.</span><span class="n">_2</span>
+    <span class="k">val</span> <span class="n">pid</span> <span class="k">=</span> <span class="n">k</span><span class="o">.</span><span class="n">_3</span>
+    
+    <span class="k">val</span> <span class="n">seatInfo</span> <span class="k">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">map</span><span class="o">{</span><span class="n">cs</span> <span class="k">=&gt;</span> <span class="o">{</span>
+        <span class="nc">SeatInfo</span><span class="o">(</span>
+            <span class="n">section</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">section</span><span class="o">,</span>
+            <span class="n">row</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">row</span><span class="o">,</span>
+            <span class="n">seat</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">seat</span><span class="o">,</span>
+            <span class="n">sale_refund</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">cs</span><span class="o">.</span><span class="n">quantity</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="s">&quot;sale&quot;</span> <span class="k">else</span> <span class="s">&quot;refund&quot;</span><span class="o">,</span>
+            <span class="n">price_type</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">priceTypeName</span><span class="o">,</span>
+            <span class="n">gross_price</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">price</span> <span class="o">+</span> <span class="n">cs</span><span class="o">.</span><span class="n">faceValueFees</span><span class="o">,</span>
+            <span class="n">barcode</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">barcode</span>
+        <span class="o">)</span>
+    <span class="o">}}</span>
+    
+    <span class="k">val</span> <span class="n">cs</span> <span class="k">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">next</span>
+    
+    <span class="k">val</span> <span class="n">e</span> <span class="k">=</span> <span class="nc">Event</span><span class="o">(</span>
+            <span class="n">perf_code</span> <span class="k">=</span> <span class="n">pid</span><span class="o">,</span>
+            <span class="n">perf_name</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">productWho</span><span class="o">,</span>
+            <span class="n">perf_dt</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">productWhen</span><span class="o">,</span>
+            <span class="n">venue</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">productWhere</span><span class="o">,</span>
+            <span class="n">seat_info</span> <span class="k">=</span> <span class="n">seatInfo</span><span class="o">.</span><span class="n">toArray</span>
+        <span class="o">)</span>
+    
+    <span class="nc">Iterator</span><span class="o">(</span>
+        <span class="nc">Client</span><span class="o">(</span>
+            <span class="n">import_account_id</span> <span class="k">=</span> <span class="n">cid</span><span class="o">,</span>
+            <span class="n">import_ref_no</span> <span class="k">=</span> <span class="n">oid</span><span class="o">,</span>
+            <span class="n">fname</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">firstName</span><span class="o">,</span>
+            <span class="n">lname</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">lastName</span><span class="o">,</span>
+            <span class="n">street1</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">trim</span><span class="o">.</span><span class="n">slice</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">64</span><span class="o">),</span>
+            <span class="n">city</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">city</span><span class="o">,</span>
+            <span class="n">state</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">state</span><span class="o">,</span>
+            <span class="n">postal_code</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">postcode</span><span class="o">,</span>
+            <span class="n">country</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">country</span><span class="o">,</span>
+            <span class="n">phone</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">phoneNumber</span><span class="o">,</span>
+            <span class="n">eaddress</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">emailAddress</span><span class="o">,</span>
+            <span class="n">order_dt</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">transactionDateTime</span><span class="o">,</span>
+            <span class="n">mos</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">channelCode</span><span class="o">,</span>
+            <span class="n">opt_in</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">cs</span><span class="o">.</span><span class="n">canContact</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="kc">true</span> <span class="k">else</span> <span class="kc">false</span><span class="o">,</span>
+            <span class="n">event</span> <span class="k">=</span> <span class="n">e</span>
+        <span class="o">)</span>
+    <span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">clientMapper: (k: (String, Long, String), vals: Iterator[CustomerSales])Iterator[Client]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">case</span> <span class="k">class</span> <span class="nc">TestXml1</span><span class="o">(</span><span class="k">val</span> <span class="n">import_account_id</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="k">val</span> <span class="n">import_ref_no</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">perf_code</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">perf_name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">seat_info</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">SeatInfo</span><span class="o">])</span>
+
+<span class="k">def</span> <span class="n">clientMapper1</span><span class="o">(</span><span class="n">k</span><span class="k">:</span> <span class="o">(</span><span class="kt">String</span><span class="o">,</span> <span class="kt">Long</span><span class="o">,</span> <span class="nc">String</span><span class="o">),</span> <span class="n">vals</span><span class="k">:</span> <span class="kt">Iterator</span><span class="o">[</span><span class="kt">CustomerSales</span><span class="o">])</span><span class="k">:</span> <span class="kt">Iterator</span><span class="o">[</span><span class="kt">TestXml1</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">oid</span> <span class="k">=</span> <span class="n">k</span><span class="o">.</span><span class="n">_1</span>
+    <span class="k">val</span> <span class="n">cid</span> <span class="k">=</span> <span class="n">k</span><span class="o">.</span><span class="n">_2</span>
+    <span class="k">val</span> <span class="n">pid</span> <span class="k">=</span> <span class="n">k</span><span class="o">.</span><span class="n">_3</span>
+    
+    <span class="k">val</span> <span class="n">seatInfo</span> <span class="k">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">map</span><span class="o">{</span><span class="n">cs</span> <span class="k">=&gt;</span> <span class="o">{</span>
+        <span class="nc">SeatInfo</span><span class="o">(</span>
+            <span class="n">section</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">section</span><span class="o">,</span>
+            <span class="n">row</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">row</span><span class="o">,</span>
+            <span class="n">seat</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">seat</span><span class="o">,</span>
+            <span class="n">sale_refund</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">cs</span><span class="o">.</span><span class="n">quantity</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="s">&quot;sale&quot;</span> <span class="k">else</span> <span class="s">&quot;refund&quot;</span><span class="o">,</span>
+            <span class="n">price_type</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">priceTypeName</span><span class="o">,</span>
+            <span class="n">gross_price</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">price</span> <span class="o">+</span> <span class="n">cs</span><span class="o">.</span><span class="n">faceValueFees</span><span class="o">,</span>
+            <span class="n">barcode</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">barcode</span>
+        <span class="o">)</span>
+    <span class="o">}}</span>
+    
+    <span class="k">val</span> <span class="n">cs</span> <span class="k">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">next</span>
+    
+    <span class="c1">// val e = Event(</span>
+    <span class="c1">//         perf_code = pid,</span>
+    <span class="c1">//         perf_name = cs.productWho,</span>
+    <span class="c1">//         perf_dt = cs.productWhen,</span>
+    <span class="c1">//         venue = cs.productWhere,</span>
+    <span class="c1">//         seat_info = seatInfo</span>
+    <span class="c1">//     )</span>
+    
+    <span class="c1">// Iterator(</span>
+    <span class="c1">//     Client(</span>
+    <span class="c1">//         import_account_id = cid,</span>
+    <span class="c1">//         import_ref_no = oid,</span>
+    <span class="c1">//         fname = cs.firstName,</span>
+    <span class="c1">//         lname = cs.lastName,</span>
+    <span class="c1">//         street1 = cs.address,</span>
+    <span class="c1">//         city = cs.city,</span>
+    <span class="c1">//         state = cs.state,</span>
+    <span class="c1">//         postal_code = cs.postcode,</span>
+    <span class="c1">//         country = cs.country,</span>
+    <span class="c1">//         phone = cs.phoneNumber,</span>
+    <span class="c1">//         eaddress = cs.emailAddress,</span>
+    <span class="c1">//         order_dt = cs.transactionDateTime,</span>
+    <span class="c1">//         mos = cs.channelCode,</span>
+    <span class="c1">//         opt_in = if (cs.canContact == 1) true else false,</span>
+    <span class="c1">//         event = e</span>
+    <span class="c1">//     )</span>
+    <span class="c1">// )</span>
+    
+    <span class="nc">Iterator</span><span class="o">(</span>
+        <span class="nc">TestXml1</span><span class="o">(</span>
+            <span class="n">import_account_id</span> <span class="k">=</span> <span class="n">cid</span><span class="o">,</span>
+            <span class="n">import_ref_no</span> <span class="k">=</span> <span class="n">oid</span><span class="o">,</span>
+            <span class="n">perf_code</span> <span class="k">=</span> <span class="n">pid</span><span class="o">,</span>
+            <span class="n">perf_name</span> <span class="k">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">productWho</span><span class="o">,</span>
+            <span class="n">seat_info</span> <span class="k">=</span> <span class="n">seatInfo</span><span class="o">.</span><span class="n">toArray</span>
+        <span class="o">)</span>
+    <span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">defined class TestXml1</span>
+<span class="go">clientMapper1: (k: (String, Long, String), vals: Iterator[CustomerSales])Iterator[TestXml1]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">groupedDS1</span> <span class="k">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">flatMapGroups</span><span class="o">((</span><span class="n">k</span><span class="o">,</span> <span class="n">viter</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Iterator</span><span class="o">(</span><span class="nc">TestXml</span><span class="o">(</span><span class="n">k</span><span class="o">.</span><span class="n">_2</span><span class="o">,</span> <span class="n">k</span><span class="o">.</span><span class="n">_1</span><span class="o">)))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">groupedDS1: org.apache.spark.sql.Dataset[TestXml] = [import_account_id: bigint, import_ref_no: string]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">groupedDS1</span><span class="o">.</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-----------------+----------------+</span>
+<span class="go">|import_account_id|   import_ref_no|</span>
+<span class="go">+-----------------+----------------+</span>
+<span class="go">|          9007250|20190716,20663,1|</span>
+<span class="go">|         14589260|20190716,19657,1|</span>
+<span class="go">+-----------------+----------------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Convert each group into Dataset[Client]</span>
+
+<span class="k">val</span> <span class="n">groupedDS</span> <span class="k">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">flatMapGroups</span><span class="o">(</span><span class="n">clientMapper</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">groupedDS: org.apache.spark.sql.Dataset[Client] = [import_account_id: bigint, import_ref_no: string ... 13 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">groupedDS</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-----------------+----------------+------+-------+------------------+---------+-----+-----------+---------+----------+--------------------+--------------------+---+------+--------------------+</span>
+<span class="go">|import_account_id|   import_ref_no| fname|  lname|           street1|     city|state|postal_code|  country|     phone|            eaddress|            order_dt|mos|opt_in|               event|</span>
+<span class="go">+-----------------+----------------+------+-------+------------------+---------+-----+-----------+---------+----------+--------------------+--------------------+---+------+--------------------+</span>
+<span class="go">|          9007250|20190716,20663,1|   Rod| Walker|  20 Cusdin Street|Glen Iris|  VIC|       3146|Australia|0439660998|rodw@actionalumin...|2019-07-16T03:48:45Z|  W| false|[EVAM2019912DC, D...|</span>
+<span class="go">|         14589260|20190716,19657,1|OLIVIA|GOODMAN|170 Charles Street|   Seddon|  VIC|       3011|Australia|0403339261|olivia.goodman@me...|2019-07-16T03:27:59Z|  M| false|[EVAM2019950, HUM...|</span>
+<span class="go">+-----------------+----------------+------+-------+------------------+---------+-----+-----------+---------+----------+--------------------+--------------------+---+------+--------------------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Accessing elements in nested structures</span>
+
+<span class="n">groupedDS</span><span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;import_account_id&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;import_ref_no&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;event.perf_code&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;event.seat_info&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;event.seat_info.sale_refund&quot;</span><span class="o">).</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-----------------+----------------+-------------+--------------------+------------+</span>
+<span class="go">|import_account_id|   import_ref_no|    perf_code|           seat_info| sale_refund|</span>
+<span class="go">+-----------------+----------------+-------------+--------------------+------------+</span>
+<span class="go">|          9007250|20190716,20663,1|EVAM2019912DC|[[SSTALLS, P, 29,...|      [sale]|</span>
+<span class="go">|         14589260|20190716,19657,1|  EVAM2019950|[[SSTALLS-2, A, 2...|[sale, sale]|</span>
+<span class="go">+-----------------+----------------+-------------+--------------------+------------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">groupedDS</span><span class="o">.</span><span class="n">printSchema</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">root</span>
+<span class="go"> |-- import_account_id: long (nullable = false)</span>
+<span class="go"> |-- import_ref_no: string (nullable = true)</span>
+<span class="go"> |-- fname: string (nullable = true)</span>
+<span class="go"> |-- lname: string (nullable = true)</span>
+<span class="go"> |-- street1: string (nullable = true)</span>
+<span class="go"> |-- city: string (nullable = true)</span>
+<span class="go"> |-- state: string (nullable = true)</span>
+<span class="go"> |-- postal_code: string (nullable = true)</span>
+<span class="go"> |-- country: string (nullable = true)</span>
+<span class="go"> |-- phone: string (nullable = true)</span>
+<span class="go"> |-- eaddress: string (nullable = true)</span>
+<span class="go"> |-- order_dt: string (nullable = true)</span>
+<span class="go"> |-- mos: string (nullable = true)</span>
+<span class="go"> |-- opt_in: boolean (nullable = false)</span>
+<span class="go"> |-- event: struct (nullable = true)</span>
+<span class="go"> |    |-- perf_code: string (nullable = true)</span>
+<span class="go"> |    |-- perf_name: string (nullable = true)</span>
+<span class="go"> |    |-- perf_dt: string (nullable = true)</span>
+<span class="go"> |    |-- venue: string (nullable = true)</span>
+<span class="go"> |    |-- seat_info: array (nullable = true)</span>
+<span class="go"> |    |    |-- element: struct (containsNull = true)</span>
+<span class="go"> |    |    |    |-- section: string (nullable = true)</span>
+<span class="go"> |    |    |    |-- row: string (nullable = true)</span>
+<span class="go"> |    |    |    |-- seat: string (nullable = true)</span>
+<span class="go"> |    |    |    |-- sale_refund: string (nullable = true)</span>
+<span class="go"> |    |    |    |-- price_type: string (nullable = true)</span>
+<span class="go"> |    |    |    |-- gross_price: long (nullable = false)</span>
+<span class="go"> |    |    |    |-- barcode: string (nullable = true)</span>
+</pre></div>
+
+<h3>Convert dataframe/dataset to XML</h3>
+
+<div class="highlight"><pre><span></span><span class="n">groupedDS1</span><span class="o">.</span><span class="n">rdd</span><span class="o">.</span><span class="n">partitions</span><span class="o">.</span><span class="n">size</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res18: Int = 200</span>
+</pre></div>
+
+<p>Reducing number of partitions before writing.</p>
+<ul>
+<li><strong>repartition</strong> will shuffle and create equal partitions.</li>
+<li><strong>coalesce</strong> won't shuffle and data won't be evenly distributed.</li>
+<li>In this case coalesce is okay as we are reducing the number of partitions to just 1.</li>
+</ul>
+
+<div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.databricks.spark.xml._</span>
+
+<span class="n">groupedDS1</span><span class="o">.</span><span class="n">coalesce</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+                <span class="o">.</span><span class="n">write</span>
+                     <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;rootTag&quot;</span><span class="o">,</span> <span class="s">&quot;data&quot;</span><span class="o">)</span>
+                     <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;rowTag&quot;</span><span class="o">,</span> <span class="s">&quot;client&quot;</span><span class="o">)</span>
+                     <span class="o">.</span><span class="n">xml</span><span class="o">(</span><span class="s">&quot;grouped_ds1_xml&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import com.databricks.spark.xml._</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="n">sh</span>
+
+<span class="n">cat</span> <span class="n">grouped_ds1_xml</span><span class="o">/</span><span class="n">part</span><span class="o">-</span><span class="mi">00000</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">&lt;data&gt;</span>
+<span class="go">    &lt;client&gt;</span>
+<span class="go">        &lt;import_account_id&gt;9007250&lt;/import_account_id&gt;</span>
+<span class="go">        &lt;import_ref_no&gt;20190716,20663,1&lt;/import_ref_no&gt;</span>
+<span class="go">    &lt;/client&gt;</span>
+
+<span class="go">    &lt;client&gt;</span>
+<span class="go">        &lt;import_account_id&gt;14589260&lt;/import_account_id&gt;</span>
+<span class="go">        &lt;import_ref_no&gt;20190716,19657,1&lt;/import_ref_no&gt;</span>
+<span class="go">    &lt;/client&gt;</span>
+
+<span class="go">&lt;/data&gt;</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">com.databricks.spark.xml._</span>
+
+<span class="n">groupedDS</span>
+        <span class="o">.</span><span class="n">coalesce</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">write</span>
+            <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;rootTag&quot;</span><span class="o">,</span> <span class="s">&quot;data&quot;</span><span class="o">)</span>
+            <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;rowTag&quot;</span><span class="o">,</span> <span class="s">&quot;client&quot;</span><span class="o">)</span>
+            <span class="o">.</span><span class="n">xml</span><span class="o">(</span><span class="s">&quot;grouped_ds_xml&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import com.databricks.spark.xml._</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>%sh
+
+cat grouped_ds_xml/part-00000
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">&lt;data&gt;</span>
+<span class="go">    &lt;client&gt;</span>
+<span class="go">        &lt;import_account_id&gt;9007250&lt;/import_account_id&gt;</span>
+<span class="go">        &lt;import_ref_no&gt;20190716,20663,1&lt;/import_ref_no&gt;</span>
+<span class="go">        &lt;fname&gt;Rod&lt;/fname&gt;</span>
+<span class="go">        &lt;lname&gt;Walker&lt;/lname&gt;</span>
+<span class="go">        &lt;street1&gt;20 Cusdin Street&lt;/street1&gt;</span>
+<span class="go">        &lt;city&gt;Glen Iris&lt;/city&gt;</span>
+<span class="go">        &lt;state&gt;VIC&lt;/state&gt;</span>
+<span class="go">        &lt;postal_code&gt;3146&lt;/postal_code&gt;</span>
+<span class="go">        &lt;country&gt;Australia&lt;/country&gt;</span>
+<span class="go">        &lt;phone&gt;0439660998&lt;/phone&gt;</span>
+<span class="go">        &lt;eaddress&gt;rodw@actionaluminium.com.au&lt;/eaddress&gt;</span>
+<span class="go">        &lt;order_dt&gt;2019-07-16T03:48:45Z&lt;/order_dt&gt;</span>
+<span class="go">        &lt;mos&gt;W&lt;/mos&gt;</span>
+<span class="go">        &lt;opt_in&gt;false&lt;/opt_in&gt;</span>
+<span class="go">        &lt;event&gt;</span>
+<span class="go">            &lt;perf_code&gt;EVAM2019912DC&lt;/perf_code&gt;</span>
+<span class="go">            &lt;perf_name&gt;DAVID CAMPBELL&lt;/perf_name&gt;</span>
+<span class="go">            &lt;perf_dt&gt;Thu 24 Oct 2019 8:00pm&lt;/perf_dt&gt;</span>
+<span class="go">            &lt;venue&gt;Hamer Hall&lt;/venue&gt;</span>
+<span class="go">            &lt;seat_info&gt;</span>
+<span class="go">                &lt;section&gt;SSTALLS&lt;/section&gt;</span>
+<span class="go">                &lt;row&gt;P&lt;/row&gt;</span>
+<span class="go">                &lt;seat&gt;29&lt;/seat&gt;</span>
+<span class="go">                &lt;sale_refund&gt;sale&lt;/sale_refund&gt;</span>
+<span class="go">                &lt;price_type&gt;Admit&lt;/price_type&gt;</span>
+<span class="go">                &lt;gross_price&gt;10230&lt;/gross_price&gt;</span>
+<span class="go">                &lt;barcode&gt;c7e40b36bfebbb4e4f0d132193b1f9725daf60b0&lt;/barcode&gt;</span>
+<span class="go">            &lt;/seat_info&gt;</span>
+<span class="go">        &lt;/event&gt;</span>
+<span class="go">    &lt;/client&gt;</span>
+
+<span class="go">    &lt;client&gt;</span>
+<span class="go">        &lt;import_account_id&gt;14589260&lt;/import_account_id&gt;</span>
+<span class="go">        &lt;import_ref_no&gt;20190716,19657,1&lt;/import_ref_no&gt;</span>
+<span class="go">        &lt;fname&gt;OLIVIA&lt;/fname&gt;</span>
+<span class="go">        &lt;lname&gt;GOODMAN&lt;/lname&gt;</span>
+<span class="go">        &lt;street1&gt;170 Charles Street&lt;/street1&gt;</span>
+<span class="go">        &lt;city&gt;Seddon&lt;/city&gt;</span>
+<span class="go">        &lt;state&gt;VIC&lt;/state&gt;</span>
+<span class="go">        &lt;postal_code&gt;3011&lt;/postal_code&gt;</span>
+<span class="go">        &lt;country&gt;Australia&lt;/country&gt;</span>
+<span class="go">        &lt;phone&gt;0403339261&lt;/phone&gt;</span>
+<span class="go">        &lt;eaddress&gt;olivia.goodman@me.com&lt;/eaddress&gt;</span>
+<span class="go">        &lt;order_dt&gt;2019-07-16T03:27:59Z&lt;/order_dt&gt;</span>
+<span class="go">        &lt;mos&gt;M&lt;/mos&gt;</span>
+<span class="go">        &lt;opt_in&gt;false&lt;/opt_in&gt;</span>
+<span class="go">        &lt;event&gt;</span>
+<span class="go">            &lt;perf_code&gt;EVAM2019950&lt;/perf_code&gt;</span>
+<span class="go">            &lt;perf_name&gt;HUMANS BY CIRCA&lt;/perf_name&gt;</span>
+<span class="go">            &lt;perf_dt&gt;Sat 30 Nov 2019 7:30pm&lt;/perf_dt&gt;</span>
+<span class="go">            &lt;venue&gt;Playhouse&lt;/venue&gt;</span>
+<span class="go">            &lt;seat_info&gt;</span>
+<span class="go">                &lt;section&gt;SSTALLS-2&lt;/section&gt;</span>
+<span class="go">                &lt;row&gt;A&lt;/row&gt;</span>
+<span class="go">                &lt;seat&gt;21&lt;/seat&gt;</span>
+<span class="go">                &lt;sale_refund&gt;sale&lt;/sale_refund&gt;</span>
+<span class="go">                &lt;price_type&gt;Adult - My Ticketek Presale&lt;/price_type&gt;</span>
+<span class="go">                &lt;gross_price&gt;4990&lt;/gross_price&gt;</span>
+<span class="go">                &lt;barcode&gt;653ab073d4005721f029d29b44cc45b75a0e0d7c&lt;/barcode&gt;</span>
+<span class="go">            &lt;/seat_info&gt;</span>
+<span class="go">            &lt;seat_info&gt;</span>
+<span class="go">                &lt;section&gt;SSTALLS-2&lt;/section&gt;</span>
+<span class="go">                &lt;row&gt;A&lt;/row&gt;</span>
+<span class="go">                &lt;seat&gt;22&lt;/seat&gt;</span>
+<span class="go">                &lt;sale_refund&gt;sale&lt;/sale_refund&gt;</span>
+<span class="go">                &lt;price_type&gt;Junior (3 to 16 years) - My Ticketek Presale&lt;/price_type&gt;</span>
+<span class="go">                &lt;gross_price&gt;3970&lt;/gross_price&gt;</span>
+<span class="go">                &lt;barcode&gt;0841c8fce610978e39d014556e07fd15683b8c8a&lt;/barcode&gt;</span>
+<span class="go">            &lt;/seat_info&gt;</span>
+<span class="go">        &lt;/event&gt;</span>
+<span class="go">    &lt;/client&gt;</span>
+
+<span class="go">&lt;/data&gt;</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>%sh
+</pre></div>

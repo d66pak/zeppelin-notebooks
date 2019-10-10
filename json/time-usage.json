@@ -1,0 +1,1929 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n\n## Time usage",
+      "user": "deepak",
+      "dateUpdated": "2019-07-10 17:07:22.339",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch2\u003eTime usage\u003c/h2\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562742430163_1172176770",
+      "id": "20190710-170710_1924289776",
+      "dateCreated": "2019-07-10 17:07:10.163",
+      "dateStarted": "2019-07-10 17:07:22.340",
+      "dateFinished": "2019-07-10 17:07:23.855",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Input file\nz.put(\"timeusage\", \"/home/ubuntu/test_spark/timeusage/atussum.csv\")\nz.put(\"test\", \"/home/ubuntu/test_spark/timeusage/test.csv\")",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 12:09:51.251",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1562742442318_248472614",
+      "id": "20190710-170722_154477694",
+      "dateCreated": "2019-07-10 17:07:22.318",
+      "dateStarted": "2019-08-28 12:09:51.284",
+      "dateFinished": "2019-08-28 12:09:51.691",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Read RDD\nval rdd \u003d sc.textFile(z.get(\"timeusage\").toString)\nrdd.take(2)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 12:09:56.279",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "rdd: org.apache.spark.rdd.RDD[String] \u003d /home/ubuntu/test_spark/timeusage/atussum.csv MapPartitionsRDD[663] at textFile at \u003cconsole\u003e:156\nres151: Array[String] \u003d Array(tucaseid,gemetsta,gtmetsta,peeduca,pehspnon,ptdtrace,teage,telfs,temjot,teschenr,teschlvl,tesex,tespempnot,trchildnum,trdpftpt,trernwa,trholiday,trspftpt,trsppres,tryhhchild,tudiaryday,tufnwgtp,tehruslt,tuyear,t010101,t010102,t010199,t010201,t010299,t010301,t010399,t010401,t010499,t010501,t010599,t019999,t020101,t020102,t020103,t020104,t020199,t020201,t020202,t020203,t020299,t020301,t020302,t020303,t020399,t020401,t020402,t020499,t020501,t020502,t020599,t020681,t020699,t020701,t020799,t020801,t020899,t020901,t020902,t020903,t020904,t020905,t020999,t029999,t030101,t030102,t030103,t030104,t030105,t030108,t030109,t030110,t030..."
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d189"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562742567038_1904952373",
+      "id": "20190710-170927_2070646284",
+      "dateCreated": "2019-07-10 17:09:27.038",
+      "dateStarted": "2019-08-28 12:09:56.308",
+      "dateFinished": "2019-08-28 12:09:56.785",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val headerColumn \u003d rdd.first.split(\",\").toList",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 12:10:08.525",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "headerColumn: List[String] \u003d List(tucaseid, gemetsta, gtmetsta, peeduca, pehspnon, ptdtrace, teage, telfs, temjot, teschenr, teschlvl, tesex, tespempnot, trchildnum, trdpftpt, trernwa, trholiday, trspftpt, trsppres, tryhhchild, tudiaryday, tufnwgtp, tehruslt, tuyear, t010101, t010102, t010199, t010201, t010299, t010301, t010399, t010401, t010499, t010501, t010599, t019999, t020101, t020102, t020103, t020104, t020199, t020201, t020202, t020203, t020299, t020301, t020302, t020303, t020399, t020401, t020402, t020499, t020501, t020502, t020599, t020681, t020699, t020701, t020799, t020801, t020899, t020901, t020902, t020903, t020904, t020905, t020999, t029999, t030101, t030102, t030103, t030104, t030105, t030108, t030109, t030110, t030111, t030112, t030186, t030199, t030201, t030202, t030203..."
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d190"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562801687008_-480955303",
+      "id": "20190711-093447_897467966",
+      "dateCreated": "2019-07-11 09:34:47.008",
+      "dateStarted": "2019-08-28 12:10:08.557",
+      "dateFinished": "2019-08-28 12:10:09.068",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "headerColumn.tail",
+      "user": "deepak",
+      "dateUpdated": "2019-07-16 16:18:01.648",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res38: List[String] \u003d List(gemetsta, gtmetsta, peeduca, pehspnon, ptdtrace, teage, telfs, temjot, teschenr, teschlvl, tesex, tespempnot, trchildnum, trdpftpt, trernwa, trholiday, trspftpt, trsppres, tryhhchild, tudiaryday, tufnwgtp, tehruslt, tuyear, t010101, t010102, t010199, t010201, t010299, t010301, t010399, t010401, t010499, t010501, t010599, t019999, t020101, t020102, t020103, t020104, t020199, t020201, t020202, t020203, t020299, t020301, t020302, t020303, t020399, t020401, t020402, t020499, t020501, t020502, t020599, t020681, t020699, t020701, t020799, t020801, t020899, t020901, t020902, t020903, t020904, t020905, t020999, t029999, t030101, t030102, t030103, t030104, t030105, t030108, t030109, t030110, t030111, t030112, t030186, t030199, t030201, t030202, t030203, t030204, t03029..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562808333644_1589756202",
+      "id": "20190711-112533_1247351982",
+      "dateCreated": "2019-07-11 11:25:33.644",
+      "dateStarted": "2019-07-16 16:18:01.663",
+      "dateFinished": "2019-07-16 16:18:01.811",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val l1 \u003d List(1, 2, 3, 4)\nval l2 \u003d List(5, 6)\n\nval l3 \u003d l1 ++ l2\nval l4 \u003d l1 ++: l2\nval l5 \u003d l1 +: l2\nval l6 \u003d l1 :+ l2",
+      "user": "deepak",
+      "dateUpdated": "2019-07-11 11:36:19.058",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "l1: List[Int] \u003d List(1, 2, 3, 4)\nl2: List[Int] \u003d List(5, 6)\nl3: List[Int] \u003d List(1, 2, 3, 4, 5, 6)\nl4: List[Int] \u003d List(1, 2, 3, 4, 5, 6)\nl5: List[Any] \u003d List(List(1, 2, 3, 4), 5, 6)\nl6: List[Any] \u003d List(1, 2, 3, 4, List(5, 6))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562808733524_-386436439",
+      "id": "20190711-113213_521974035",
+      "dateCreated": "2019-07-11 11:32:13.524",
+      "dateStarted": "2019-07-11 11:36:19.072",
+      "dateFinished": "2019-07-11 11:36:19.288",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Convert header into schema\nimport org.apache.spark.sql._\nimport org.apache.spark.sql.types._\n\nval fields \u003d List(new StructField(headerColumn.head, StringType, false))\nval fields_tail \u003d headerColumn.tail.map(header \u003d\u003e new StructField(header, DoubleType, false))",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 15:56:22.468",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 278.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.sql._\nimport org.apache.spark.sql.types._\nfields: List[org.apache.spark.sql.types.StructField] \u003d List(StructField(tucaseid,StringType,false))\nfields_tail: List[org.apache.spark.sql.types.StructField] \u003d List(StructField(gemetsta,DoubleType,false), StructField(gtmetsta,DoubleType,false), StructField(peeduca,DoubleType,false), StructField(pehspnon,DoubleType,false), StructField(ptdtrace,DoubleType,false), StructField(teage,DoubleType,false), StructField(telfs,DoubleType,false), StructField(temjot,DoubleType,false), StructField(teschenr,DoubleType,false), StructField(teschlvl,DoubleType,false), StructField(tesex,DoubleType,false), StructField(tespempnot,DoubleType,false), StructField(trchildnum,DoubleType,false), StructField(trdpftpt,DoubleType,false), StructField(tr..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562807195469_-656747330",
+      "id": "20190711-110635_3066481",
+      "dateCreated": "2019-07-11 11:06:35.469",
+      "dateStarted": "2019-07-18 15:56:22.482",
+      "dateFinished": "2019-07-18 15:56:22.745",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val all_fields \u003d fields ++: fields_tail",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 15:56:26.117",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "all_fields: List[org.apache.spark.sql.types.StructField] \u003d List(StructField(tucaseid,StringType,false), StructField(gemetsta,DoubleType,false), StructField(gtmetsta,DoubleType,false), StructField(peeduca,DoubleType,false), StructField(pehspnon,DoubleType,false), StructField(ptdtrace,DoubleType,false), StructField(teage,DoubleType,false), StructField(telfs,DoubleType,false), StructField(temjot,DoubleType,false), StructField(teschenr,DoubleType,false), StructField(teschlvl,DoubleType,false), StructField(tesex,DoubleType,false), StructField(tespempnot,DoubleType,false), StructField(trchildnum,DoubleType,false), StructField(trdpftpt,DoubleType,false), StructField(trernwa,DoubleType,false), StructField(trholiday,DoubleType,false), StructField(trspftpt,DoubleType,false), StructField(trsppres,..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562809086302_-1168615932",
+      "id": "20190711-113806_751093125",
+      "dateCreated": "2019-07-11 11:38:06.302",
+      "dateStarted": "2019-07-18 15:56:26.131",
+      "dateFinished": "2019-07-18 15:56:26.423",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val schema1 \u003d new StructType(all_fields.toArray)",
+      "user": "deepak",
+      "dateUpdated": "2019-07-16 16:18:26.611",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 197.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "schema1: org.apache.spark.sql.types.StructType \u003d StructType(StructField(tucaseid,StringType,false), StructField(gemetsta,DoubleType,false), StructField(gtmetsta,DoubleType,false), StructField(peeduca,DoubleType,false), StructField(pehspnon,DoubleType,false), StructField(ptdtrace,DoubleType,false), StructField(teage,DoubleType,false), StructField(telfs,DoubleType,false), StructField(temjot,DoubleType,false), StructField(teschenr,DoubleType,false), StructField(teschlvl,DoubleType,false), StructField(tesex,DoubleType,false), StructField(tespempnot,DoubleType,false), StructField(trchildnum,DoubleType,false), StructField(trdpftpt,DoubleType,false), StructField(trernwa,DoubleType,false), StructField(trholiday,DoubleType,false), StructField(trspftpt,DoubleType,false), StructField(trsppres,Doub..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562809189687_1936576348",
+      "id": "20190711-113949_314003136",
+      "dateCreated": "2019-07-11 11:39:49.687",
+      "dateStarted": "2019-07-16 16:18:26.626",
+      "dateFinished": "2019-07-16 16:18:26.781",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "rdd.partitions.length",
+      "user": "deepak",
+      "dateUpdated": "2019-07-16 16:18:34.721",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res39: Int \u003d 5\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562809227459_1932756349",
+      "id": "20190711-114027_514045493",
+      "dateCreated": "2019-07-11 11:40:27.459",
+      "dateStarted": "2019-07-16 16:18:34.735",
+      "dateFinished": "2019-07-16 16:18:34.851",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import org.apache.spark.sql._\nimport org.apache.spark.sql.types._\n\n/** @return The schema of the DataFrame, assuming that the first given column has type String and all the others\n    *         have type Double. None of the fields are nullable.\n    * @param columnNames Column names of the DataFrame\n    */\ndef dfSchema(columnNames: List[String]): StructType \u003d {\n    \n    val fields \u003d List(new StructField(columnNames.head, StringType, false)) // First column\n    val rest_of_fields \u003d columnNames.tail.map(header \u003d\u003e new StructField(header, DoubleType, false))\n    val all_fields \u003d fields ++: rest_of_fields\n    new StructType(all_fields.toArray)\n}",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 12:34:55.279",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.sql._\nimport org.apache.spark.sql.types._\ndfSchema: (columnNames: List[String])org.apache.spark.sql.types.StructType\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562815027032_-46757842",
+      "id": "20190711-131707_1407098598",
+      "dateCreated": "2019-07-11 13:17:07.032",
+      "dateStarted": "2019-08-28 12:34:55.308",
+      "dateFinished": "2019-08-28 12:34:55.783",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "/** @return An RDD Row compatible with the schema produced by `dfSchema`\n    * @param line Raw fields\n    */\ndef row(line: List[String]): Row \u003d {\n    val first \u003d List(line.head.toString)\n    val rest \u003d line.tail.map(_.toDouble)\n    val first_plus_rest \u003d first ++: rest\n    Row.fromSeq(first_plus_rest.toSeq)\n}",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 13:22:54.574",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "row: (line: List[String])org.apache.spark.sql.Row\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562816544469_198207880",
+      "id": "20190711-134224_1703387677",
+      "dateCreated": "2019-07-11 13:42:24.469",
+      "dateStarted": "2019-08-28 13:22:54.603",
+      "dateFinished": "2019-08-28 13:22:55.097",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val data1 \u003d rdd\n              .mapPartitionsWithIndex((i, it) \u003d\u003e if (i\u003d\u003d0) it.drop(1) else it)\n              .map(_.split(\",\").toList)\n              .map(row)\n              \ndata1.take(1)\n// // val df1 \u003d spark.createDataFrame(data1.sample(), schema1)\n// val sample \u003d data1.sample(false, 0.0001)\n// sample.count\n\n// sample.take(1)\n\nval df \u003d spark.createDataFrame(data1, schema1)\ndf.count\n",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 13:23:25.912",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u003cconsole\u003e:171: error: not found: value schema1\n       val df \u003d spark.createDataFrame(data1, schema1)\n                                             ^\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562904620612_1333273486",
+      "id": "20190712-141020_914038079",
+      "dateCreated": "2019-07-12 14:10:20.612",
+      "dateStarted": "2019-08-28 13:23:25.949",
+      "dateFinished": "2019-08-28 13:23:26.046",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "/** @return The read DataFrame along with its column names. */\ndef read(resource: String): (List[String], DataFrame) \u003d {\n    val rdd \u003d sc.textFile(resource)\n    val headerColumns \u003d rdd.first.split(\",\").toList // Get the header line as list\n    val schema \u003d dfSchema(headerColumns)  // Generate schema out of header columns\n    \n    // Convert each rdd element to Row\n    val data \u003d rdd\n                 .mapPartitionsWithIndex((i, it) \u003d\u003e if (i \u003d\u003d 0) it.drop(1) else it) // skip header line from first partition\n                 .map(line \u003d\u003e row(line.split(\",\").toList)) // Convert each line into Row\n                 \n    // Create DataFrame\n    val df \u003d spark.createDataFrame(data, schema)\n    (headerColumns, df)\n}",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 13:25:46.128",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "read: (resource: String)(List[String], org.apache.spark.sql.DataFrame)\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562898411410_375080988",
+      "id": "20190712-122651_1114652535",
+      "dateCreated": "2019-07-12 12:26:51.410",
+      "dateStarted": "2019-08-28 13:25:46.166",
+      "dateFinished": "2019-08-28 13:25:46.799",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val (columns, initDF) \u003d read(z.get(\"timeusage\").toString)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 13:25:50.219",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "columns: List[String] \u003d List(tucaseid, gemetsta, gtmetsta, peeduca, pehspnon, ptdtrace, teage, telfs, temjot, teschenr, teschlvl, tesex, tespempnot, trchildnum, trdpftpt, trernwa, trholiday, trspftpt, trsppres, tryhhchild, tudiaryday, tufnwgtp, tehruslt, tuyear, t010101, t010102, t010199, t010201, t010299, t010301, t010399, t010401, t010499, t010501, t010599, t019999, t020101, t020102, t020103, t020104, t020199, t020201, t020202, t020203, t020299, t020301, t020302, t020303, t020399, t020401, t020402, t020499, t020501, t020502, t020599, t020681, t020699, t020701, t020799, t020801, t020899, t020901, t020902, t020903, t020904, t020905, t020999, t029999, t030101, t030102, t030103, t030104, t030105, t030108, t030109, t030110, t030111, t030112, t030186, t030199, t030201, t030202, t030203, t03..."
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d191"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562904194336_372852324",
+      "id": "20190712-140314_1165455482",
+      "dateCreated": "2019-07-12 14:03:14.336",
+      "dateStarted": "2019-08-28 13:25:50.251",
+      "dateFinished": "2019-08-28 13:25:51.055",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "initDF.show(2)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 13:26:09.151",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------------+--------+--------+-------+--------+--------+-----+-----+------+--------+--------+-----+----------+----------+--------+-------+---------+--------+--------+----------+----------+---------+--------+------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+\n|        tucaseid|gemetsta|gtmetsta|peeduca|pehspnon|ptdtrace|teage|telfs|temjot|teschenr|teschlvl|tesex|tespempnot|trchildnum|trdpftpt|trernwa|trholiday|trspftpt|trsppres|tryhhchild|tudiaryday| tufnwgtp|tehruslt|tuyear|t010101|t010102|t010199|t010201|t010299|t010301|t010399|t010401|t010499|t010501|t010599|t019999|t020101|t020102|t020103|t020104|t020199|t020201|t020202|t020203|t020299|t020301|t020302|t020303|t020399|t020401|t020402|t020499|t020501|t020502|t020599|t020681|t020699|t020701|t020799|t020801|t020899|t020901|t020902|t020903|t020904|t020905|t020999|t029999|t030101|t030102|t030103|t030104|t030105|t030108|t030109|t030110|t030111|t030112|t030186|t030199|t030201|t030202|t030203|t030204|t030299|t030301|t030302|t030303|t030399|t030401|t030402|t030403|t030404|t030405|t030499|t030501|t030502|t030503|t030504|t030599|t039999|t040101|t040102|t040103|t040104|t040105|t040108|t040109|t040110|t040111|t040112|t040186|t040199|t040201|t040202|t040203|t040204|t040299|t040301|t040302|t040303|t040399|t040401|t040402|t040403|t040404|t040405|t040499|t040501|t040502|t040503|t040504|t040505|t040506|t040507|t040508|t040599|t049999|t050101|t050102|t050103|t050189|t050201|t050202|t050203|t050204|t050289|t050301|t050302|t050303|t050304|t050389|t050403|t050404|t050405|t050481|t050499|t059999|t060101|t060102|t060103|t060104|t060199|t060201|t060202|t060203|t060289|t060301|t060302|t060303|t060399|t060401|t060402|t060403|t060499|t069999|t070101|t070102|t070103|t070104|t070105|t070199|t070201|t070299|t070301|t070399|t079999|t080101|t080102|t080199|t080201|t080202|t080203|t080299|t080301|t080302|t080399|t080401|t080402|t080403|t080499|t080501|t080502|t080599|t080601|t080602|t080699|t080701|t080702|t080799|t080801|t080899|t089999|t090101|t090102|t090103|t090104|t090199|t090201|t090202|t090299|t090301|t090302|t090399|t090401|t090402|t090499|t090501|t090502|t090599|t099999|t100101|t100102|t100103|t100199|t100201|t100299|t100381|t100383|t100399|t100401|t100499|t109999|t110101|t110199|t110281|t110289|t119999|t120101|t120199|t120201|t120202|t120299|t120301|t120302|t120303|t120304|t120305|t120306|t120307|t120308|t120309|t120310|t120311|t120312|t120313|t120399|t120401|t120402|t120403|t120404|t120405|t120499|t120501|t120502|t120503|t120504|t120599|t129999|t130101|t130102|t130103|t130104|t130105|t130106|t130107|t130108|t130109|t130110|t130111|t130112|t130113|t130114|t130115|t130116|t130117|t130118|t130119|t130120|t130121|t130122|t130123|t130124|t130125|t130126|t130127|t130128|t130129|t130130|t130131|t130132|t130133|t130134|t130135|t130136|t130199|t130201|t130202|t130203|t130204|t130205|t130206|t130207|t130208|t130209|t130210|t130211|t130212|t130213|t130214|t130215|t130216|t130217|t130218|t130219|t130220|t130221|t130222|t130223|t130224|t130225|t130226|t130227|t130228|t130229|t130230|t130231|t130232|t130299|t130301|t130302|t130399|t130401|t130402|t130499|t139999|t140101|t140102|t140103|t140104|t140105|t149999|t150101|t150102|t150103|t150104|t150105|t150106|t150199|t150201|t150202|t150203|t150204|t150299|t150301|t150302|t150399|t150401|t150402|t150499|t150501|t150599|t150601|t150602|t150699|t159989|t160101|t160102|t160103|t160104|t160105|t160106|t160107|t160108|t169989|t180101|t180199|t180280|t180381|t180382|t180399|t180481|t180482|t180499|t180501|t180502|t180589|t180601|t180682|t180699|t180701|t180782|t180801|t180802|t180803|t180804|t180805|t180806|t180807|t180899|t180901|t180902|t180903|t180904|t180905|t180999|t181002|t181081|t181099|t181101|t181199|t181201|t181202|t181204|t181283|t181299|t181301|t181302|t181399|t181401|t181499|t181501|t181599|t181601|t181699|t181801|t181899|t189999|t500101|t500103|t500104|t500105|t500106|t500107|t509989|\n+----------------+--------+--------+-------+--------+--------+-----+-----+------+--------+--------+-----+----------+----------+--------+-------+---------+--------+--------+----------+----------+---------+--------+------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+\n|\"20030100013280\"|     1.0|    -1.0|   44.0|     2.0|     2.0| 60.0|  2.0|   2.0|    -1.0|    -1.0|  1.0|       2.0|       0.0|     2.0|66000.0|      0.0|    -1.0|     1.0|      -1.0|       6.0|8155463.0|    30.0|2003.0|  870.0|    0.0|    0.0|   40.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    5.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|  325.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|  200.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|\n|\"20030100013344\"|     2.0|    -1.0|   40.0|     2.0|     1.0| 41.0|  1.0|   2.0|     2.0|    -1.0|  2.0|       1.0|       2.0|     2.0|20000.0|      0.0|     1.0|     1.0|       0.0|       7.0|1735323.0|    30.0|2003.0|  620.0|    0.0|    0.0|   60.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|   60.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|   90.0|    0.0|    0.0|    0.0|    0.0|  530.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|   60.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|   20.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|\n+----------------+--------+--------+-------+--------+--------+-----+-----+------+--------+--------+-----+----------+----------+--------+-------+---------+--------+--------+----------+----------+---------+--------+------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+\nonly showing top 2 rows\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d192"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562904521082_1003051842",
+      "id": "20190712-140841_277155836",
+      "dateCreated": "2019-07-12 14:08:41.082",
+      "dateStarted": "2019-08-28 13:26:09.184",
+      "dateFinished": "2019-08-28 13:26:10.257",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "/** @return The initial data frame columns partitioned in three groups: primary needs (sleeping, eating, etc.),\n    *         work and other (leisure activities)\n    *\n    * @see https://www.kaggle.com/bls/american-time-use-survey\n    *\n    * The dataset contains the daily time (in minutes) people spent in various activities. For instance, the column\n    * \"t010101\" contains the time spent sleeping, the column \"t110101\" contains the time spent eating and drinking, etc.\n    *\n    * This method groups related columns together:\n    * 1. \"primary needs\" activities (sleeping, eating, etc.). These are the columns starting with \"t01\", \"t03\", \"t11\",\n    *    \"t1801\" and \"t1803\".\n    * 2. working activities. These are the columns starting with \"t05\" and \"t1805\".\n    * 3. other activities (leisure). These are the columns starting with \"t02\", \"t04\", \"t06\", \"t07\", \"t08\", \"t09\",\n    *    \"t10\", \"t12\", \"t13\", \"t14\", \"t15\", \"t16\" and \"t18\" (those which are not part of the previous groups only).\n    */\n    \nimport scala.collection.mutable.ListBuffer\n  def classifiedColumns(columnNames: List[String]): (List[Column], List[Column], List[Column]) \u003d {\n      val primary \u003d ListBuffer[Column]()\n      val work \u003d ListBuffer[Column]()\n      val other \u003d ListBuffer[Column]()\n      for(c \u003c- columnNames) {\n          if (c.startsWith(\"t01\") || c.startsWith(\"t03\") || c.startsWith(\"t11\") || c.startsWith(\"t1801\") || c.startsWith(\"t1803\")) {\n              primary +\u003d new Column(c)\n          } else if (c.startsWith(\"t05\") || c.startsWith(\"t1805\")) {\n              work +\u003d new Column(c)\n          } else if (c.startsWith(\"t02\") || c.startsWith(\"t04\") || c.startsWith(\"t06\") || c.startsWith(\"t07\") || c.startsWith(\"t08\") ||\n                     c.startsWith(\"t09\") || c.startsWith(\"t10\") || c.startsWith(\"t12\") || c.startsWith(\"t13\") || c.startsWith(\"t14\") ||\n                     c.startsWith(\"t15\") || c.startsWith(\"t16\") || (c.startsWith(\"t18\") \u0026\u0026 !c.startsWith(\"t1805\"))) {\n              other +\u003d new Column(c)\n          }\n      }\n      (primary.toList, work.toList, other.toList)\n  }",
+      "user": "deepak",
+      "dateUpdated": "2019-09-06 15:59:51.967",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import scala.collection.mutable.ListBuffer\nclassifiedColumns: (columnNames: List[String])(List[org.apache.spark.sql.Column], List[org.apache.spark.sql.Column], List[org.apache.spark.sql.Column])\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562904537113_-864154130",
+      "id": "20190712-140857_550019255",
+      "dateCreated": "2019-07-12 14:08:57.113",
+      "dateStarted": "2019-07-18 15:57:11.616",
+      "dateFinished": "2019-07-18 15:57:11.847",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val (primary1, work1, other1) \u003d classifiedColumns(columns)",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 15:57:15.513",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "primary1: List[org.apache.spark.sql.Column] \u003d List(t010101, t010102, t010199, t010201, t010299, t010301, t010399, t010401, t010499, t010501, t010599, t019999, t030101, t030102, t030103, t030104, t030105, t030108, t030109, t030110, t030111, t030112, t030186, t030199, t030201, t030202, t030203, t030204, t030299, t030301, t030302, t030303, t030399, t030401, t030402, t030403, t030404, t030405, t030499, t030501, t030502, t030503, t030504, t030599, t039999, t110101, t110199, t110281, t110289, t119999, t180101, t180199, t180381, t180382, t180399)\nwork1: List[org.apache.spark.sql.Column] \u003d List(t050101, t050102, t050103, t050189, t050201, t050202, t050203, t050204, t050289, t050301, t050302, t050303, t050304, t050389, t050403, t050404, t050405, t050481, t050499, t059999, t180501, t180502, t1805..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563260424484_1452045832",
+      "id": "20190716-170024_1813198539",
+      "dateCreated": "2019-07-16 17:00:24.484",
+      "dateStarted": "2019-07-18 15:57:15.526",
+      "dateFinished": "2019-07-18 15:57:15.770",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// org.apache.spark.sql.functions.when\n\nval working \u003d when($\"telfs\".between(1, 2), \"working\")\n              .otherwise(\"not working\")\n              .as(\"working\")",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 13:31:59.155",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "working: org.apache.spark.sql.Column \u003d CASE WHEN ((telfs \u003e\u003d 1) AND (telfs \u003c\u003d 2)) THEN working ELSE not working END AS `working`\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563430938365_-1652438816",
+      "id": "20190718-162218_73930588",
+      "dateCreated": "2019-07-18 16:22:18.365",
+      "dateStarted": "2019-07-18 16:34:00.269",
+      "dateFinished": "2019-07-18 16:34:00.478",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "initDF.select(working).show()",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 16:34:06.554",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----------+\n|    working|\n+-----------+\n|    working|\n|    working|\n|    working|\n|not working|\n|    working|\n|    working|\n|    working|\n|    working|\n|    working|\n|    working|\n|    working|\n|    working|\n|    working|\n|not working|\n|    working|\n|    working|\n|not working|\n|    working|\n|not working|\n|    working|\n+-----------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d58"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563431522717_-319259699",
+      "id": "20190718-163202_1344760720",
+      "dateCreated": "2019-07-18 16:32:02.717",
+      "dateStarted": "2019-07-18 16:34:06.569",
+      "dateFinished": "2019-07-18 16:34:06.923",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "",
+      "user": "deepak",
+      "dateUpdated": "2019-07-24 14:35:25.251",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1563942840663_238593914",
+      "id": "20190724-143400_868331750",
+      "dateCreated": "2019-07-24 14:34:00.663",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val primaryNeeds1 \u003d (primary1.reduce(_ + _) / 60).as(\"p\")",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 17:12:07.338",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "primaryNeeds1: org.apache.spark.sql.Column \u003d (((((((((((((((((((((((((((((((((((((((((((((((((((((((t010101 + t010102) + t010199) + t010201) + t010299) + t010301) + t010399) + t010401) + t010499) + t010501) + t010599) + t019999) + t030101) + t030102) + t030103) + t030104) + t030105) + t030108) + t030109) + t030110) + t030111) + t030112) + t030186) + t030199) + t030201) + t030202) + t030203) + t030204) + t030299) + t030301) + t030302) + t030303) + t030399) + t030401) + t030402) + t030403) + t030404) + t030405) + t030499) + t030501) + t030502) + t030503) + t030504) + t030599) + t039999) + t110101) + t110199) + t110281) + t110289) + t119999) + t180101) + t180199) + t180381) + t180382) + t180399) / 60) AS `p`\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563432871222_-1012327861",
+      "id": "20190718-165431_121021100",
+      "dateCreated": "2019-07-18 16:54:31.222",
+      "dateStarted": "2019-07-18 17:12:07.354",
+      "dateFinished": "2019-07-18 17:12:07.546",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "initDF.select(primaryNeeds1).show",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 17:12:37.735",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+------------------+\n|                 p|\n+------------------+\n|             15.25|\n|13.833333333333334|\n|11.916666666666666|\n|13.083333333333334|\n|11.783333333333333|\n|              17.0|\n|12.783333333333333|\n|               9.0|\n|13.166666666666666|\n| 6.683333333333334|\n| 9.833333333333334|\n|12.416666666666666|\n|11.633333333333333|\n|              14.0|\n|             12.15|\n|             13.75|\n|             11.25|\n|11.166666666666666|\n|12.666666666666666|\n|11.416666666666666|\n+------------------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d59"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563433937690_1738576743",
+      "id": "20190718-171217_1891913182",
+      "dateCreated": "2019-07-18 17:12:17.690",
+      "dateStarted": "2019-07-18 17:12:37.752",
+      "dateFinished": "2019-07-18 17:12:38.290",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "/** @return a projection of the initial DataFrame such that all columns containing hours spent on primary needs\n    *         are summed together in a single column (and same for work and leisure). The “teage” column is also\n    *         projected to three values: \"young\", \"active\", \"elder\".\n    *\n    * @param primaryNeedsColumns List of columns containing time spent on “primary needs”\n    * @param workColumns List of columns containing time spent working\n    * @param otherColumns List of columns containing time spent doing other activities\n    * @param df DataFrame whose schema matches the given column lists\n    *\n    * This methods builds an intermediate DataFrame that sums up all the columns of each group of activity into\n    * a single column.\n    *\n    * The resulting DataFrame should have the following columns:\n    * - working: value computed from the “telfs” column of the given DataFrame:\n    *   - \"working\" if 1 \u003c\u003d telfs \u003c 3\n    *   - \"not working\" otherwise\n    * - sex: value computed from the “tesex” column of the given DataFrame:\n    *   - \"male\" if tesex \u003d 1, \"female\" otherwise\n    * - age: value computed from the “teage” column of the given DataFrame:\n    *   - \"young\" if 15 \u003c\u003d teage \u003c\u003d 22,\n    *   - \"active\" if 23 \u003c\u003d teage \u003c\u003d 55,\n    *   - \"elder\" otherwise\n    * - primaryNeeds: sum of all the `primaryNeedsColumns`, in hours\n    * - work: sum of all the `workColumns`, in hours\n    * - other: sum of all the `otherColumns`, in hours\n    *\n    * Finally, the resulting DataFrame should exclude people that are not employable (ie telfs \u003d 5).\n    *\n    * Note that the initial DataFrame contains time in \u0027\u0027minutes\u0027\u0027. You have to convert it into \u0027\u0027hours\u0027\u0027.\n    */\n    \ndef timeUsageSummary(\n    primaryNeedsColumns: List[Column],\n    workColumns: List[Column],\n    otherColumns: List[Column],\n    df: DataFrame\n  ): DataFrame \u003d {\n    // Transform the data from the initial dataset into data that make\n    // more sense for our use case\n    // Hint: you can use the `when` and `otherwise` Spark functions\n    // Hint: don’t forget to give your columns the expected name with the `as` method\n    val workingStatusProjection: Column \u003d when(col(\"telfs\").between(1, 2), \"working\")\n                                          .otherwise(\"not working\")\n                                          .as(\"working\")\n    val sexProjection: Column \u003d when($\"tesex\" \u003d\u003d\u003d 1, \"male\")\n                                .otherwise(\"female\")\n                                .as(\"sex\")\n    val ageProjection: Column \u003d when(col(\"teage\").between(15, 22), \"young\")\n                                .when(col(\"teage\").between(23, 55), \"active\")\n                                .otherwise(\"elder\")\n                                .as(\"age\")\n\n    // Create columns that sum columns of the initial dataset\n    // Hint: you want to create a complex column expression that sums other columns\n    //       by using the `+` operator between them\n    // Hint: don’t forget to convert the value to hours\n    val primaryNeedsProjection: Column \u003d (primaryNeedsColumns.reduce(_ + _) / 60).as(\"primaryNeeds\")\n    val workProjection: Column \u003d (workColumns.reduce(_ + _) / 60).as(\"work\")\n    val otherProjection: Column \u003d (otherColumns.reduce(_ + _) / 60).as(\"other\")\n    \n    df\n      .select(workingStatusProjection, sexProjection, ageProjection, primaryNeedsProjection, workProjection, otherProjection)\n      .where($\"telfs\" \u003c\u003d 4) // Discard people who are not in labor force\n  }",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 13:48:58.393",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "timeUsageSummary: (primaryNeedsColumns: List[org.apache.spark.sql.Column], workColumns: List[org.apache.spark.sql.Column], otherColumns: List[org.apache.spark.sql.Column], df: org.apache.spark.sql.DataFrame)org.apache.spark.sql.DataFrame\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563261065283_-1291122366",
+      "id": "20190716-171105_869901738",
+      "dateCreated": "2019-07-16 17:11:05.283",
+      "dateStarted": "2019-08-28 13:48:58.423",
+      "dateFinished": "2019-08-28 13:48:58.954",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val (primaryNeedsColumns, workColumns, otherColumns) \u003d classifiedColumns(columns)\nval summaryDF \u003d timeUsageSummary(primaryNeedsColumns, workColumns, otherColumns, initDF)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 13:49:38.516",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "primaryNeedsColumns: List[org.apache.spark.sql.Column] \u003d List(t010101, t010102, t010199, t010201, t010299, t010301, t010399, t010401, t010499, t010501, t010599, t019999, t030101, t030102, t030103, t030104, t030105, t030108, t030109, t030110, t030111, t030112, t030186, t030199, t030201, t030202, t030203, t030204, t030299, t030301, t030302, t030303, t030399, t030401, t030402, t030403, t030404, t030405, t030499, t030501, t030502, t030503, t030504, t030599, t039999, t110101, t110199, t110281, t110289, t119999, t180101, t180199, t180381, t180382, t180399)\nworkColumns: List[org.apache.spark.sql.Column] \u003d List(t050101, t050102, t050103, t050189, t050201, t050202, t050203, t050204, t050289, t050301, t050302, t050303, t050304, t050389, t050403, t050404, t050405, t050481, t050499, t059999, t18050..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563493174673_84267070",
+      "id": "20190719-093934_2129684467",
+      "dateCreated": "2019-07-19 09:39:34.673",
+      "dateStarted": "2019-08-28 13:49:38.547",
+      "dateFinished": "2019-08-28 13:49:39.420",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "summaryDF.show",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 13:49:58.853",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----------+------+------+------------------+------------------+------------------+\n|    working|   sex|   age|      primaryNeeds|              work|             other|\n+-----------+------+------+------------------+------------------+------------------+\n|    working|  male| elder|             15.25|               0.0|              8.75|\n|    working|female|active|13.833333333333334|               0.0|10.166666666666666|\n|    working|female|active|11.916666666666666|               0.0|12.083333333333334|\n|not working|female|active|13.083333333333334|               2.0| 8.916666666666666|\n|    working|  male|active|11.783333333333333| 8.583333333333334|3.6333333333333333|\n|    working|female|active|              17.0|               0.0|               7.0|\n|    working|female|active|12.783333333333333| 8.566666666666666|              2.65|\n|    working|female| young|               9.0| 9.083333333333334| 5.916666666666667|\n|    working|female|active|13.166666666666666|               0.0|10.833333333333334|\n|    working|female|active| 6.683333333333334|               4.5|12.816666666666666|\n|    working|  male|active| 9.833333333333334|12.133333333333333| 2.033333333333333|\n|    working|female|active|12.416666666666666|               0.0|11.583333333333334|\n|    working|female|active|11.633333333333333| 6.333333333333333| 6.033333333333333|\n|    working|female|active|             12.15|               9.0|              2.85|\n|    working|female|active|             13.75|              0.75|               9.5|\n|    working|female|active|11.166666666666666|1.0833333333333333|             11.75|\n|    working|female| young|11.416666666666666|               0.0|12.583333333333334|\n|    working|female|active|              15.8|               0.0|               8.2|\n|    working|  male|active| 9.666666666666666|11.616666666666667| 2.716666666666667|\n|    working|female|active|              12.1| 7.966666666666667| 3.933333333333333|\n+-----------+------+------+------------------+------------------+------------------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d193"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563493254370_-745560406",
+      "id": "20190719-094054_1166034177",
+      "dateCreated": "2019-07-19 09:40:54.370",
+      "dateStarted": "2019-08-28 13:49:58.893",
+      "dateFinished": "2019-08-28 13:50:00.638",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "summaryDF.filter(\u0027sex \u003d\u003d\u003d \"male\").show",
+      "user": "deepak",
+      "dateUpdated": "2019-07-24 14:36:43.854",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------+----+------+------------------+------------------+------------------+\n|working| sex|   age|      primaryNeeds|              work|             other|\n+-------+----+------+------------------+------------------+------------------+\n|working|male| elder|             15.25|               0.0|              8.75|\n|working|male|active|11.783333333333333| 8.583333333333334|3.6333333333333333|\n|working|male|active| 9.833333333333334|12.133333333333333| 2.033333333333333|\n|working|male|active| 9.666666666666666|11.616666666666667| 2.716666666666667|\n|working|male|active| 9.833333333333334|              9.75| 4.416666666666667|\n|working|male| young|14.333333333333334|               0.0| 9.666666666666666|\n|working|male|active|              17.0|              2.75|              4.25|\n|working|male|active| 9.333333333333334| 9.916666666666666|              4.75|\n|working|male|active| 9.183333333333334| 9.083333333333334| 5.233333333333333|\n|working|male|active|              8.25|               3.0|             12.75|\n|working|male|active| 9.383333333333333| 8.666666666666666| 5.633333333333334|\n|working|male|active|10.833333333333334|               0.0|13.166666666666666|\n|working|male|active|15.833333333333334|               0.0| 8.166666666666666|\n|working|male|active|11.083333333333334|               0.0|12.916666666666666|\n|working|male|active|              13.0|               0.0|              11.0|\n|working|male|active|11.216666666666667|               0.0|12.783333333333333|\n|working|male|active|11.583333333333334| 8.416666666666666|3.1666666666666665|\n|working|male|active|              12.7|               0.0|              11.3|\n|working|male|active| 7.416666666666667|15.583333333333334|               1.0|\n|working|male|active| 6.666666666666667|13.166666666666666| 4.166666666666667|\n+-------+----+------+------------------+------------------+------------------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d149"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563942958638_-1479358473",
+      "id": "20190724-143558_1195131083",
+      "dateCreated": "2019-07-24 14:35:58.638",
+      "dateStarted": "2019-07-24 14:36:43.894",
+      "dateFinished": "2019-07-24 14:36:45.902",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import org.apache.spark.sql.functions._\nsummaryDF.groupBy($\"working\", $\"sex\", $\"age\").agg(round(avg(\"primaryNeeds\"), 1).as(\"primaryNeeds\"), round(avg(\"work\"), 1).as(\"work\"), round(avg(\"other\"), 1).as(\"other\")).orderBy($\"working\", $\"sex\", $\"age\").show",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 13:55:29.738",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----------+------+------+------------+----+-----+\n|    working|   sex|   age|primaryNeeds|work|other|\n+-----------+------+------+------------+----+-----+\n|not working|female|active|        12.4| 0.5| 10.8|\n|not working|female| elder|        10.9| 0.4| 12.4|\n|not working|female| young|        12.5| 0.2| 11.1|\n|not working|  male|active|        11.4| 0.9| 11.4|\n|not working|  male| elder|        10.7| 0.7| 12.3|\n|not working|  male| young|        11.6| 0.2| 11.9|\n|    working|female|active|        11.5| 4.2|  8.1|\n|    working|female| elder|        10.6| 3.9|  9.3|\n|    working|female| young|        11.6| 3.3|  8.9|\n|    working|  male|active|        10.8| 5.2|  7.8|\n|    working|  male| elder|        10.4| 4.8|  8.6|\n|    working|  male| young|        10.9| 3.7|  9.2|\n+-----------+------+------+------------+----+-----+\n\nimport org.apache.spark.sql.functions._\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d194"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563494666474_1891836004",
+      "id": "20190719-100426_949566841",
+      "dateCreated": "2019-07-19 10:04:26.474",
+      "dateStarted": "2019-08-28 13:55:29.775",
+      "dateFinished": "2019-08-28 13:55:35.502",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": " import org.apache.spark.sql.functions._\n  /** @return the average daily time (in hours) spent in primary needs, working or leisure, grouped by the different\n    *         ages of life (young, active or elder), sex and working status.\n    * @param summed DataFrame returned by `timeUsageSumByClass`\n    *\n    * The resulting DataFrame should have the following columns:\n    * - working: the “working” column of the `summed` DataFrame,\n    * - sex: the “sex” column of the `summed` DataFrame,\n    * - age: the “age” column of the `summed` DataFrame,\n    * - primaryNeeds: the average value of the “primaryNeeds” columns of all the people that have the same working\n    *   status, sex and age, rounded with a scale of 1 (using the `round` function),\n    * - work: the average value of the “work” columns of all the people that have the same working status, sex\n    *   and age, rounded with a scale of 1 (using the `round` function),\n    * - other: the average value of the “other” columns all the people that have the same working status, sex and\n    *   age, rounded with a scale of 1 (using the `round` function).\n    *\n    * Finally, the resulting DataFrame should be sorted by working status, sex and age.\n    */\n  def timeUsageGrouped(summed: DataFrame): DataFrame \u003d {\n    summed.groupBy($\"working\", $\"sex\", $\"age\").agg(round(avg(\"primaryNeeds\"), 1).as(\"primaryNeeds\"), round(avg(\"work\"), 1).as(\"work\"), round(avg(\"other\"), 1).as(\"other\")).orderBy($\"working\", $\"sex\", $\"age\")\n  }",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 13:56:58.789",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.sql.functions._\ntimeUsageGrouped: (summed: org.apache.spark.sql.DataFrame)org.apache.spark.sql.DataFrame\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563493299613_-626861351",
+      "id": "20190719-094139_764668454",
+      "dateCreated": "2019-07-19 09:41:39.613",
+      "dateStarted": "2019-08-28 13:56:58.827",
+      "dateFinished": "2019-08-28 13:56:59.348",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val finalDF \u003d timeUsageGrouped(summaryDF)\nfinalDF.show",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 13:58:25.500",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----------+------+------+------------+----+-----+\n|    working|   sex|   age|primaryNeeds|work|other|\n+-----------+------+------+------------+----+-----+\n|not working|female|active|        12.4| 0.5| 10.8|\n|not working|female| elder|        10.9| 0.4| 12.4|\n|not working|female| young|        12.5| 0.2| 11.1|\n|not working|  male|active|        11.4| 0.9| 11.4|\n|not working|  male| elder|        10.7| 0.7| 12.3|\n|not working|  male| young|        11.6| 0.2| 11.9|\n|    working|female|active|        11.5| 4.2|  8.1|\n|    working|female| elder|        10.6| 3.9|  9.3|\n|    working|female| young|        11.6| 3.3|  8.9|\n|    working|  male|active|        10.8| 5.2|  7.8|\n|    working|  male| elder|        10.4| 4.8|  8.6|\n|    working|  male| young|        10.9| 3.7|  9.2|\n+-----------+------+------+------------+----+-----+\n\nfinalDF: org.apache.spark.sql.DataFrame \u003d [working: string, sex: string ... 4 more fields]\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d195"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563774279940_1661296596",
+      "id": "20190722-154439_784526040",
+      "dateCreated": "2019-07-22 15:44:39.940",
+      "dateStarted": "2019-08-28 13:58:25.537",
+      "dateFinished": "2019-08-28 13:58:31.234",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "finalDF.rdd.getNumPartitions",
+      "user": "deepak",
+      "dateUpdated": "2019-07-23 16:15:53.177",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res76: Int \u003d 12\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d136"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563862538494_1031788524",
+      "id": "20190723-161538_1726625175",
+      "dateCreated": "2019-07-23 16:15:38.494",
+      "dateStarted": "2019-07-23 16:15:53.208",
+      "dateFinished": "2019-07-23 16:15:58.211",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Bucketing\n// https://jaceklaskowski.gitbooks.io/mastering-spark-sql/spark-sql-bucketing.html\n\nimport org.apache.spark.sql.SaveMode\n\nfinalDF.write\n        .bucketBy(1, \"working\")\n        .sortBy(\"working\", \"sex\", \"age\")\n        .mode(SaveMode.Overwrite)\n        .saveAsTable(\"timeusage_final_table\")",
+      "user": "deepak",
+      "dateUpdated": "2019-07-23 16:41:57.243",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.sql.SaveMode\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d143",
+            "http://10.130.22.177:4040/jobs/job?id\u003d144"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563862570808_-1386003520",
+      "id": "20190723-161610_535729908",
+      "dateCreated": "2019-07-23 16:16:10.808",
+      "dateStarted": "2019-07-23 16:41:57.270",
+      "dateFinished": "2019-07-23 16:42:02.757",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// List the tables\n\nspark.catalog.listTables.show",
+      "user": "deepak",
+      "dateUpdated": "2019-07-23 16:35:46.053",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+--------------------+--------+-----------+---------+-----------+\n|                name|database|description|tableType|isTemporary|\n+--------------------+--------+-----------+---------+-----------+\n|timeusage_final_t...| default|       null|  MANAGED|      false|\n+--------------------+--------+-----------+---------+-----------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563863712683_1931111622",
+      "id": "20190723-163512_1329483582",
+      "dateCreated": "2019-07-23 16:35:12.683",
+      "dateStarted": "2019-07-23 16:35:22.210",
+      "dateFinished": "2019-07-23 16:35:22.553",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "spark.sql(\"select * from timeusage_final_table\").show",
+      "user": "deepak",
+      "dateUpdated": "2019-07-23 16:42:07.937",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----------+------+------+------------+----+-----+\n|    working|   sex|   age|primaryNeeds|work|other|\n+-----------+------+------+------------+----+-----+\n|    working|  male| young|        10.9| 3.7|  9.2|\n|    working|female| young|        11.6| 3.3|  8.9|\n|    working|female| elder|        10.6| 3.9|  9.3|\n|    working|female|active|        11.5| 4.2|  8.1|\n|not working|female|active|        12.4| 0.5| 10.8|\n|not working|  male| elder|        10.7| 0.7| 12.3|\n|not working|female| elder|        10.9| 0.4| 12.4|\n|not working|  male|active|        11.4| 0.9| 11.4|\n|not working|  male| young|        11.6| 0.2| 11.9|\n|    working|  male| elder|        10.4| 4.8|  8.6|\n|    working|  male|active|        10.8| 5.2|  7.8|\n|not working|female| young|        12.5| 0.2| 11.1|\n+-----------+------+------+------------+----+-----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d145"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563863896134_1200958639",
+      "id": "20190723-163816_1617096615",
+      "dateCreated": "2019-07-23 16:38:16.134",
+      "dateStarted": "2019-07-23 16:42:07.969",
+      "dateFinished": "2019-07-23 16:42:08.345",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val tableDF \u003d spark.table(\"timeusage_final_table\")",
+      "user": "deepak",
+      "dateUpdated": "2019-07-23 16:43:29.400",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "tableDF: org.apache.spark.sql.DataFrame \u003d [working: string, sex: string ... 4 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563864184968_-87250273",
+      "id": "20190723-164304_1295060215",
+      "dateCreated": "2019-07-23 16:43:04.968",
+      "dateStarted": "2019-07-23 16:43:29.432",
+      "dateFinished": "2019-07-23 16:43:29.741",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "tableDF.show",
+      "user": "deepak",
+      "dateUpdated": "2019-07-23 16:43:37.662",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----------+------+------+------------+----+-----+\n|    working|   sex|   age|primaryNeeds|work|other|\n+-----------+------+------+------------+----+-----+\n|    working|  male| young|        10.9| 3.7|  9.2|\n|    working|female| young|        11.6| 3.3|  8.9|\n|    working|female| elder|        10.6| 3.9|  9.3|\n|    working|female|active|        11.5| 4.2|  8.1|\n|not working|female|active|        12.4| 0.5| 10.8|\n|not working|  male| elder|        10.7| 0.7| 12.3|\n|not working|female| elder|        10.9| 0.4| 12.4|\n|not working|  male|active|        11.4| 0.9| 11.4|\n|not working|  male| young|        11.6| 0.2| 11.9|\n|    working|  male| elder|        10.4| 4.8|  8.6|\n|    working|  male|active|        10.8| 5.2|  7.8|\n|not working|female| young|        12.5| 0.2| 11.1|\n+-----------+------+------+------------+----+-----+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d146"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563864211963_259034082",
+      "id": "20190723-164331_2098917300",
+      "dateCreated": "2019-07-23 16:43:31.963",
+      "dateStarted": "2019-07-23 16:43:37.696",
+      "dateFinished": "2019-07-23 16:43:38.078",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "tableDF.rdd.getNumPartitions",
+      "user": "deepak",
+      "dateUpdated": "2019-07-23 16:43:54.879",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res89: Int \u003d 1\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563864221769_-1501864921",
+      "id": "20190723-164341_1792112550",
+      "dateCreated": "2019-07-23 16:43:41.769",
+      "dateStarted": "2019-07-23 16:43:54.917",
+      "dateFinished": "2019-07-23 16:43:55.275",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "tableDF.count",
+      "user": "deepak",
+      "dateUpdated": "2019-07-23 16:45:05.474",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res90: Long \u003d 12\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d147"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563864297696_-327593552",
+      "id": "20190723-164457_342446561",
+      "dateCreated": "2019-07-23 16:44:57.696",
+      "dateStarted": "2019-07-23 16:45:05.505",
+      "dateFinished": "2019-07-23 16:45:05.946",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "/**\n  * Models a row of the summarized data set\n  * @param working Working status (either \"working\" or \"not working\")\n  * @param sex Sex (either \"male\" or \"female\")\n  * @param age Age (either \"young\", \"active\" or \"elder\")\n  * @param primaryNeeds Number of daily hours spent on primary needs\n  * @param work Number of daily hours spent on work\n  * @param other Number of daily hours spent on other activities\n  */\ncase class TimeUsageRow(\n  working: String,\n  sex: String,\n  age: String,   \n  primaryNeeds: Double,\n  work: Double,    \n  other: Double\n)",
+      "user": "deepak",
+      "dateUpdated": "2019-07-22 16:20:27.244",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "defined class TimeUsageRow\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563775038152_-1982810774",
+      "id": "20190722-155718_1492661357",
+      "dateCreated": "2019-07-22 15:57:18.152",
+      "dateStarted": "2019-07-22 16:20:27.271",
+      "dateFinished": "2019-07-22 16:20:27.423",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "summaryDF.printSchema",
+      "user": "deepak",
+      "dateUpdated": "2019-07-22 16:22:42.710",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- working: string (nullable \u003d false)\n |-- sex: string (nullable \u003d false)\n |-- age: string (nullable \u003d false)\n |-- primaryNeeds: double (nullable \u003d true)\n |-- work: double (nullable \u003d true)\n |-- other: double (nullable \u003d true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563776555794_-1138667843",
+      "id": "20190722-162235_2030701113",
+      "dateCreated": "2019-07-22 16:22:35.795",
+      "dateStarted": "2019-07-22 16:22:42.738",
+      "dateFinished": "2019-07-22 16:22:43.059",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val summaryDS \u003d summaryDF.as[TimeUsageRow]",
+      "user": "deepak",
+      "dateUpdated": "2019-07-22 16:23:37.071",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "summaryDS: org.apache.spark.sql.Dataset[TimeUsageRow] \u003d [working: string, sex: string ... 4 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563776568676_-1721560057",
+      "id": "20190722-162248_1436624414",
+      "dateCreated": "2019-07-22 16:22:48.676",
+      "dateStarted": "2019-07-22 16:23:37.097",
+      "dateFinished": "2019-07-22 16:23:37.674",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "summaryDS.show",
+      "user": "deepak",
+      "dateUpdated": "2019-07-22 16:23:50.404",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----------+------+------+------------------+------------------+------------------+\n|    working|   sex|   age|      primaryNeeds|              work|             other|\n+-----------+------+------+------------------+------------------+------------------+\n|    working|  male| elder|             15.25|               0.0|              8.75|\n|    working|female|active|13.833333333333334|               0.0|10.166666666666666|\n|    working|female|active|11.916666666666666|               0.0|12.083333333333334|\n|not working|female|active|13.083333333333334|               2.0| 8.916666666666666|\n|    working|  male|active|11.783333333333333| 8.583333333333334|3.6333333333333333|\n|    working|female|active|              17.0|               0.0|               7.0|\n|    working|female|active|12.783333333333333| 8.566666666666666|              2.65|\n|    working|female| young|               9.0| 9.083333333333334| 5.916666666666667|\n|    working|female|active|13.166666666666666|               0.0|10.833333333333334|\n|    working|female|active| 6.683333333333334|               4.5|12.816666666666666|\n|    working|  male|active| 9.833333333333334|12.133333333333333| 2.033333333333333|\n|    working|female|active|12.416666666666666|               0.0|11.583333333333334|\n|    working|female|active|11.633333333333333| 6.333333333333333| 6.033333333333333|\n|    working|female|active|             12.15|               9.0|              2.85|\n|    working|female|active|             13.75|              0.75|               9.5|\n|    working|female|active|11.166666666666666|1.0833333333333333|             11.75|\n|    working|female| young|11.416666666666666|               0.0|12.583333333333334|\n|    working|female|active|              15.8|               0.0|               8.2|\n|    working|  male|active| 9.666666666666666|11.616666666666667| 2.716666666666667|\n|    working|female|active|              12.1| 7.966666666666667| 3.933333333333333|\n+-----------+------+------+------------------+------------------+------------------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d116"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563776622528_-716162296",
+      "id": "20190722-162342_670227078",
+      "dateCreated": "2019-07-22 16:23:42.528",
+      "dateStarted": "2019-07-22 16:23:50.432",
+      "dateFinished": "2019-07-22 16:23:51.863",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import org.apache.spark.sql.expressions.scalalang.typed\n\nsummaryDS.groupByKey(s \u003d\u003e (s.working, s.sex, s.age))\n         .agg(typed.avg(_.primaryNeeds), typed.avg(_.work), typed.avg(_.other))\n         .toDF(\"key\", \"primaryNeeds\", \"work\", \"other\")\n         .select($\"key\", round($\"primaryNeeds\", 1).as(\"primaryNeeds\"), round($\"work\", 1).as(\"work\"), round($\"other\", 1).as(\"other\"))\n         .orderBy($\"key\")\n         .show",
+      "user": "deepak",
+      "dateUpdated": "2019-07-22 17:14:38.449",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+--------------------+------------+----+-----+\n|                 key|primaryNeeds|work|other|\n+--------------------+------------+----+-----+\n|[not working, fem...|        12.4| 0.5| 10.8|\n|[not working, fem...|        10.9| 0.4| 12.4|\n|[not working, fem...|        12.5| 0.2| 11.1|\n|[not working, mal...|        11.4| 0.9| 11.4|\n|[not working, mal...|        10.7| 0.7| 12.3|\n|[not working, mal...|        11.6| 0.2| 11.9|\n|[working, female,...|        11.5| 4.2|  8.1|\n|[working, female,...|        10.6| 3.9|  9.3|\n|[working, female,...|        11.6| 3.3|  8.9|\n|[working, male, a...|        10.8| 5.2|  7.8|\n|[working, male, e...|        10.4| 4.8|  8.6|\n|[working, male, y...|        10.9| 3.7|  9.2|\n+--------------------+------------+----+-----+\n\nimport org.apache.spark.sql.expressions.scalalang.typed\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d135"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563776891047_-1246680069",
+      "id": "20190722-162811_2028033221",
+      "dateCreated": "2019-07-22 16:28:11.047",
+      "dateStarted": "2019-07-22 17:14:38.478",
+      "dateFinished": "2019-07-22 17:14:44.050",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "  /**\n    * @return Same as `timeUsageGrouped`, but using the typed API when possible\n    * @param summed Dataset returned by the `timeUsageSummaryTyped` method\n    *\n    * Note that, though they have the same type (`Dataset[TimeUsageRow]`), the input\n    * dataset contains one element per respondent, whereas the resulting dataset\n    * contains one element per group (whose time spent on each activity kind has\n    * been aggregated).\n    *\n    * Hint: you should use the `groupByKey` and `typed.avg` methods.\n    */\n  def timeUsageGroupedTyped(summed: Dataset[TimeUsageRow]): Dataset[TimeUsageRow] \u003d {\n    import org.apache.spark.sql.expressions.scalalang.typed\n    ???\n  }\n",
+      "user": "deepak",
+      "dateUpdated": "2019-07-22 16:21:11.207",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1563776427244_781512353",
+      "id": "20190722-162027_2005977226",
+      "dateCreated": "2019-07-22 16:20:27.244",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "coursera-spark/week-04",
+  "id": "2EGA7S9UW",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {
+    "md:shared_process": [],
+    "sh:shared_process": [],
+    "spark:shared_process": []
+  },
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}

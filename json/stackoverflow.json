@@ -1,0 +1,1078 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n\n## StackOverflow",
+      "user": "deepak",
+      "dateUpdated": "2019-07-09 09:34:18.292",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch2\u003eStackOverflow\u003c/h2\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562628795770_-1298503813",
+      "id": "20190709-093315_1616848645",
+      "dateCreated": "2019-07-09 09:33:15.770",
+      "dateStarted": "2019-07-09 09:34:18.293",
+      "dateFinished": "2019-07-09 09:34:20.373",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Input file\nz.put(\"stackoverflow\", \"/home/ubuntu/test_spark/stackoverflow/stackoverflow.csv\")",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 14:50:42.956",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1562628858287_997515363",
+      "id": "20190709-093418_148550885",
+      "dateCreated": "2019-07-09 09:34:18.287",
+      "dateStarted": "2019-08-28 14:50:43.070",
+      "dateFinished": "2019-08-28 14:50:44.476",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sh\nhead {stackoverflow}",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 14:50:46.086",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/sh"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "1,27233496,,,0,C#\n1,23698767,,,9,C#\n1,5484340,,,0,C#\n2,5494879,,5484340,1,\n1,9419744,,,2,Objective-C\n1,26875732,,,1,C#\n1,9002525,,,2,C++\n2,9003401,,9002525,4,\n2,9003942,,9002525,1,\n2,9005311,,9002525,0,\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562629003052_-14664975",
+      "id": "20190709-093643_1869694572",
+      "dateCreated": "2019-07-09 09:36:43.052",
+      "dateStarted": "2019-08-28 14:50:46.107",
+      "dateFinished": "2019-08-28 14:50:46.117",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "/** A raw stackoverflow posting, either a question or an answer */\n\ntype QID \u003d Int\ntype HighScore \u003d Int\ntype LangIndex \u003d Int\n\ncase class Posting(postingType: Int, id: Int, acceptedAnswer: Option[Int], parentId: Option[QID], score: Int, tags: Option[String]) extends Serializable\n\ntype Question \u003d Posting\ntype Answer \u003d Posting",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 14:50:49.572",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "defined type alias QID\ndefined type alias HighScore\ndefined type alias LangIndex\ndefined class Posting\ndefined type alias Question\ndefined type alias Answer\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562629043781_1717318858",
+      "id": "20190709-093723_199040431",
+      "dateCreated": "2019-07-09 09:37:23.781",
+      "dateStarted": "2019-08-28 14:50:49.594",
+      "dateFinished": "2019-08-28 14:50:49.675",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Start reading and transforming csv file\n\nval lines \u003d sc.textFile(z.get(\"stackoverflow\").toString)\n\nlines.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 14:50:53.070",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "lines: org.apache.spark.rdd.RDD[String] \u003d /home/ubuntu/test_spark/stackoverflow/stackoverflow.csv MapPartitionsRDD[697] at textFile at \u003cconsole\u003e:169\nres159: Array[String] \u003d Array(1,27233496,,,0,C#, 1,23698767,,,9,C#, 1,5484340,,,0,C#, 2,5494879,,5484340,1,, 1,9419744,,,2,Objective-C)\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d197"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562629096703_883531415",
+      "id": "20190709-093816_1260055063",
+      "dateCreated": "2019-07-09 09:38:16.703",
+      "dateStarted": "2019-08-28 14:50:53.087",
+      "dateFinished": "2019-08-28 14:50:54.377",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "/** Load postings from the given file */\n\n/**\n * \u003cpostTypeId\u003e,\u003cid\u003e,[\u003cacceptedAnswer\u003e],[\u003cparentId\u003e],\u003cscore\u003e,[\u003ctag\u003e]\n *\n * A short explanation of the comma-separated fields follows.\n * \u003cpostTypeId\u003e:     Type of the post. Type 1 \u003d question, type 2 \u003d answer.\n * \u003cid\u003e:             Unique id of the post (regardless of type).\n * \u003cacceptedAnswer\u003e: Id of the accepted answer post. This information is optional, so maybe be missingindicated by an empty string.\n * \u003cparentId\u003e:       For an answer: id of the corresponding question. For a question:missing, indicated by an empty string.\n * \u003cscore\u003e:          The StackOverflow score (based on user votes).\n * \u003ctag\u003e:            The tag indicates the programming language that the post is about, in case it\u0027s a question, or missing in case it\u0027s an answer.\n**/\n\n\nimport org.apache.spark.rdd.RDD\n\ndef rawPostings(lines: RDD[String]): RDD[Posting] \u003d {\n    lines.map(line \u003d\u003e {\n        val elems \u003d line.split(\",\")\n        Posting(postingType \u003d elems(0).toInt,\n                id \u003d elems(1).toInt,\n                acceptedAnswer \u003d if (elems(2) \u003d\u003d \"\") None else Some(elems(2).toInt),\n                parentId \u003d if (elems(3) \u003d\u003d \"\") None else Some(elems(3).toInt),\n                score \u003d elems(4).toInt,\n                tags \u003d if (elems.length \u003e\u003d 6) Some(elems(5).intern()) else None)\n    })\n}",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 14:50:57.189",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.rdd.RDD\nrawPostings: (lines: org.apache.spark.rdd.RDD[String])org.apache.spark.rdd.RDD[Posting]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562629428003_-1207491567",
+      "id": "20190709-094348_2141405061",
+      "dateCreated": "2019-07-09 09:43:48.003",
+      "dateStarted": "2019-08-28 14:50:57.211",
+      "dateFinished": "2019-08-28 14:50:57.827",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val raw \u003d rawPostings(lines)\nraw.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 14:51:00.959",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "raw: org.apache.spark.rdd.RDD[Posting] \u003d MapPartitionsRDD[698] at map at \u003cconsole\u003e:185\nres160: Array[Posting] \u003d Array(Posting(1,27233496,None,None,0,Some(C#)), Posting(1,23698767,None,None,9,Some(C#)), Posting(1,5484340,None,None,0,Some(C#)), Posting(2,5494879,None,Some(5484340),1,None), Posting(1,9419744,None,None,2,Some(Objective-C)))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d198"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562629892451_1967565085",
+      "id": "20190709-095132_810216671",
+      "dateCreated": "2019-07-09 09:51:32.451",
+      "dateStarted": "2019-08-28 14:51:00.980",
+      "dateFinished": "2019-08-28 14:51:01.562",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import org.apache.spark.HashPartitioner\nval q \u003d raw\n        .filter(_.postingType \u003d\u003d 1)\n        .map(question \u003d\u003e (question.id, question))\n        .partitionBy(new HashPartitioner(100))\nq.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 14:51:04.676",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.HashPartitioner\nq: org.apache.spark.rdd.RDD[(Int, Posting)] \u003d ShuffledRDD[701] at partitionBy at \u003cconsole\u003e:170\nres161: Array[(Int, Posting)] \u003d Array((3406000,Posting(1,3406000,None,None,0,Some(C#))), (17520100,Posting(1,17520100,None,None,1,Some(JavaScript))), (23620700,Posting(1,23620700,None,None,0,Some(PHP))), (4026400,Posting(1,4026400,None,None,1,Some(PHP))), (17933700,Posting(1,17933700,None,None,3,Some(Ruby))))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d199"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562649514670_-1008706052",
+      "id": "20190709-151834_2084838334",
+      "dateCreated": "2019-07-09 15:18:34.671",
+      "dateStarted": "2019-08-28 14:51:04.693",
+      "dateFinished": "2019-08-28 14:51:09.230",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "q.partitions.length",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 14:51:11.736",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res162: Int \u003d 100\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562652186693_795758163",
+      "id": "20190709-160306_1164861164",
+      "dateCreated": "2019-07-09 16:03:06.693",
+      "dateStarted": "2019-08-28 14:51:11.751",
+      "dateFinished": "2019-08-28 14:51:12.241",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// ** repartition is not an action **\n\nval q1 \u003d q.repartition(10)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 14:52:33.791",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "q1: org.apache.spark.rdd.RDD[(Int, Posting)] \u003d MapPartitionsRDD[705] at repartition at \u003cconsole\u003e:165\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1566967875542_1617647947",
+      "id": "20190828-145115_1537223706",
+      "dateCreated": "2019-08-28 14:51:15.542",
+      "dateStarted": "2019-08-28 14:51:40.995",
+      "dateFinished": "2019-08-28 14:51:41.548",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val answers \u003d raw\n              .filter(_.postingType \u003d\u003d 2)\n              .map(answer \u003d\u003e (answer.parentId.get, answer))\n              .partitionBy(new HashPartitioner(100))\nanswers.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 11:36:36.054",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "answers: org.apache.spark.rdd.RDD[(QID, Posting)] \u003d ShuffledRDD[644] at partitionBy at \u003cconsole\u003e:154\nres142: Array[(QID, Posting)] \u003d Array((3406000,Posting(2,3406081,None,Some(3406000),0,None)), (3406000,Posting(2,3408739,None,Some(3406000),0,None)), (17933700,Posting(2,17935422,None,Some(17933700),5,None)), (16124200,Posting(2,16125106,None,Some(16124200),1,None)), (3302600,Posting(2,3302670,None,Some(3302600),1,None)))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d181"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562651741104_223156944",
+      "id": "20190709-155541_1694516132",
+      "dateCreated": "2019-07-09 15:55:41.104",
+      "dateStarted": "2019-08-28 11:36:36.070",
+      "dateFinished": "2019-08-28 11:36:39.680",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "answers.partitions.length",
+      "user": "deepak",
+      "dateUpdated": "2019-07-10 09:47:21.220",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res84: Int \u003d 100\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562652206174_-1091306697",
+      "id": "20190709-160326_1360547313",
+      "dateCreated": "2019-07-09 16:03:26.174",
+      "dateStarted": "2019-07-10 09:47:21.232",
+      "dateFinished": "2019-07-10 09:47:21.402",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val joined \u003d q.join(answers)\njoined.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 11:36:43.850",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "joined: org.apache.spark.rdd.RDD[(Int, (Posting, Posting))] \u003d MapPartitionsRDD[647] at join at \u003cconsole\u003e:153\nres143: Array[(Int, (Posting, Posting))] \u003d Array((7885200,(Posting(1,7885200,None,None,0,Some(JavaScript)),Posting(2,7885231,None,Some(7885200),2,None))), (637100,(Posting(1,637100,None,None,8,Some(Java)),Posting(2,637468,None,Some(637100),8,None))), (637100,(Posting(1,637100,None,None,8,Some(Java)),Posting(2,637656,None,Some(637100),0,None))), (637100,(Posting(1,637100,None,None,8,Some(Java)),Posting(2,638396,None,Some(637100),0,None))), (637100,(Posting(1,637100,None,None,8,Some(Java)),Posting(2,641458,None,Some(637100),0,None))))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d182"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562651892900_-1907350640",
+      "id": "20190709-155812_95193677",
+      "dateCreated": "2019-07-09 15:58:12.900",
+      "dateStarted": "2019-08-28 11:36:43.866",
+      "dateFinished": "2019-08-28 11:36:44.675",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val groupedPostings \u003d joined.groupByKey()\ngroupedPostings.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 11:36:48.091",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "groupedPostings: org.apache.spark.rdd.RDD[(Int, Iterable[(Posting, Posting)])] \u003d MapPartitionsRDD[648] at groupByKey at \u003cconsole\u003e:151\nres144: Array[(Int, Iterable[(Posting, Posting)])] \u003d Array((7885200,CompactBuffer((Posting(1,7885200,None,None,0,Some(JavaScript)),Posting(2,7885231,None,Some(7885200),2,None)))), (20746400,CompactBuffer((Posting(1,20746400,None,None,1,Some(C#)),Posting(2,20746520,None,Some(20746400),2,None)), (Posting(1,20746400,None,None,1,Some(C#)),Posting(2,20746573,None,Some(20746400),2,None)), (Posting(1,20746400,None,None,1,Some(C#)),Posting(2,20752699,None,Some(20746400),1,None)))), (637100,CompactBuffer((Posting(1,637100,None,None,8,Some(Java)),Posting(2,637468,None,Some(637100),8,None)), (Posting(1,637100,None,None,8,Some(Java)),Posting(2,637656,None,Some(637100..."
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d183"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562654143711_1632467511",
+      "id": "20190709-163543_1649222048",
+      "dateCreated": "2019-07-09 16:35:43.711",
+      "dateStarted": "2019-08-28 11:36:48.110",
+      "dateFinished": "2019-08-28 11:36:48.952",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "/** Group the questions and answers together */\n\ndef groupedPostings(postings: RDD[Posting]): RDD[(QID, Iterable[(Question, Answer)])] \u003d {\n    // Create questions rdd (id, question)\n    val questions \u003d postings\n                    .filter(_.postingType \u003d\u003d 1)\n                    .map(question \u003d\u003e (question.id, question))\n                    .partitionBy(new HashPartitioner(100))\n                    \n    // Create answers rdd (parentId, answer)\n    val answers \u003d postings\n                  .filter(_.postingType \u003d\u003d 2)\n                  .map(answer \u003d\u003e (answer.parentId.get, answer))\n                  .partitionBy(new HashPartitioner(100))\n                  \n    // 1 question will have multiple answers\n    // Join both the rdds (inner join)\n    val joined \u003d questions.join(answers)\n    \n    // Finally group the results\n    joined.groupByKey()\n}",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 11:36:51.013",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "groupedPostings: (postings: org.apache.spark.rdd.RDD[Posting])org.apache.spark.rdd.RDD[(QID, Iterable[(Question, Answer)])]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562631587464_-1300695809",
+      "id": "20190709-101947_555408515",
+      "dateCreated": "2019-07-09 10:19:47.464",
+      "dateStarted": "2019-08-28 11:36:51.028",
+      "dateFinished": "2019-08-28 11:36:51.508",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val grouped \u003d groupedPostings(raw)\ngrouped.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 11:36:54.321",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "grouped: org.apache.spark.rdd.RDD[(QID, Iterable[(Question, Answer)])] \u003d MapPartitionsRDD[658] at groupByKey at \u003cconsole\u003e:179\nres145: Array[(QID, Iterable[(Question, Answer)])] \u003d Array((7885200,CompactBuffer((Posting(1,7885200,None,None,0,Some(JavaScript)),Posting(2,7885231,None,Some(7885200),2,None)))), (20746400,CompactBuffer((Posting(1,20746400,None,None,1,Some(C#)),Posting(2,20746520,None,Some(20746400),2,None)), (Posting(1,20746400,None,None,1,Some(C#)),Posting(2,20746573,None,Some(20746400),2,None)), (Posting(1,20746400,None,None,1,Some(C#)),Posting(2,20752699,None,Some(20746400),1,None)))), (637100,CompactBuffer((Posting(1,637100,None,None,8,Some(Java)),Posting(2,637468,None,Some(637100),8,None)), (Posting(1,637100,None,None,8,Some(Java)),Posting(2,637656,None,Some(637100),0,None..."
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d184"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562654299160_693585728",
+      "id": "20190709-163819_700688541",
+      "dateCreated": "2019-07-09 16:38:19.160",
+      "dateStarted": "2019-08-28 11:36:54.337",
+      "dateFinished": "2019-08-28 11:37:01.739",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Compute score\n\n// val scored: RDD[(Question, HighScore)] \u003d ???\n\nval score \u003d grouped.map{case (qid, qu_ans) \u003d\u003e {\n    // val question \u003d qu_ans.head match {\n    //     case (q: Question, ans: Answer) \u003d\u003e q\n    // }\n    //(question, 1)\n    \n    val scores \u003d qu_ans.map{case (q, ans) \u003d\u003e ans.score}\n    \n    (qu_ans.head._1, scores, scores.max)\n}}\n\nscore.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 11:37:55.232",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "score: org.apache.spark.rdd.RDD[(Question, Iterable[Int], Int)] \u003d MapPartitionsRDD[659] at map at \u003cconsole\u003e:155\nres146: Array[(Question, Iterable[Int], Int)] \u003d Array((Posting(1,7885200,None,None,0,Some(JavaScript)),List(2),2), (Posting(1,20746400,None,None,1,Some(C#)),List(2, 2, 1),2), (Posting(1,637100,None,None,8,Some(Java)),List(8, 0, 0, 0),8), (Posting(1,15967400,None,None,4,Some(Java)),List(2, 2, 1, 1),2), (Posting(1,9422300,None,None,1,Some(Java)),List(3),3))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d185"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562654354613_942542838",
+      "id": "20190709-163914_1514538454",
+      "dateCreated": "2019-07-09 16:39:14.613",
+      "dateStarted": "2019-08-28 11:37:55.247",
+      "dateFinished": "2019-08-28 11:37:56.135",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "/** Compute the maximum score for each posting */\ndef scoredPostings(grouped: RDD[(QID, Iterable[(Question, Answer)])]): RDD[(Question, HighScore)] \u003d {\n    val score \u003d grouped.map{case(qid, qu_ans) \u003d\u003e {\n        (qu_ans.head._1, qu_ans.map{case(q, ans) \u003d\u003e ans.score}.max)\n    }}\n    score\n}",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 11:38:00.256",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "scoredPostings: (grouped: org.apache.spark.rdd.RDD[(QID, Iterable[(Question, Answer)])])org.apache.spark.rdd.RDD[(Question, HighScore)]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562722453530_390041160",
+      "id": "20190710-113413_333610590",
+      "dateCreated": "2019-07-10 11:34:13.531",
+      "dateStarted": "2019-08-28 11:38:00.271",
+      "dateFinished": "2019-08-28 11:38:00.732",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val scored \u003d scoredPostings(grouped)\nscored.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 11:38:03.836",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "scored: org.apache.spark.rdd.RDD[(Question, HighScore)] \u003d MapPartitionsRDD[660] at map at \u003cconsole\u003e:160\nres147: Array[(Question, HighScore)] \u003d Array((Posting(1,7885200,None,None,0,Some(JavaScript)),2), (Posting(1,20746400,None,None,1,Some(C#)),2), (Posting(1,637100,None,None,8,Some(Java)),8), (Posting(1,15967400,None,None,4,Some(Java)),2), (Posting(1,9422300,None,None,1,Some(Java)),3))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d186"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562717619305_-1325129490",
+      "id": "20190710-101339_124785399",
+      "dateCreated": "2019-07-10 10:13:39.305",
+      "dateStarted": "2019-08-28 11:38:03.852",
+      "dateFinished": "2019-08-28 11:38:04.681",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "/** Languages */\nval langs \u003d List(\n    \"JavaScript\", \"Java\", \"PHP\", \"Python\", \"C#\", \"C++\", \"Ruby\", \"CSS\",\n    \"Objective-C\", \"Perl\", \"Scala\", \"Haskell\", \"MATLAB\", \"Clojure\", \"Groovy\")\n\n/** Compute the vectors for the kmeans */\ndef vectorPostings(scored: RDD[(Question, HighScore)]): RDD[(LangIndex, HighScore)] \u003d {\n    val vector \u003d scored.map{case(q, highScore) \u003d\u003e {\n        val tag \u003d q.tags.getOrElse(\"\")\n        val index \u003d langs.indexOf(tag)\n        (index * 50000, highScore)\n    }}\n    vector\n}",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 11:39:44.983",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "langs: List[String] \u003d List(JavaScript, Java, PHP, Python, C#, C++, Ruby, CSS, Objective-C, Perl, Scala, Haskell, MATLAB, Clojure, Groovy)\nvectorPostings: (scored: org.apache.spark.rdd.RDD[(Question, HighScore)])org.apache.spark.rdd.RDD[(LangIndex, HighScore)]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1562722960535_-689360254",
+      "id": "20190710-114240_1155409302",
+      "dateCreated": "2019-07-10 11:42:40.535",
+      "dateStarted": "2019-08-28 11:39:44.999",
+      "dateFinished": "2019-08-28 11:39:45.509",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val vectors \u003d vectorPostings(scored)\nvectors.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 11:39:54.029",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "vectors: org.apache.spark.rdd.RDD[(LangIndex, HighScore)] \u003d MapPartitionsRDD[661] at map at \u003cconsole\u003e:164\nres148: Array[(LangIndex, HighScore)] \u003d Array((0,2), (200000,2), (50000,8), (50000,2), (50000,3))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d187"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562726691738_-1778591070",
+      "id": "20190710-124451_1393908723",
+      "dateCreated": "2019-07-10 12:44:51.738",
+      "dateStarted": "2019-08-28 11:39:54.045",
+      "dateFinished": "2019-08-28 11:39:54.909",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "assert(vectors.count() \u003d\u003d 2121822, \"Incorrect number of vectors: \" + vectors.count())",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 11:40:04.145",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d188"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562726782367_1123869096",
+      "id": "20190710-124622_78487126",
+      "dateCreated": "2019-07-10 12:46:22.367",
+      "dateStarted": "2019-08-28 11:40:04.161",
+      "dateFinished": "2019-08-28 11:40:15.667",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "vectors.count",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 14:47:53.232",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res157: Long \u003d 2121822\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d196"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1562726803308_-1745286044",
+      "id": "20190710-124643_729671016",
+      "dateCreated": "2019-07-10 12:46:43.309",
+      "dateStarted": "2019-08-28 14:47:53.252",
+      "dateFinished": "2019-08-28 14:48:05.059",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "vectors.par",
+      "user": "deepak",
+      "dateUpdated": "2019-08-28 14:50:40.821",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1562726826292_-1365628216",
+      "id": "20190710-124706_1276770140",
+      "dateCreated": "2019-07-10 12:47:06.293",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "coursera-spark/week-02",
+  "id": "2EHEBEFBJ",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {
+    "md:shared_process": [],
+    "sh:shared_process": [],
+    "spark:shared_process": []
+  },
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}

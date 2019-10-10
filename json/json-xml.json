@@ -1,0 +1,1636 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n\n## ACM generate XML from customer sales gz files",
+      "user": "deepak",
+      "dateUpdated": "2019-07-17 09:34:50.944",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch2\u003eACM generate XML from customer sales gz files\u003c/h2\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563319699957_657596593",
+      "id": "20190717-092819_2069465602",
+      "dateCreated": "2019-07-17 09:28:19.957",
+      "dateStarted": "2019-07-17 09:34:50.944",
+      "dateFinished": "2019-07-17 09:34:53.097",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "sc.version",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 10:30:46.906",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res1: String \u003d 2.4.0\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563409418034_1312679696",
+      "id": "20190718-102338_515291344",
+      "dateCreated": "2019-07-18 10:23:38.034",
+      "dateStarted": "2019-07-18 10:30:46.934",
+      "dateFinished": "2019-07-18 10:30:58.661",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "z.put(\"acm\", \"/home/ubuntu/test_spark/acm-xml/\")",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 10:34:31.676",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1563320090939_982398885",
+      "id": "20190717-093450_751093125",
+      "dateCreated": "2019-07-17 09:34:50.939",
+      "dateStarted": "2019-07-18 10:34:31.698",
+      "dateFinished": "2019-07-18 10:34:31.829",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sh\n\nls -l {acm}",
+      "user": "deepak",
+      "dateUpdated": "2019-07-17 09:35:47.166",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/sh"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "total 8\n-rw-r--r-- 1 ubuntu ubuntu 597 Jul 17 09:26 customer_sales_20190716032832_00.gz\n-rw-r--r-- 1 ubuntu ubuntu 512 Jul 17 09:26 customer_sales_20190716034903_00.gz\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563320134204_-2794519",
+      "id": "20190717-093534_521730477",
+      "dateCreated": "2019-07-17 09:35:34.204",
+      "dateStarted": "2019-07-17 09:35:47.175",
+      "dateFinished": "2019-07-17 09:35:49.345",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Read into DF\n\nval df_raw \u003d spark.read.format(\"json\").load(z.get(\"acm\").toString)",
+      "user": "deepak",
+      "dateUpdated": "2019-07-17 09:46:54.324",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "df_raw: org.apache.spark.sql.DataFrame \u003d [address: string, barcode: string ... 27 more fields]\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d85"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563320147167_-691242491",
+      "id": "20190717-093547_1852024262",
+      "dateCreated": "2019-07-17 09:35:47.167",
+      "dateStarted": "2019-07-17 09:46:54.330",
+      "dateFinished": "2019-07-17 09:46:55.201",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "df_raw.printSchema",
+      "user": "deepak",
+      "dateUpdated": "2019-07-17 09:47:15.343",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- address: string (nullable \u003d true)\n |-- barcode: string (nullable \u003d true)\n |-- canContact: long (nullable \u003d true)\n |-- channelCode: string (nullable \u003d true)\n |-- city: string (nullable \u003d true)\n |-- country: string (nullable \u003d true)\n |-- customerId: long (nullable \u003d true)\n |-- emailAddress: string (nullable \u003d true)\n |-- faceValueFees: long (nullable \u003d true)\n |-- firstName: string (nullable \u003d true)\n |-- lastName: string (nullable \u003d true)\n |-- orderId: string (nullable \u003d true)\n |-- orderlineId: string (nullable \u003d true)\n |-- phoneNumber: string (nullable \u003d true)\n |-- postcode: string (nullable \u003d true)\n |-- price: long (nullable \u003d true)\n |-- priceNet: long (nullable \u003d true)\n |-- priceTypeName: string (nullable \u003d true)\n |-- productId: string (nullable \u003d true)\n |-- productWhen: string (nullable \u003d true)\n |-- productWhere: string (nullable \u003d true)\n |-- productWho: string (nullable \u003d true)\n |-- quantity: long (nullable \u003d true)\n |-- row: string (nullable \u003d true)\n |-- salutation: string (nullable \u003d true)\n |-- seat: string (nullable \u003d true)\n |-- section: string (nullable \u003d true)\n |-- state: string (nullable \u003d true)\n |-- transactionDateTime: string (nullable \u003d true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563320802836_835776512",
+      "id": "20190717-094642_1075180155",
+      "dateCreated": "2019-07-17 09:46:42.836",
+      "dateStarted": "2019-07-17 09:47:15.349",
+      "dateFinished": "2019-07-17 09:47:15.517",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "df_raw.show()",
+      "user": "deepak",
+      "dateUpdated": "2019-07-17 09:47:42.023",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------+--------------------+----------+-----------+---------+---------+----------+--------------------+-------------+---------+--------+--------------+----------------+-----------+--------+-----+--------+--------------------+-------------+--------------------+------------+---------------+--------+---+----------+----+---------+-----+--------------------+\n|            address|             barcode|canContact|channelCode|     city|  country|customerId|        emailAddress|faceValueFees|firstName|lastName|       orderId|     orderlineId|phoneNumber|postcode|price|priceNet|       priceTypeName|    productId|         productWhen|productWhere|     productWho|quantity|row|salutation|seat|  section|state| transactionDateTime|\n+-------------------+--------------------+----------+-----------+---------+---------+----------+--------------------+-------------+---------+--------+--------------+----------------+-----------+--------+-----+--------+--------------------+-------------+--------------------+------------+---------------+--------+---+----------+----+---------+-----+--------------------+\n|170 Charles Street |93cd75aad9623ef24...|         0|          M|   Seddon|Australia|  14589260|olivia.goodman@me...|          420|   OLIVIA| GOODMAN|20190716,19657|20190716,19657,1| 0403339261|    3011| 4570|    4570|Adult - My Ticket...|  EVAM2019950|Sat 30 Nov 2019 7...|   Playhouse|HUMANS BY CIRCA|       1|  A|        MS|  20|SSTALLS-2|  VIC|2019-07-16T03:27:59Z|\n|170 Charles Street |653ab073d4005721f...|         0|          M|   Seddon|Australia|  14589260|olivia.goodman@me...|          420|   OLIVIA| GOODMAN|20190716,19657|20190716,19657,1| 0403339261|    3011| 4570|    4570|Adult - My Ticket...|  EVAM2019950|Sat 30 Nov 2019 7...|   Playhouse|HUMANS BY CIRCA|       1|  A|        MS|  21|SSTALLS-2|  VIC|2019-07-16T03:27:59Z|\n|170 Charles Street |0841c8fce610978e3...|         0|          M|   Seddon|Australia|  14589260|olivia.goodman@me...|          400|   OLIVIA| GOODMAN|20190716,19657|20190716,19657,1| 0403339261|    3011| 3570|    3570|Junior (3 to 16 y...|  EVAM2019950|Sat 30 Nov 2019 7...|   Playhouse|HUMANS BY CIRCA|       1|  A|        MS|  22|SSTALLS-2|  VIC|2019-07-16T03:27:59Z|\n|  20 Cusdin Street |21b528c39a9526965...|         0|          W|Glen Iris|Australia|   9007250|rodw@actionalumin...|          510|      Rod|  Walker|20190716,20663|20190716,20663,1| 0439660998|    3146| 9720|    9720|               Admit|EVAM2019912DC|Thu 24 Oct 2019 8...|  Hamer Hall| DAVID CAMPBELL|       1|  P|        Mr|  28|  SSTALLS|  VIC|2019-07-16T03:48:45Z|\n|  20 Cusdin Street |c7e40b36bfebbb4e4...|         0|          W|Glen Iris|Australia|   9007250|rodw@actionalumin...|          510|      Rod|  Walker|20190716,20663|20190716,20663,1| 0439660998|    3146| 9720|    9720|               Admit|EVAM2019912DC|Thu 24 Oct 2019 8...|  Hamer Hall| DAVID CAMPBELL|       1|  P|        Mr|  29|  SSTALLS|  VIC|2019-07-16T03:48:45Z|\n+-------------------+--------------------+----------+-----------+---------+---------+----------+--------------------+-------------+---------+--------+--------------+----------------+-----------+--------+-----+--------+--------------------+-------------+--------------------+------------+---------------+--------+---+----------+----+---------+-----+--------------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d86",
+            "http://10.130.22.177:4040/jobs/job?id\u003d87"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563320835343_-556038259",
+      "id": "20190717-094715_1508771656",
+      "dateCreated": "2019-07-17 09:47:15.343",
+      "dateStarted": "2019-07-17 09:47:42.030",
+      "dateFinished": "2019-07-17 09:47:42.318",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "df_raw.take(2)",
+      "user": "deepak",
+      "dateUpdated": "2019-07-17 10:18:19.759",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res56: Array[org.apache.spark.sql.Row] \u003d Array([170 Charles Street ,93cd75aad9623ef242f808665d2f2be0a8d912c4,0,M,Seddon,Australia,14589260,olivia.goodman@me.com,420,OLIVIA,GOODMAN,20190716,19657,20190716,19657,1,0403339261,3011,4570,4570,Adult - My Ticketek Presale,EVAM2019950,Sat 30 Nov 2019 7:30pm,Playhouse,HUMANS BY CIRCA,1,A,MS,20,SSTALLS-2,VIC,2019-07-16T03:27:59Z], [170 Charles Street ,653ab073d4005721f029d29b44cc45b75a0e0d7c,0,M,Seddon,Australia,14589260,olivia.goodman@me.com,420,OLIVIA,GOODMAN,20190716,19657,20190716,19657,1,0403339261,3011,4570,4570,Adult - My Ticketek Presale,EVAM2019950,Sat 30 Nov 2019 7:30pm,Playhouse,HUMANS BY CIRCA,1,A,MS,21,SSTALLS-2,VIC,2019-07-16T03:27:59Z])\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d92"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563320862023_-121058358",
+      "id": "20190717-094742_1168200659",
+      "dateCreated": "2019-07-17 09:47:42.023",
+      "dateStarted": "2019-07-17 10:18:19.767",
+      "dateFinished": "2019-07-17 10:18:19.963",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// groupby address\n\ndf_raw.groupByKey(r \u003d\u003e r.getString(0)).keys.show()",
+      "user": "deepak",
+      "dateUpdated": "2019-07-17 10:29:05.600",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------+\n|              value|\n+-------------------+\n|170 Charles Street |\n|  20 Cusdin Street |\n+-------------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d98",
+            "http://10.130.22.177:4040/jobs/job?id\u003d99",
+            "http://10.130.22.177:4040/jobs/job?id\u003d100",
+            "http://10.130.22.177:4040/jobs/job?id\u003d101",
+            "http://10.130.22.177:4040/jobs/job?id\u003d102"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563320917505_-1092421270",
+      "id": "20190717-094837_1397738057",
+      "dateCreated": "2019-07-17 09:48:37.505",
+      "dateStarted": "2019-07-17 10:27:20.107",
+      "dateFinished": "2019-07-17 10:27:20.699",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "case class CustomerSales(address: String, barcode: String, canContact: Long, channelCode: String, city: String, country: String, customerId: Long, emailAddress: String, faceValueFees: Long, firstName: String, lastName: String, orderId: String, orderlineId: String, phoneNumber: String, postcode: String, price: Long, priceNet: Long, priceTypeName: String, productId: String, productWhen: String, productWhere: String, productWho: String, quantity: Long, row: String, salutation: String, seat: String, section: String, state: String, transactionDateTime: String)",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 10:34:41.735",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "defined class CustomerSales\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563323047875_-1630200597",
+      "id": "20190717-102407_525089783",
+      "dateCreated": "2019-07-17 10:24:07.875",
+      "dateStarted": "2019-07-18 10:34:41.758",
+      "dateFinished": "2019-07-18 10:34:42.328",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val ds \u003d spark\n             .read\n             .format(\"json\")\n             .load(z.get(\"acm\").toString)\n             .as[CustomerSales]",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 10:34:47.579",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "ds: org.apache.spark.sql.Dataset[CustomerSales] \u003d [address: string, barcode: string ... 27 more fields]\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d0"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563324362154_2094845509",
+      "id": "20190717-104602_805514850",
+      "dateCreated": "2019-07-17 10:46:02.154",
+      "dateStarted": "2019-07-18 10:34:47.602",
+      "dateFinished": "2019-07-18 10:34:52.090",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "ds.printSchema",
+      "user": "deepak",
+      "dateUpdated": "2019-07-17 10:48:13.580",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- address: string (nullable \u003d true)\n |-- barcode: string (nullable \u003d true)\n |-- canContact: long (nullable \u003d true)\n |-- channelCode: string (nullable \u003d true)\n |-- city: string (nullable \u003d true)\n |-- country: string (nullable \u003d true)\n |-- customerId: long (nullable \u003d true)\n |-- emailAddress: string (nullable \u003d true)\n |-- faceValueFees: long (nullable \u003d true)\n |-- firstName: string (nullable \u003d true)\n |-- lastName: string (nullable \u003d true)\n |-- orderId: string (nullable \u003d true)\n |-- orderlineId: string (nullable \u003d true)\n |-- phoneNumber: string (nullable \u003d true)\n |-- postcode: string (nullable \u003d true)\n |-- price: long (nullable \u003d true)\n |-- priceNet: long (nullable \u003d true)\n |-- priceTypeName: string (nullable \u003d true)\n |-- productId: string (nullable \u003d true)\n |-- productWhen: string (nullable \u003d true)\n |-- productWhere: string (nullable \u003d true)\n |-- productWho: string (nullable \u003d true)\n |-- quantity: long (nullable \u003d true)\n |-- row: string (nullable \u003d true)\n |-- salutation: string (nullable \u003d true)\n |-- seat: string (nullable \u003d true)\n |-- section: string (nullable \u003d true)\n |-- state: string (nullable \u003d true)\n |-- transactionDateTime: string (nullable \u003d true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563324482155_-539179886",
+      "id": "20190717-104802_457138084",
+      "dateCreated": "2019-07-17 10:48:02.155",
+      "dateStarted": "2019-07-17 10:48:13.590",
+      "dateFinished": "2019-07-17 10:48:13.779",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "ds.show()",
+      "user": "deepak",
+      "dateUpdated": "2019-07-17 10:48:23.757",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------+--------------------+----------+-----------+---------+---------+----------+--------------------+-------------+---------+--------+--------------+----------------+-----------+--------+-----+--------+--------------------+-------------+--------------------+------------+---------------+--------+---+----------+----+---------+-----+--------------------+\n|            address|             barcode|canContact|channelCode|     city|  country|customerId|        emailAddress|faceValueFees|firstName|lastName|       orderId|     orderlineId|phoneNumber|postcode|price|priceNet|       priceTypeName|    productId|         productWhen|productWhere|     productWho|quantity|row|salutation|seat|  section|state| transactionDateTime|\n+-------------------+--------------------+----------+-----------+---------+---------+----------+--------------------+-------------+---------+--------+--------------+----------------+-----------+--------+-----+--------+--------------------+-------------+--------------------+------------+---------------+--------+---+----------+----+---------+-----+--------------------+\n|170 Charles Street |93cd75aad9623ef24...|         0|          M|   Seddon|Australia|  14589260|olivia.goodman@me...|          420|   OLIVIA| GOODMAN|20190716,19657|20190716,19657,1| 0403339261|    3011| 4570|    4570|Adult - My Ticket...|  EVAM2019950|Sat 30 Nov 2019 7...|   Playhouse|HUMANS BY CIRCA|       1|  A|        MS|  20|SSTALLS-2|  VIC|2019-07-16T03:27:59Z|\n|170 Charles Street |653ab073d4005721f...|         0|          M|   Seddon|Australia|  14589260|olivia.goodman@me...|          420|   OLIVIA| GOODMAN|20190716,19657|20190716,19657,1| 0403339261|    3011| 4570|    4570|Adult - My Ticket...|  EVAM2019950|Sat 30 Nov 2019 7...|   Playhouse|HUMANS BY CIRCA|       1|  A|        MS|  21|SSTALLS-2|  VIC|2019-07-16T03:27:59Z|\n|170 Charles Street |0841c8fce610978e3...|         0|          M|   Seddon|Australia|  14589260|olivia.goodman@me...|          400|   OLIVIA| GOODMAN|20190716,19657|20190716,19657,1| 0403339261|    3011| 3570|    3570|Junior (3 to 16 y...|  EVAM2019950|Sat 30 Nov 2019 7...|   Playhouse|HUMANS BY CIRCA|       1|  A|        MS|  22|SSTALLS-2|  VIC|2019-07-16T03:27:59Z|\n|  20 Cusdin Street |21b528c39a9526965...|         0|          W|Glen Iris|Australia|   9007250|rodw@actionalumin...|          510|      Rod|  Walker|20190716,20663|20190716,20663,1| 0439660998|    3146| 9720|    9720|               Admit|EVAM2019912DC|Thu 24 Oct 2019 8...|  Hamer Hall| DAVID CAMPBELL|       1|  P|        Mr|  28|  SSTALLS|  VIC|2019-07-16T03:48:45Z|\n|  20 Cusdin Street |c7e40b36bfebbb4e4...|         0|          W|Glen Iris|Australia|   9007250|rodw@actionalumin...|          510|      Rod|  Walker|20190716,20663|20190716,20663,1| 0439660998|    3146| 9720|    9720|               Admit|EVAM2019912DC|Thu 24 Oct 2019 8...|  Hamer Hall| DAVID CAMPBELL|       1|  P|        Mr|  29|  SSTALLS|  VIC|2019-07-16T03:48:45Z|\n+-------------------+--------------------+----------+-----------+---------+---------+----------+--------------------+-------------+---------+--------+--------------+----------------+-----------+--------+-----+--------+--------------------+-------------+--------------------+------------+---------------+--------+---+----------+----+---------+-----+--------------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d104",
+            "http://10.130.22.177:4040/jobs/job?id\u003d105"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563324493580_-107137009",
+      "id": "20190717-104813_1188444168",
+      "dateCreated": "2019-07-17 10:48:13.580",
+      "dateStarted": "2019-07-17 10:48:23.767",
+      "dateFinished": "2019-07-17 10:48:24.005",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Group by address\n\nds.groupByKey(cs \u003d\u003e cs.address).keys.show()",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 10:35:03.523",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------+\n|              value|\n+-------------------+\n|170 Charles Street |\n|  20 Cusdin Street |\n+-------------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d1",
+            "http://10.130.22.177:4040/jobs/job?id\u003d2",
+            "http://10.130.22.177:4040/jobs/job?id\u003d3",
+            "http://10.130.22.177:4040/jobs/job?id\u003d4",
+            "http://10.130.22.177:4040/jobs/job?id\u003d5"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563324503757_1066994230",
+      "id": "20190717-104823_552270317",
+      "dateCreated": "2019-07-17 10:48:23.757",
+      "dateStarted": "2019-07-18 10:35:03.546",
+      "dateFinished": "2019-07-18 10:35:05.689",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Group by multiple keys\n\nds.groupByKey(cs \u003d\u003e (cs.address, cs.customerId)).keys.show()",
+      "user": "deepak",
+      "dateUpdated": "2019-07-17 10:54:46.280",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------+--------+\n|                 _1|      _2|\n+-------------------+--------+\n|170 Charles Street |14589260|\n|  20 Cusdin Street | 9007250|\n+-------------------+--------+\n\ngrouped: Unit \u003d ()\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d112",
+            "http://10.130.22.177:4040/jobs/job?id\u003d113",
+            "http://10.130.22.177:4040/jobs/job?id\u003d114",
+            "http://10.130.22.177:4040/jobs/job?id\u003d115",
+            "http://10.130.22.177:4040/jobs/job?id\u003d116"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563324521313_-1588924003",
+      "id": "20190717-104841_2041335903",
+      "dateCreated": "2019-07-17 10:48:41.313",
+      "dateStarted": "2019-07-17 10:54:24.149",
+      "dateFinished": "2019-07-17 10:54:25.083",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val grouped1 \u003d ds.groupByKey(cs \u003d\u003e (\n        cs.customerId,\n        cs.orderlineId,\n        cs.firstName,\n        cs.lastName,\n        cs.address,\n        cs.city,\n        cs.state,\n        cs.postcode,\n        cs.country,\n        cs.phoneNumber,\n        cs.emailAddress,\n        cs.transactionDateTime,\n        cs.channelCode,\n        cs.canContact,\n        cs.productId,\n        cs.productWho,\n        cs.productWhere,\n        cs.productWhen\n    ))",
+      "user": "deepak",
+      "dateUpdated": "2019-07-17 11:05:21.094",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "grouped1: org.apache.spark.sql.KeyValueGroupedDataset[(Long, String, String, String, String, String, String, String, String, String, String, String, String, Long, String, String, String, String),CustomerSales] \u003d KeyValueGroupedDataset: [key: [_1: bigint, _2: string ... 16 more field(s)], value: [address: string, barcode: string ... 27 more field(s)]]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563324864136_1337010920",
+      "id": "20190717-105424_409795981",
+      "dateCreated": "2019-07-17 10:54:24.136",
+      "dateStarted": "2019-07-17 11:05:21.108",
+      "dateFinished": "2019-07-17 11:05:21.474",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Enough to group by orderlineId, customerID\n// NOTE: also repartitioning to optimize (might not be needed)\n// Also, maintaining 1 partition as its a very small dataset\nval grouped \u003d ds.repartition(1, $\"orderlineId\").groupByKey(cs \u003d\u003e (cs.orderlineId, cs.customerId, cs.productId))",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 11:15:47.868",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "grouped: org.apache.spark.sql.KeyValueGroupedDataset[(String, Long, String),CustomerSales] \u003d KeyValueGroupedDataset: [key: [_1: string, _2: bigint ... 1 more field(s)], value: [address: string, barcode: string ... 27 more field(s)]]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563325523687_-1290875769",
+      "id": "20190717-110523_99345218",
+      "dateCreated": "2019-07-17 11:05:23.687",
+      "dateStarted": "2019-07-18 11:15:02.142",
+      "dateFinished": "2019-07-18 11:15:02.525",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "grouped.keys.show()",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 11:15:05.897",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------------+--------+-------------+\n|              _1|      _2|           _3|\n+----------------+--------+-------------+\n|20190716,20663,1| 9007250|EVAM2019912DC|\n|20190716,19657,1|14589260|  EVAM2019950|\n+----------------+--------+-------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d27",
+            "http://10.130.22.177:4040/jobs/job?id\u003d28",
+            "http://10.130.22.177:4040/jobs/job?id\u003d29",
+            "http://10.130.22.177:4040/jobs/job?id\u003d30",
+            "http://10.130.22.177:4040/jobs/job?id\u003d31"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563325424287_-906836346",
+      "id": "20190717-110344_296594022",
+      "dateCreated": "2019-07-17 11:03:44.287",
+      "dateStarted": "2019-07-18 11:15:05.924",
+      "dateFinished": "2019-07-18 11:15:06.507",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Create schema as per XML output\n\nimport org.apache.spark.sql.types._\n\nval schema \u003d new StructType()\n                          .add(\"import_account_id\", LongType, false)\n                          .add(\"import_ref_no\", StringType, false)\n                          .add(\"fname\", StringType, false)\n                          .add(\"lname\", StringType, false)\n                          .add(\"street1\", StringType, false)\n                          .add(\"city\", StringType, false)\n                          .add(\"state\", StringType, false)\n                          .add(\"postal_code\", StringType, false)\n                          .add(\"country\", StringType, false)\n                          .add(\"phone\", StringType, false)\n                          .add(\"eaddress\", StringType, false)\n                          .add(\"order_dt\", StringType, false)\n                          .add(\"mos\", StringType, false)\n                          .add(\"opt_in\", BooleanType, false)\n                          .add(\"event\", MapType(\n                                StringType,\n                                new StructType()\n                                             .add(\"perf_code\", StringType, false)\n                                             .add(\"perf_name\", StringType, false)\n                                             .add(\"perf_dt\", StringType, false)\n                                             .add(\"venue\", StringType, false)\n                                             .add(\"seat_info\", ArrayType(\n                                                    new StructType()\n                                                                 .add(\"section\", StringType, false)\n                                                                 .add(\"row\", StringType, false)\n                                                                 .add(\"seat\", StringType, false)\n                                                                 .add(\"sale_refund\", StringType, false)\n                                                                 .add(\"price_type\", StringType, false)\n                                                                 .add(\"gross_price\", LongType, false)\n                                                                 .add(\"barcode\", StringType, false)\n                                                 ), false)\n                                                     \n                              ), false)\n                          ",
+      "user": "deepak",
+      "dateUpdated": "2019-07-17 14:53:12.410",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import org.apache.spark.sql.types._\nschema: org.apache.spark.sql.types.StructType \u003d StructType(StructField(import_account_id,LongType,false), StructField(import_ref_no,StringType,false), StructField(fname,StringType,false), StructField(lname,StringType,false), StructField(street1,StringType,false), StructField(city,StringType,false), StructField(state,StringType,false), StructField(postal_code,StringType,false), StructField(country,StringType,false), StructField(phone,StringType,false), StructField(eaddress,StringType,false), StructField(order_dt,StringType,false), StructField(mos,StringType,false), StructField(opt_in,BooleanType,false), StructField(event,MapType(StringType,StructType(StructField(perf_code,StringType,false), StructField(perf_name,StringType,false), StructField(perf_dt,S..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563325485393_628399039",
+      "id": "20190717-110445_1692544364",
+      "dateCreated": "2019-07-17 11:04:45.393",
+      "dateStarted": "2019-07-17 14:53:12.425",
+      "dateFinished": "2019-07-17 14:53:12.627",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "case class SeatInfo(val section: String, val row: String, val seat: String, val sale_refund: String, val price_type: String, val gross_price: Long, val barcode: String)\ncase class Event(val perf_code: String, val perf_name: String, val perf_dt: String, val venue: String, val seat_info: Array[SeatInfo])\ncase class Client(val import_account_id: Long, val import_ref_no: String, val fname: String, val lname: String, val street1: String, val city: String, val state: String, val postal_code: String, val country: String, val phone: String, val eaddress: String, val order_dt: String, val mos: String, val opt_in: Boolean, val event: Event)",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 10:35:27.685",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "defined class SeatInfo\ndefined class Event\ndefined class Client\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563342904260_-1686897119",
+      "id": "20190717-155504_583626095",
+      "dateCreated": "2019-07-17 15:55:04.260",
+      "dateStarted": "2019-07-18 10:35:27.709",
+      "dateFinished": "2019-07-18 10:35:27.963",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "case class TestXml(val import_account_id: Long, val import_ref_no: String)",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 10:35:32.589",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "defined class TestXml\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563339179584_-1961026609",
+      "id": "20190717-145259_134176842",
+      "dateCreated": "2019-07-17 14:52:59.584",
+      "dateStarted": "2019-07-18 10:35:32.613",
+      "dateFinished": "2019-07-18 10:35:32.814",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "def clientMapper(k: (String, Long, String), vals: Iterator[CustomerSales]): Iterator[Client] \u003d {\n    val oid \u003d k._1\n    val cid \u003d k._2\n    val pid \u003d k._3\n    \n    val seatInfo \u003d vals.map{cs \u003d\u003e {\n        SeatInfo(\n            section \u003d cs.section,\n            row \u003d cs.row,\n            seat \u003d cs.seat,\n            sale_refund \u003d if (cs.quantity \u003d\u003d 1) \"sale\" else \"refund\",\n            price_type \u003d cs.priceTypeName,\n            gross_price \u003d cs.price + cs.faceValueFees,\n            barcode \u003d cs.barcode\n        )\n    }}\n    \n    val cs \u003d vals.next\n    \n    val e \u003d Event(\n            perf_code \u003d pid,\n            perf_name \u003d cs.productWho,\n            perf_dt \u003d cs.productWhen,\n            venue \u003d cs.productWhere,\n            seat_info \u003d seatInfo.toArray\n        )\n    \n    Iterator(\n        Client(\n            import_account_id \u003d cid,\n            import_ref_no \u003d oid,\n            fname \u003d cs.firstName,\n            lname \u003d cs.lastName,\n            street1 \u003d cs.address.trim.slice(0, 64),\n            city \u003d cs.city,\n            state \u003d cs.state,\n            postal_code \u003d cs.postcode,\n            country \u003d cs.country,\n            phone \u003d cs.phoneNumber,\n            eaddress \u003d cs.emailAddress,\n            order_dt \u003d cs.transactionDateTime,\n            mos \u003d cs.channelCode,\n            opt_in \u003d if (cs.canContact \u003d\u003d 1) true else false,\n            event \u003d e\n        )\n    )\n}",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 12:05:22.233",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "clientMapper: (k: (String, Long, String), vals: Iterator[CustomerSales])Iterator[Client]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563343821710_589119579",
+      "id": "20190717-161021_480253428",
+      "dateCreated": "2019-07-17 16:10:21.710",
+      "dateStarted": "2019-07-18 12:05:22.259",
+      "dateFinished": "2019-07-18 12:05:22.485",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "\ncase class TestXml1(val import_account_id: Long, val import_ref_no: String, val perf_code: String, val perf_name: String, val seat_info: Array[SeatInfo])\n\ndef clientMapper1(k: (String, Long, String), vals: Iterator[CustomerSales]): Iterator[TestXml1] \u003d {\n    val oid \u003d k._1\n    val cid \u003d k._2\n    val pid \u003d k._3\n    \n    val seatInfo \u003d vals.map{cs \u003d\u003e {\n        SeatInfo(\n            section \u003d cs.section,\n            row \u003d cs.row,\n            seat \u003d cs.seat,\n            sale_refund \u003d if (cs.quantity \u003d\u003d 1) \"sale\" else \"refund\",\n            price_type \u003d cs.priceTypeName,\n            gross_price \u003d cs.price + cs.faceValueFees,\n            barcode \u003d cs.barcode\n        )\n    }}\n    \n    val cs \u003d vals.next\n    \n    // val e \u003d Event(\n    //         perf_code \u003d pid,\n    //         perf_name \u003d cs.productWho,\n    //         perf_dt \u003d cs.productWhen,\n    //         venue \u003d cs.productWhere,\n    //         seat_info \u003d seatInfo\n    //     )\n    \n    // Iterator(\n    //     Client(\n    //         import_account_id \u003d cid,\n    //         import_ref_no \u003d oid,\n    //         fname \u003d cs.firstName,\n    //         lname \u003d cs.lastName,\n    //         street1 \u003d cs.address,\n    //         city \u003d cs.city,\n    //         state \u003d cs.state,\n    //         postal_code \u003d cs.postcode,\n    //         country \u003d cs.country,\n    //         phone \u003d cs.phoneNumber,\n    //         eaddress \u003d cs.emailAddress,\n    //         order_dt \u003d cs.transactionDateTime,\n    //         mos \u003d cs.channelCode,\n    //         opt_in \u003d if (cs.canContact \u003d\u003d 1) true else false,\n    //         event \u003d e\n    //     )\n    // )\n    \n    Iterator(\n        TestXml1(\n            import_account_id \u003d cid,\n            import_ref_no \u003d oid,\n            perf_code \u003d pid,\n            perf_name \u003d cs.productWho,\n            seat_info \u003d seatInfo.toArray\n        )\n    )\n}",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 10:35:39.553",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "defined class TestXml1\nclientMapper1: (k: (String, Long, String), vals: Iterator[CustomerSales])Iterator[TestXml1]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563346977725_639207771",
+      "id": "20190717-170257_958011930",
+      "dateCreated": "2019-07-17 17:02:57.725",
+      "dateStarted": "2019-07-18 10:35:39.573",
+      "dateFinished": "2019-07-18 10:35:39.750",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val groupedDS1 \u003d grouped.flatMapGroups((k, viter) \u003d\u003e Iterator(TestXml(k._2, k._1)))",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 11:16:31.326",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "groupedDS1: org.apache.spark.sql.Dataset[TestXml] \u003d [import_account_id: bigint, import_ref_no: string]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563342676346_1994771901",
+      "id": "20190717-155116_111809260",
+      "dateCreated": "2019-07-17 15:51:16.346",
+      "dateStarted": "2019-07-18 11:16:31.347",
+      "dateFinished": "2019-07-18 11:16:31.642",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "groupedDS1.show()",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 11:16:34.062",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----------------+----------------+\n|import_account_id|   import_ref_no|\n+-----------------+----------------+\n|          9007250|20190716,20663,1|\n|         14589260|20190716,19657,1|\n+-----------------+----------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d32",
+            "http://10.130.22.177:4040/jobs/job?id\u003d33",
+            "http://10.130.22.177:4040/jobs/job?id\u003d34",
+            "http://10.130.22.177:4040/jobs/job?id\u003d35",
+            "http://10.130.22.177:4040/jobs/job?id\u003d36"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563342829681_730479887",
+      "id": "20190717-155349_399858769",
+      "dateCreated": "2019-07-17 15:53:49.681",
+      "dateStarted": "2019-07-18 11:16:34.085",
+      "dateFinished": "2019-07-18 11:16:34.751",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Convert each group into Dataset[Client]\n\nval groupedDS \u003d grouped.flatMapGroups(clientMapper)",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 12:06:51.804",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "groupedDS: org.apache.spark.sql.Dataset[Client] \u003d [import_account_id: bigint, import_ref_no: string ... 13 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563342847210_-276996041",
+      "id": "20190717-155407_1974484628",
+      "dateCreated": "2019-07-17 15:54:07.210",
+      "dateStarted": "2019-07-18 12:06:51.830",
+      "dateFinished": "2019-07-18 12:06:52.281",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "groupedDS.show",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 12:06:57.660",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----------------+----------------+------+-------+------------------+---------+-----+-----------+---------+----------+--------------------+--------------------+---+------+--------------------+\n|import_account_id|   import_ref_no| fname|  lname|           street1|     city|state|postal_code|  country|     phone|            eaddress|            order_dt|mos|opt_in|               event|\n+-----------------+----------------+------+-------+------------------+---------+-----+-----------+---------+----------+--------------------+--------------------+---+------+--------------------+\n|          9007250|20190716,20663,1|   Rod| Walker|  20 Cusdin Street|Glen Iris|  VIC|       3146|Australia|0439660998|rodw@actionalumin...|2019-07-16T03:48:45Z|  W| false|[EVAM2019912DC, D...|\n|         14589260|20190716,19657,1|OLIVIA|GOODMAN|170 Charles Street|   Seddon|  VIC|       3011|Australia|0403339261|olivia.goodman@me...|2019-07-16T03:27:59Z|  M| false|[EVAM2019950, HUM...|\n+-----------------+----------------+------+-------+------------------+---------+-----+-----------+---------+----------+--------------------+--------------------+---+------+--------------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d45",
+            "http://10.130.22.177:4040/jobs/job?id\u003d46",
+            "http://10.130.22.177:4040/jobs/job?id\u003d47",
+            "http://10.130.22.177:4040/jobs/job?id\u003d48",
+            "http://10.130.22.177:4040/jobs/job?id\u003d49"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563346850168_-1059131816",
+      "id": "20190717-170050_1247585539",
+      "dateCreated": "2019-07-17 17:00:50.168",
+      "dateStarted": "2019-07-18 12:06:57.685",
+      "dateFinished": "2019-07-18 12:06:58.582",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Accessing elements in nested structures\n\ngroupedDS.select($\"import_account_id\", $\"import_ref_no\", $\"event.perf_code\", $\"event.seat_info\", $\"event.seat_info.sale_refund\").show",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 09:41:02.568",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----------------+----------------+-------------+--------------------+------------+\n|import_account_id|   import_ref_no|    perf_code|           seat_info| sale_refund|\n+-----------------+----------------+-------------+--------------------+------------+\n|          9007250|20190716,20663,1|EVAM2019912DC|[[SSTALLS, P, 29,...|      [sale]|\n|         14589260|20190716,19657,1|  EVAM2019950|[[SSTALLS-2, A, 2...|[sale, sale]|\n+-----------------+----------------+-------------+--------------------+------------+\n\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d217",
+            "http://10.130.22.177:4040/jobs/job?id\u003d218",
+            "http://10.130.22.177:4040/jobs/job?id\u003d219",
+            "http://10.130.22.177:4040/jobs/job?id\u003d220",
+            "http://10.130.22.177:4040/jobs/job?id\u003d221"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563346862222_543258317",
+      "id": "20190717-170102_533152326",
+      "dateCreated": "2019-07-17 17:01:02.222",
+      "dateStarted": "2019-07-18 09:39:25.443",
+      "dateFinished": "2019-07-18 09:39:26.199",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "groupedDS.printSchema",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 09:41:10.576",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- import_account_id: long (nullable \u003d false)\n |-- import_ref_no: string (nullable \u003d true)\n |-- fname: string (nullable \u003d true)\n |-- lname: string (nullable \u003d true)\n |-- street1: string (nullable \u003d true)\n |-- city: string (nullable \u003d true)\n |-- state: string (nullable \u003d true)\n |-- postal_code: string (nullable \u003d true)\n |-- country: string (nullable \u003d true)\n |-- phone: string (nullable \u003d true)\n |-- eaddress: string (nullable \u003d true)\n |-- order_dt: string (nullable \u003d true)\n |-- mos: string (nullable \u003d true)\n |-- opt_in: boolean (nullable \u003d false)\n |-- event: struct (nullable \u003d true)\n |    |-- perf_code: string (nullable \u003d true)\n |    |-- perf_name: string (nullable \u003d true)\n |    |-- perf_dt: string (nullable \u003d true)\n |    |-- venue: string (nullable \u003d true)\n |    |-- seat_info: array (nullable \u003d true)\n |    |    |-- element: struct (containsNull \u003d true)\n |    |    |    |-- section: string (nullable \u003d true)\n |    |    |    |-- row: string (nullable \u003d true)\n |    |    |    |-- seat: string (nullable \u003d true)\n |    |    |    |-- sale_refund: string (nullable \u003d true)\n |    |    |    |-- price_type: string (nullable \u003d true)\n |    |    |    |-- gross_price: long (nullable \u003d false)\n |    |    |    |-- barcode: string (nullable \u003d true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563406630593_-770069395",
+      "id": "20190718-093710_325385580",
+      "dateCreated": "2019-07-18 09:37:10.593",
+      "dateStarted": "2019-07-18 09:41:10.596",
+      "dateFinished": "2019-07-18 09:41:10.716",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n### Convert dataframe/dataset to XML",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 10:33:40.245",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch3\u003eConvert dataframe/dataset to XML\u003c/h3\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563406870576_1912853118",
+      "id": "20190718-094110_384488531",
+      "dateCreated": "2019-07-18 09:41:10.576",
+      "dateStarted": "2019-07-18 10:33:40.246",
+      "dateFinished": "2019-07-18 10:33:40.252",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "groupedDS1.rdd.partitions.size",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 11:17:23.963",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res18: Int \u003d 200\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563410029983_-1777333562",
+      "id": "20190718-103349_1663528545",
+      "dateCreated": "2019-07-18 10:33:49.983",
+      "dateStarted": "2019-07-18 11:17:23.989",
+      "dateFinished": "2019-07-18 11:17:24.129",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\nReducing number of partitions before writing.\n* **repartition** will shuffle and create equal partitions.\n* **coalesce** won\u0027t shuffle and data won\u0027t be evenly distributed.\n* In this case coalesce is okay as we are reducing the number of partitions to just 1.",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 11:21:02.923",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eReducing number of partitions before writing.\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003erepartition\u003c/strong\u003e will shuffle and create equal partitions.\u003c/li\u003e\n\u003cli\u003e\u003cstrong\u003ecoalesce\u003c/strong\u003e won\u0027t shuffle and data won\u0027t be evenly distributed.\u003c/li\u003e\n\u003cli\u003eIn this case coalesce is okay as we are reducing the number of partitions to just 1.\u003c/li\u003e\n\u003c/ul\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563412650985_1651430201",
+      "id": "20190718-111730_967610787",
+      "dateCreated": "2019-07-18 11:17:30.985",
+      "dateStarted": "2019-07-18 11:21:02.923",
+      "dateFinished": "2019-07-18 11:21:02.928",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import com.databricks.spark.xml._\n\ngroupedDS1.coalesce(1)\n                .write\n                     .option(\"rootTag\", \"data\")\n                     .option(\"rowTag\", \"client\")\n                     .xml(\"grouped_ds1_xml\")",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 11:22:04.931",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import com.databricks.spark.xml._\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d37"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563410020213_-2001359724",
+      "id": "20190718-103340_68088252",
+      "dateCreated": "2019-07-18 10:33:40.213",
+      "dateStarted": "2019-07-18 11:22:04.955",
+      "dateFinished": "2019-07-18 11:22:05.989",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sh\n\ncat grouped_ds1_xml/part-00000",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 11:22:51.685",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u003cdata\u003e\n    \u003cclient\u003e\n        \u003cimport_account_id\u003e9007250\u003c/import_account_id\u003e\n        \u003cimport_ref_no\u003e20190716,20663,1\u003c/import_ref_no\u003e\n    \u003c/client\u003e\n\n    \u003cclient\u003e\n        \u003cimport_account_id\u003e14589260\u003c/import_account_id\u003e\n        \u003cimport_ref_no\u003e20190716,19657,1\u003c/import_ref_no\u003e\n    \u003c/client\u003e\n\n\u003c/data\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563410448196_680807009",
+      "id": "20190718-104048_379418172",
+      "dateCreated": "2019-07-18 10:40:48.196",
+      "dateStarted": "2019-07-18 11:22:51.709",
+      "dateFinished": "2019-07-18 11:22:51.719",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import com.databricks.spark.xml._\n\ngroupedDS\n        .coalesce(1)\n        .write\n            .option(\"rootTag\", \"data\")\n            .option(\"rowTag\", \"client\")\n            .xml(\"grouped_ds_xml\")\n    ",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 12:07:13.592",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import com.databricks.spark.xml._\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d50"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1563412971685_1649152647",
+      "id": "20190718-112251_160304654",
+      "dateCreated": "2019-07-18 11:22:51.686",
+      "dateStarted": "2019-07-18 12:07:13.617",
+      "dateFinished": "2019-07-18 12:07:14.810",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sh\n\ncat grouped_ds_xml/part-00000",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 12:07:17.192",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/sh"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u003cdata\u003e\n    \u003cclient\u003e\n        \u003cimport_account_id\u003e9007250\u003c/import_account_id\u003e\n        \u003cimport_ref_no\u003e20190716,20663,1\u003c/import_ref_no\u003e\n        \u003cfname\u003eRod\u003c/fname\u003e\n        \u003clname\u003eWalker\u003c/lname\u003e\n        \u003cstreet1\u003e20 Cusdin Street\u003c/street1\u003e\n        \u003ccity\u003eGlen Iris\u003c/city\u003e\n        \u003cstate\u003eVIC\u003c/state\u003e\n        \u003cpostal_code\u003e3146\u003c/postal_code\u003e\n        \u003ccountry\u003eAustralia\u003c/country\u003e\n        \u003cphone\u003e0439660998\u003c/phone\u003e\n        \u003ceaddress\u003erodw@actionaluminium.com.au\u003c/eaddress\u003e\n        \u003corder_dt\u003e2019-07-16T03:48:45Z\u003c/order_dt\u003e\n        \u003cmos\u003eW\u003c/mos\u003e\n        \u003copt_in\u003efalse\u003c/opt_in\u003e\n        \u003cevent\u003e\n            \u003cperf_code\u003eEVAM2019912DC\u003c/perf_code\u003e\n            \u003cperf_name\u003eDAVID CAMPBELL\u003c/perf_name\u003e\n            \u003cperf_dt\u003eThu 24 Oct 2019 8:00pm\u003c/perf_dt\u003e\n            \u003cvenue\u003eHamer Hall\u003c/venue\u003e\n            \u003cseat_info\u003e\n                \u003csection\u003eSSTALLS\u003c/section\u003e\n                \u003crow\u003eP\u003c/row\u003e\n                \u003cseat\u003e29\u003c/seat\u003e\n                \u003csale_refund\u003esale\u003c/sale_refund\u003e\n                \u003cprice_type\u003eAdmit\u003c/price_type\u003e\n                \u003cgross_price\u003e10230\u003c/gross_price\u003e\n                \u003cbarcode\u003ec7e40b36bfebbb4e4f0d132193b1f9725daf60b0\u003c/barcode\u003e\n            \u003c/seat_info\u003e\n        \u003c/event\u003e\n    \u003c/client\u003e\n\n    \u003cclient\u003e\n        \u003cimport_account_id\u003e14589260\u003c/import_account_id\u003e\n        \u003cimport_ref_no\u003e20190716,19657,1\u003c/import_ref_no\u003e\n        \u003cfname\u003eOLIVIA\u003c/fname\u003e\n        \u003clname\u003eGOODMAN\u003c/lname\u003e\n        \u003cstreet1\u003e170 Charles Street\u003c/street1\u003e\n        \u003ccity\u003eSeddon\u003c/city\u003e\n        \u003cstate\u003eVIC\u003c/state\u003e\n        \u003cpostal_code\u003e3011\u003c/postal_code\u003e\n        \u003ccountry\u003eAustralia\u003c/country\u003e\n        \u003cphone\u003e0403339261\u003c/phone\u003e\n        \u003ceaddress\u003eolivia.goodman@me.com\u003c/eaddress\u003e\n        \u003corder_dt\u003e2019-07-16T03:27:59Z\u003c/order_dt\u003e\n        \u003cmos\u003eM\u003c/mos\u003e\n        \u003copt_in\u003efalse\u003c/opt_in\u003e\n        \u003cevent\u003e\n            \u003cperf_code\u003eEVAM2019950\u003c/perf_code\u003e\n            \u003cperf_name\u003eHUMANS BY CIRCA\u003c/perf_name\u003e\n            \u003cperf_dt\u003eSat 30 Nov 2019 7:30pm\u003c/perf_dt\u003e\n            \u003cvenue\u003ePlayhouse\u003c/venue\u003e\n            \u003cseat_info\u003e\n                \u003csection\u003eSSTALLS-2\u003c/section\u003e\n                \u003crow\u003eA\u003c/row\u003e\n                \u003cseat\u003e21\u003c/seat\u003e\n                \u003csale_refund\u003esale\u003c/sale_refund\u003e\n                \u003cprice_type\u003eAdult - My Ticketek Presale\u003c/price_type\u003e\n                \u003cgross_price\u003e4990\u003c/gross_price\u003e\n                \u003cbarcode\u003e653ab073d4005721f029d29b44cc45b75a0e0d7c\u003c/barcode\u003e\n            \u003c/seat_info\u003e\n            \u003cseat_info\u003e\n                \u003csection\u003eSSTALLS-2\u003c/section\u003e\n                \u003crow\u003eA\u003c/row\u003e\n                \u003cseat\u003e22\u003c/seat\u003e\n                \u003csale_refund\u003esale\u003c/sale_refund\u003e\n                \u003cprice_type\u003eJunior (3 to 16 years) - My Ticketek Presale\u003c/price_type\u003e\n                \u003cgross_price\u003e3970\u003c/gross_price\u003e\n                \u003cbarcode\u003e0841c8fce610978e39d014556e07fd15683b8c8a\u003c/barcode\u003e\n            \u003c/seat_info\u003e\n        \u003c/event\u003e\n    \u003c/client\u003e\n\n\u003c/data\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1563413141330_-1729729818",
+      "id": "20190718-112541_1564169412",
+      "dateCreated": "2019-07-18 11:25:41.330",
+      "dateStarted": "2019-07-18 12:07:17.217",
+      "dateFinished": "2019-07-18 12:07:17.229",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sh\n",
+      "user": "deepak",
+      "dateUpdated": "2019-07-18 11:26:10.406",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1563413170406_-1703940158",
+      "id": "20190718-112610_1370720106",
+      "dateCreated": "2019-07-18 11:26:10.406",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "acm-xml",
+  "id": "2EJSETEK2",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {
+    "md:shared_process": [],
+    "sh:shared_process": [],
+    "spark:shared_process": []
+  },
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}

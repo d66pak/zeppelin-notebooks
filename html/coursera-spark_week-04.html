@@ -1,0 +1,714 @@
+<link rel="stylesheet" type="text/css" href="style.css">
+<h2>Time usage</h2>
+
+<div class="highlight"><pre><span></span><span class="c1">// Input file</span>
+<span class="n">z</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="s">&quot;timeusage&quot;</span><span class="o">,</span> <span class="s">&quot;/home/ubuntu/test_spark/timeusage/atussum.csv&quot;</span><span class="o">)</span>
+<span class="n">z</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="s">&quot;test&quot;</span><span class="o">,</span> <span class="s">&quot;/home/ubuntu/test_spark/timeusage/test.csv&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Read RDD</span>
+<span class="k">val</span> <span class="n">rdd</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;timeusage&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+<span class="n">rdd</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">rdd: org.apache.spark.rdd.RDD[String] = /home/ubuntu/test_spark/timeusage/atussum.csv MapPartitionsRDD[663] at textFile at &lt;console&gt;:156</span>
+<span class="go">res151: Array[String] = Array(tucaseid,gemetsta,gtmetsta,peeduca,pehspnon,ptdtrace,teage,telfs,temjot,teschenr,teschlvl,tesex,tespempnot,trchildnum,trdpftpt,trernwa,trholiday,trspftpt,trsppres,tryhhchild,tudiaryday,tufnwgtp,tehruslt,tuyear,t010101,t010102,t010199,t010201,t010299,t010301,t010399,t010401,t010499,t010501,t010599,t019999,t020101,t020102,t020103,t020104,t020199,t020201,t020202,t020203,t020299,t020301,t020302,t020303,t020399,t020401,t020402,t020499,t020501,t020502,t020599,t020681,t020699,t020701,t020799,t020801,t020899,t020901,t020902,t020903,t020904,t020905,t020999,t029999,t030101,t030102,t030103,t030104,t030105,t030108,t030109,t030110,t030...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">headerColumn</span> <span class="k">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;,&quot;</span><span class="o">).</span><span class="n">toList</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">headerColumn: List[String] = List(tucaseid, gemetsta, gtmetsta, peeduca, pehspnon, ptdtrace, teage, telfs, temjot, teschenr, teschlvl, tesex, tespempnot, trchildnum, trdpftpt, trernwa, trholiday, trspftpt, trsppres, tryhhchild, tudiaryday, tufnwgtp, tehruslt, tuyear, t010101, t010102, t010199, t010201, t010299, t010301, t010399, t010401, t010499, t010501, t010599, t019999, t020101, t020102, t020103, t020104, t020199, t020201, t020202, t020203, t020299, t020301, t020302, t020303, t020399, t020401, t020402, t020499, t020501, t020502, t020599, t020681, t020699, t020701, t020799, t020801, t020899, t020901, t020902, t020903, t020904, t020905, t020999, t029999, t030101, t030102, t030103, t030104, t030105, t030108, t030109, t030110, t030111, t030112, t030186, t030199, t030201, t030202, t030203...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">headerColumn</span><span class="o">.</span><span class="n">tail</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res38: List[String] = List(gemetsta, gtmetsta, peeduca, pehspnon, ptdtrace, teage, telfs, temjot, teschenr, teschlvl, tesex, tespempnot, trchildnum, trdpftpt, trernwa, trholiday, trspftpt, trsppres, tryhhchild, tudiaryday, tufnwgtp, tehruslt, tuyear, t010101, t010102, t010199, t010201, t010299, t010301, t010399, t010401, t010499, t010501, t010599, t019999, t020101, t020102, t020103, t020104, t020199, t020201, t020202, t020203, t020299, t020301, t020302, t020303, t020399, t020401, t020402, t020499, t020501, t020502, t020599, t020681, t020699, t020701, t020799, t020801, t020899, t020901, t020902, t020903, t020904, t020905, t020999, t029999, t030101, t030102, t030103, t030104, t030105, t030108, t030109, t030110, t030111, t030112, t030186, t030199, t030201, t030202, t030203, t030204, t03029...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">l1</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">l2</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">l3</span> <span class="k">=</span> <span class="n">l1</span> <span class="o">++</span> <span class="n">l2</span>
+<span class="k">val</span> <span class="n">l4</span> <span class="k">=</span> <span class="n">l1</span> <span class="o">++:</span> <span class="n">l2</span>
+<span class="k">val</span> <span class="n">l5</span> <span class="k">=</span> <span class="n">l1</span> <span class="o">+:</span> <span class="n">l2</span>
+<span class="k">val</span> <span class="n">l6</span> <span class="k">=</span> <span class="n">l1</span> <span class="o">:+</span> <span class="n">l2</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">l1: List[Int] = List(1, 2, 3, 4)</span>
+<span class="go">l2: List[Int] = List(5, 6)</span>
+<span class="go">l3: List[Int] = List(1, 2, 3, 4, 5, 6)</span>
+<span class="go">l4: List[Int] = List(1, 2, 3, 4, 5, 6)</span>
+<span class="go">l5: List[Any] = List(List(1, 2, 3, 4), 5, 6)</span>
+<span class="go">l6: List[Any] = List(1, 2, 3, 4, List(5, 6))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Convert header into schema</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.sql._</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.sql.types._</span>
+
+<span class="k">val</span> <span class="n">fields</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="k">new</span> <span class="nc">StructField</span><span class="o">(</span><span class="n">headerColumn</span><span class="o">.</span><span class="n">head</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">fields_tail</span> <span class="k">=</span> <span class="n">headerColumn</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">header</span> <span class="k">=&gt;</span> <span class="k">new</span> <span class="nc">StructField</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="nc">DoubleType</span><span class="o">,</span> <span class="kc">false</span><span class="o">))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import org.apache.spark.sql._</span>
+<span class="go">import org.apache.spark.sql.types._</span>
+<span class="go">fields: List[org.apache.spark.sql.types.StructField] = List(StructField(tucaseid,StringType,false))</span>
+<span class="go">fields_tail: List[org.apache.spark.sql.types.StructField] = List(StructField(gemetsta,DoubleType,false), StructField(gtmetsta,DoubleType,false), StructField(peeduca,DoubleType,false), StructField(pehspnon,DoubleType,false), StructField(ptdtrace,DoubleType,false), StructField(teage,DoubleType,false), StructField(telfs,DoubleType,false), StructField(temjot,DoubleType,false), StructField(teschenr,DoubleType,false), StructField(teschlvl,DoubleType,false), StructField(tesex,DoubleType,false), StructField(tespempnot,DoubleType,false), StructField(trchildnum,DoubleType,false), StructField(trdpftpt,DoubleType,false), StructField(tr...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">all_fields</span> <span class="k">=</span> <span class="n">fields</span> <span class="o">++:</span> <span class="n">fields_tail</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">all_fields: List[org.apache.spark.sql.types.StructField] = List(StructField(tucaseid,StringType,false), StructField(gemetsta,DoubleType,false), StructField(gtmetsta,DoubleType,false), StructField(peeduca,DoubleType,false), StructField(pehspnon,DoubleType,false), StructField(ptdtrace,DoubleType,false), StructField(teage,DoubleType,false), StructField(telfs,DoubleType,false), StructField(temjot,DoubleType,false), StructField(teschenr,DoubleType,false), StructField(teschlvl,DoubleType,false), StructField(tesex,DoubleType,false), StructField(tespempnot,DoubleType,false), StructField(trchildnum,DoubleType,false), StructField(trdpftpt,DoubleType,false), StructField(trernwa,DoubleType,false), StructField(trholiday,DoubleType,false), StructField(trspftpt,DoubleType,false), StructField(trsppres,...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">schema1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StructType</span><span class="o">(</span><span class="n">all_fields</span><span class="o">.</span><span class="n">toArray</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">schema1: org.apache.spark.sql.types.StructType = StructType(StructField(tucaseid,StringType,false), StructField(gemetsta,DoubleType,false), StructField(gtmetsta,DoubleType,false), StructField(peeduca,DoubleType,false), StructField(pehspnon,DoubleType,false), StructField(ptdtrace,DoubleType,false), StructField(teage,DoubleType,false), StructField(telfs,DoubleType,false), StructField(temjot,DoubleType,false), StructField(teschenr,DoubleType,false), StructField(teschlvl,DoubleType,false), StructField(tesex,DoubleType,false), StructField(tespempnot,DoubleType,false), StructField(trchildnum,DoubleType,false), StructField(trdpftpt,DoubleType,false), StructField(trernwa,DoubleType,false), StructField(trholiday,DoubleType,false), StructField(trspftpt,DoubleType,false), StructField(trsppres,Doub...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">rdd</span><span class="o">.</span><span class="n">partitions</span><span class="o">.</span><span class="n">length</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res39: Int = 5</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">org.apache.spark.sql._</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.sql.types._</span>
+
+<span class="cm">/** @return The schema of the DataFrame, assuming that the first given column has type String and all the others</span>
+<span class="cm">    *         have type Double. None of the fields are nullable.</span>
+<span class="cm">    * @param columnNames Column names of the DataFrame</span>
+<span class="cm">    */</span>
+<span class="k">def</span> <span class="n">dfSchema</span><span class="o">(</span><span class="n">columnNames</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">StructType</span> <span class="o">=</span> <span class="o">{</span>
+    
+    <span class="k">val</span> <span class="n">fields</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="k">new</span> <span class="nc">StructField</span><span class="o">(</span><span class="n">columnNames</span><span class="o">.</span><span class="n">head</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">false</span><span class="o">))</span> <span class="c1">// First column</span>
+    <span class="k">val</span> <span class="n">rest_of_fields</span> <span class="k">=</span> <span class="n">columnNames</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">header</span> <span class="k">=&gt;</span> <span class="k">new</span> <span class="nc">StructField</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="nc">DoubleType</span><span class="o">,</span> <span class="kc">false</span><span class="o">))</span>
+    <span class="k">val</span> <span class="n">all_fields</span> <span class="k">=</span> <span class="n">fields</span> <span class="o">++:</span> <span class="n">rest_of_fields</span>
+    <span class="k">new</span> <span class="nc">StructType</span><span class="o">(</span><span class="n">all_fields</span><span class="o">.</span><span class="n">toArray</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import org.apache.spark.sql._</span>
+<span class="go">import org.apache.spark.sql.types._</span>
+<span class="go">dfSchema: (columnNames: List[String])org.apache.spark.sql.types.StructType</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="cm">/** @return An RDD Row compatible with the schema produced by `dfSchema`</span>
+<span class="cm">    * @param line Raw fields</span>
+<span class="cm">    */</span>
+<span class="k">def</span> <span class="n">row</span><span class="o">(</span><span class="n">line</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Row</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">first</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="n">line</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">toString</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">rest</span> <span class="k">=</span> <span class="n">line</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">toDouble</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">first_plus_rest</span> <span class="k">=</span> <span class="n">first</span> <span class="o">++:</span> <span class="n">rest</span>
+    <span class="nc">Row</span><span class="o">.</span><span class="n">fromSeq</span><span class="o">(</span><span class="n">first_plus_rest</span><span class="o">.</span><span class="n">toSeq</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">row: (line: List[String])org.apache.spark.sql.Row</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">data1</span> <span class="k">=</span> <span class="n">rdd</span>
+              <span class="o">.</span><span class="n">mapPartitionsWithIndex</span><span class="o">((</span><span class="n">i</span><span class="o">,</span> <span class="n">it</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="k">if</span> <span class="o">(</span><span class="n">i</span><span class="o">==</span><span class="mi">0</span><span class="o">)</span> <span class="n">it</span><span class="o">.</span><span class="n">drop</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="k">else</span> <span class="n">it</span><span class="o">)</span>
+              <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;,&quot;</span><span class="o">).</span><span class="n">toList</span><span class="o">)</span>
+              <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">row</span><span class="o">)</span>
+              
+<span class="n">data1</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+<span class="c1">// // val df1 = spark.createDataFrame(data1.sample(), schema1)</span>
+<span class="c1">// val sample = data1.sample(false, 0.0001)</span>
+<span class="c1">// sample.count</span>
+
+<span class="c1">// sample.take(1)</span>
+
+<span class="k">val</span> <span class="n">df</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="o">(</span><span class="n">data1</span><span class="o">,</span> <span class="n">schema1</span><span class="o">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">count</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">&lt;console&gt;:171: error: not found: value schema1</span>
+<span class="go">       val df = spark.createDataFrame(data1, schema1)</span>
+<span class="go">                                             ^</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="cm">/** @return The read DataFrame along with its column names. */</span>
+<span class="k">def</span> <span class="n">read</span><span class="o">(</span><span class="n">resource</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">],</span> <span class="nc">DataFrame</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">rdd</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="o">(</span><span class="n">resource</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">headerColumns</span> <span class="k">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;,&quot;</span><span class="o">).</span><span class="n">toList</span> <span class="c1">// Get the header line as list</span>
+    <span class="k">val</span> <span class="n">schema</span> <span class="k">=</span> <span class="n">dfSchema</span><span class="o">(</span><span class="n">headerColumns</span><span class="o">)</span>  <span class="c1">// Generate schema out of header columns</span>
+    
+    <span class="c1">// Convert each rdd element to Row</span>
+    <span class="k">val</span> <span class="n">data</span> <span class="k">=</span> <span class="n">rdd</span>
+                 <span class="o">.</span><span class="n">mapPartitionsWithIndex</span><span class="o">((</span><span class="n">i</span><span class="o">,</span> <span class="n">it</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="n">it</span><span class="o">.</span><span class="n">drop</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="k">else</span> <span class="n">it</span><span class="o">)</span> <span class="c1">// skip header line from first partition</span>
+                 <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">line</span> <span class="k">=&gt;</span> <span class="n">row</span><span class="o">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;,&quot;</span><span class="o">).</span><span class="n">toList</span><span class="o">))</span> <span class="c1">// Convert each line into Row</span>
+                 
+    <span class="c1">// Create DataFrame</span>
+    <span class="k">val</span> <span class="n">df</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="o">(</span><span class="n">data</span><span class="o">,</span> <span class="n">schema</span><span class="o">)</span>
+    <span class="o">(</span><span class="n">headerColumns</span><span class="o">,</span> <span class="n">df</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">read: (resource: String)(List[String], org.apache.spark.sql.DataFrame)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="o">(</span><span class="n">columns</span><span class="o">,</span> <span class="n">initDF</span><span class="o">)</span> <span class="k">=</span> <span class="n">read</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;timeusage&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">columns: List[String] = List(tucaseid, gemetsta, gtmetsta, peeduca, pehspnon, ptdtrace, teage, telfs, temjot, teschenr, teschlvl, tesex, tespempnot, trchildnum, trdpftpt, trernwa, trholiday, trspftpt, trsppres, tryhhchild, tudiaryday, tufnwgtp, tehruslt, tuyear, t010101, t010102, t010199, t010201, t010299, t010301, t010399, t010401, t010499, t010501, t010599, t019999, t020101, t020102, t020103, t020104, t020199, t020201, t020202, t020203, t020299, t020301, t020302, t020303, t020399, t020401, t020402, t020499, t020501, t020502, t020599, t020681, t020699, t020701, t020799, t020801, t020899, t020901, t020902, t020903, t020904, t020905, t020999, t029999, t030101, t030102, t030103, t030104, t030105, t030108, t030109, t030110, t030111, t030112, t030186, t030199, t030201, t030202, t030203, t03...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">initDF</span><span class="o">.</span><span class="n">show</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+----------------+--------+--------+-------+--------+--------+-----+-----+------+--------+--------+-----+----------+----------+--------+-------+---------+--------+--------+----------+----------+---------+--------+------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+</span>
+<span class="go">|        tucaseid|gemetsta|gtmetsta|peeduca|pehspnon|ptdtrace|teage|telfs|temjot|teschenr|teschlvl|tesex|tespempnot|trchildnum|trdpftpt|trernwa|trholiday|trspftpt|trsppres|tryhhchild|tudiaryday| tufnwgtp|tehruslt|tuyear|t010101|t010102|t010199|t010201|t010299|t010301|t010399|t010401|t010499|t010501|t010599|t019999|t020101|t020102|t020103|t020104|t020199|t020201|t020202|t020203|t020299|t020301|t020302|t020303|t020399|t020401|t020402|t020499|t020501|t020502|t020599|t020681|t020699|t020701|t020799|t020801|t020899|t020901|t020902|t020903|t020904|t020905|t020999|t029999|t030101|t030102|t030103|t030104|t030105|t030108|t030109|t030110|t030111|t030112|t030186|t030199|t030201|t030202|t030203|t030204|t030299|t030301|t030302|t030303|t030399|t030401|t030402|t030403|t030404|t030405|t030499|t030501|t030502|t030503|t030504|t030599|t039999|t040101|t040102|t040103|t040104|t040105|t040108|t040109|t040110|t040111|t040112|t040186|t040199|t040201|t040202|t040203|t040204|t040299|t040301|t040302|t040303|t040399|t040401|t040402|t040403|t040404|t040405|t040499|t040501|t040502|t040503|t040504|t040505|t040506|t040507|t040508|t040599|t049999|t050101|t050102|t050103|t050189|t050201|t050202|t050203|t050204|t050289|t050301|t050302|t050303|t050304|t050389|t050403|t050404|t050405|t050481|t050499|t059999|t060101|t060102|t060103|t060104|t060199|t060201|t060202|t060203|t060289|t060301|t060302|t060303|t060399|t060401|t060402|t060403|t060499|t069999|t070101|t070102|t070103|t070104|t070105|t070199|t070201|t070299|t070301|t070399|t079999|t080101|t080102|t080199|t080201|t080202|t080203|t080299|t080301|t080302|t080399|t080401|t080402|t080403|t080499|t080501|t080502|t080599|t080601|t080602|t080699|t080701|t080702|t080799|t080801|t080899|t089999|t090101|t090102|t090103|t090104|t090199|t090201|t090202|t090299|t090301|t090302|t090399|t090401|t090402|t090499|t090501|t090502|t090599|t099999|t100101|t100102|t100103|t100199|t100201|t100299|t100381|t100383|t100399|t100401|t100499|t109999|t110101|t110199|t110281|t110289|t119999|t120101|t120199|t120201|t120202|t120299|t120301|t120302|t120303|t120304|t120305|t120306|t120307|t120308|t120309|t120310|t120311|t120312|t120313|t120399|t120401|t120402|t120403|t120404|t120405|t120499|t120501|t120502|t120503|t120504|t120599|t129999|t130101|t130102|t130103|t130104|t130105|t130106|t130107|t130108|t130109|t130110|t130111|t130112|t130113|t130114|t130115|t130116|t130117|t130118|t130119|t130120|t130121|t130122|t130123|t130124|t130125|t130126|t130127|t130128|t130129|t130130|t130131|t130132|t130133|t130134|t130135|t130136|t130199|t130201|t130202|t130203|t130204|t130205|t130206|t130207|t130208|t130209|t130210|t130211|t130212|t130213|t130214|t130215|t130216|t130217|t130218|t130219|t130220|t130221|t130222|t130223|t130224|t130225|t130226|t130227|t130228|t130229|t130230|t130231|t130232|t130299|t130301|t130302|t130399|t130401|t130402|t130499|t139999|t140101|t140102|t140103|t140104|t140105|t149999|t150101|t150102|t150103|t150104|t150105|t150106|t150199|t150201|t150202|t150203|t150204|t150299|t150301|t150302|t150399|t150401|t150402|t150499|t150501|t150599|t150601|t150602|t150699|t159989|t160101|t160102|t160103|t160104|t160105|t160106|t160107|t160108|t169989|t180101|t180199|t180280|t180381|t180382|t180399|t180481|t180482|t180499|t180501|t180502|t180589|t180601|t180682|t180699|t180701|t180782|t180801|t180802|t180803|t180804|t180805|t180806|t180807|t180899|t180901|t180902|t180903|t180904|t180905|t180999|t181002|t181081|t181099|t181101|t181199|t181201|t181202|t181204|t181283|t181299|t181301|t181302|t181399|t181401|t181499|t181501|t181599|t181601|t181699|t181801|t181899|t189999|t500101|t500103|t500104|t500105|t500106|t500107|t509989|</span>
+<span class="go">+----------------+--------+--------+-------+--------+--------+-----+-----+------+--------+--------+-----+----------+----------+--------+-------+---------+--------+--------+----------+----------+---------+--------+------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+</span>
+<span class="go">|&quot;20030100013280&quot;|     1.0|    -1.0|   44.0|     2.0|     2.0| 60.0|  2.0|   2.0|    -1.0|    -1.0|  1.0|       2.0|       0.0|     2.0|66000.0|      0.0|    -1.0|     1.0|      -1.0|       6.0|8155463.0|    30.0|2003.0|  870.0|    0.0|    0.0|   40.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    5.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|  325.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|  200.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|</span>
+<span class="go">|&quot;20030100013344&quot;|     2.0|    -1.0|   40.0|     2.0|     1.0| 41.0|  1.0|   2.0|     2.0|    -1.0|  2.0|       1.0|       2.0|     2.0|20000.0|      0.0|     1.0|     1.0|       0.0|       7.0|1735323.0|    30.0|2003.0|  620.0|    0.0|    0.0|   60.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|   60.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|   90.0|    0.0|    0.0|    0.0|    0.0|  530.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|   60.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|   20.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|    0.0|</span>
+<span class="go">+----------------+--------+--------+-------+--------+--------+-----+-----+------+--------+--------+-----+----------+----------+--------+-------+---------+--------+--------+----------+----------+---------+--------+------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+</span>
+<span class="go">only showing top 2 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="cm">/** @return The initial data frame columns partitioned in three groups: primary needs (sleeping, eating, etc.),</span>
+<span class="cm">    *         work and other (leisure activities)</span>
+<span class="cm">    *</span>
+<span class="cm">    * @see https://www.kaggle.com/bls/american-time-use-survey</span>
+<span class="cm">    *</span>
+<span class="cm">    * The dataset contains the daily time (in minutes) people spent in various activities. For instance, the column</span>
+<span class="cm">    * &quot;t010101&quot; contains the time spent sleeping, the column &quot;t110101&quot; contains the time spent eating and drinking, etc.</span>
+<span class="cm">    *</span>
+<span class="cm">    * This method groups related columns together:</span>
+<span class="cm">    * 1. &quot;primary needs&quot; activities (sleeping, eating, etc.). These are the columns starting with &quot;t01&quot;, &quot;t03&quot;, &quot;t11&quot;,</span>
+<span class="cm">    *    &quot;t1801&quot; and &quot;t1803&quot;.</span>
+<span class="cm">    * 2. working activities. These are the columns starting with &quot;t05&quot; and &quot;t1805&quot;.</span>
+<span class="cm">    * 3. other activities (leisure). These are the columns starting with &quot;t02&quot;, &quot;t04&quot;, &quot;t06&quot;, &quot;t07&quot;, &quot;t08&quot;, &quot;t09&quot;,</span>
+<span class="cm">    *    &quot;t10&quot;, &quot;t12&quot;, &quot;t13&quot;, &quot;t14&quot;, &quot;t15&quot;, &quot;t16&quot; and &quot;t18&quot; (those which are not part of the previous groups only).</span>
+<span class="cm">    */</span>
+    
+<span class="k">import</span> <span class="nn">scala.collection.mutable.ListBuffer</span>
+  <span class="k">def</span> <span class="n">classifiedColumns</span><span class="o">(</span><span class="n">columnNames</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="o">(</span><span class="kt">List</span><span class="o">[</span><span class="kt">Column</span><span class="o">],</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Column</span><span class="o">],</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Column</span><span class="o">])</span> <span class="k">=</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">primary</span> <span class="k">=</span> <span class="nc">ListBuffer</span><span class="o">[</span><span class="kt">Column</span><span class="o">]()</span>
+      <span class="k">val</span> <span class="n">work</span> <span class="k">=</span> <span class="nc">ListBuffer</span><span class="o">[</span><span class="kt">Column</span><span class="o">]()</span>
+      <span class="k">val</span> <span class="n">other</span> <span class="k">=</span> <span class="nc">ListBuffer</span><span class="o">[</span><span class="kt">Column</span><span class="o">]()</span>
+      <span class="k">for</span><span class="o">(</span><span class="n">c</span> <span class="k">&lt;-</span> <span class="n">columnNames</span><span class="o">)</span> <span class="o">{</span>
+          <span class="k">if</span> <span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t01&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t03&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t11&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t1801&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t1803&quot;</span><span class="o">))</span> <span class="o">{</span>
+              <span class="n">primary</span> <span class="o">+=</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="n">c</span><span class="o">)</span>
+          <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t05&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t1805&quot;</span><span class="o">))</span> <span class="o">{</span>
+              <span class="n">work</span> <span class="o">+=</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="n">c</span><span class="o">)</span>
+          <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t02&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t04&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t06&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t07&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t08&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t09&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t10&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t12&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t13&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t14&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t15&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t16&quot;</span><span class="o">)</span> <span class="o">||</span> <span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t18&quot;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">c</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">&quot;t1805&quot;</span><span class="o">)))</span> <span class="o">{</span>
+              <span class="n">other</span> <span class="o">+=</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="n">c</span><span class="o">)</span>
+          <span class="o">}</span>
+      <span class="o">}</span>
+      <span class="o">(</span><span class="n">primary</span><span class="o">.</span><span class="n">toList</span><span class="o">,</span> <span class="n">work</span><span class="o">.</span><span class="n">toList</span><span class="o">,</span> <span class="n">other</span><span class="o">.</span><span class="n">toList</span><span class="o">)</span>
+  <span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import scala.collection.mutable.ListBuffer</span>
+<span class="go">classifiedColumns: (columnNames: List[String])(List[org.apache.spark.sql.Column], List[org.apache.spark.sql.Column], List[org.apache.spark.sql.Column])</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="o">(</span><span class="n">primary1</span><span class="o">,</span> <span class="n">work1</span><span class="o">,</span> <span class="n">other1</span><span class="o">)</span> <span class="k">=</span> <span class="n">classifiedColumns</span><span class="o">(</span><span class="n">columns</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">primary1: List[org.apache.spark.sql.Column] = List(t010101, t010102, t010199, t010201, t010299, t010301, t010399, t010401, t010499, t010501, t010599, t019999, t030101, t030102, t030103, t030104, t030105, t030108, t030109, t030110, t030111, t030112, t030186, t030199, t030201, t030202, t030203, t030204, t030299, t030301, t030302, t030303, t030399, t030401, t030402, t030403, t030404, t030405, t030499, t030501, t030502, t030503, t030504, t030599, t039999, t110101, t110199, t110281, t110289, t119999, t180101, t180199, t180381, t180382, t180399)</span>
+<span class="go">work1: List[org.apache.spark.sql.Column] = List(t050101, t050102, t050103, t050189, t050201, t050202, t050203, t050204, t050289, t050301, t050302, t050303, t050304, t050389, t050403, t050404, t050405, t050481, t050499, t059999, t180501, t180502, t1805...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// org.apache.spark.sql.functions.when</span>
+
+<span class="k">val</span> <span class="n">working</span> <span class="k">=</span> <span class="n">when</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;telfs&quot;</span><span class="o">.</span><span class="n">between</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">),</span> <span class="s">&quot;working&quot;</span><span class="o">)</span>
+              <span class="o">.</span><span class="n">otherwise</span><span class="o">(</span><span class="s">&quot;not working&quot;</span><span class="o">)</span>
+              <span class="o">.</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;working&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">working: org.apache.spark.sql.Column = CASE WHEN ((telfs &gt;= 1) AND (telfs &lt;= 2)) THEN working ELSE not working END AS `working`</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">initDF</span><span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="n">working</span><span class="o">).</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-----------+</span>
+<span class="go">|    working|</span>
+<span class="go">+-----------+</span>
+<span class="go">|    working|</span>
+<span class="go">|    working|</span>
+<span class="go">|    working|</span>
+<span class="go">|not working|</span>
+<span class="go">|    working|</span>
+<span class="go">|    working|</span>
+<span class="go">|    working|</span>
+<span class="go">|    working|</span>
+<span class="go">|    working|</span>
+<span class="go">|    working|</span>
+<span class="go">|    working|</span>
+<span class="go">|    working|</span>
+<span class="go">|    working|</span>
+<span class="go">|not working|</span>
+<span class="go">|    working|</span>
+<span class="go">|    working|</span>
+<span class="go">|not working|</span>
+<span class="go">|    working|</span>
+<span class="go">|not working|</span>
+<span class="go">|    working|</span>
+<span class="go">+-----------+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">primaryNeeds1</span> <span class="k">=</span> <span class="o">(</span><span class="n">primary1</span><span class="o">.</span><span class="n">reduce</span><span class="o">(</span><span class="k">_</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span> <span class="o">/</span> <span class="mi">60</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;p&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">primaryNeeds1: org.apache.spark.sql.Column = (((((((((((((((((((((((((((((((((((((((((((((((((((((((t010101 + t010102) + t010199) + t010201) + t010299) + t010301) + t010399) + t010401) + t010499) + t010501) + t010599) + t019999) + t030101) + t030102) + t030103) + t030104) + t030105) + t030108) + t030109) + t030110) + t030111) + t030112) + t030186) + t030199) + t030201) + t030202) + t030203) + t030204) + t030299) + t030301) + t030302) + t030303) + t030399) + t030401) + t030402) + t030403) + t030404) + t030405) + t030499) + t030501) + t030502) + t030503) + t030504) + t030599) + t039999) + t110101) + t110199) + t110281) + t110289) + t119999) + t180101) + t180199) + t180381) + t180382) + t180399) / 60) AS `p`</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">initDF</span><span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="n">primaryNeeds1</span><span class="o">).</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+------------------+</span>
+<span class="go">|                 p|</span>
+<span class="go">+------------------+</span>
+<span class="go">|             15.25|</span>
+<span class="go">|13.833333333333334|</span>
+<span class="go">|11.916666666666666|</span>
+<span class="go">|13.083333333333334|</span>
+<span class="go">|11.783333333333333|</span>
+<span class="go">|              17.0|</span>
+<span class="go">|12.783333333333333|</span>
+<span class="go">|               9.0|</span>
+<span class="go">|13.166666666666666|</span>
+<span class="go">| 6.683333333333334|</span>
+<span class="go">| 9.833333333333334|</span>
+<span class="go">|12.416666666666666|</span>
+<span class="go">|11.633333333333333|</span>
+<span class="go">|              14.0|</span>
+<span class="go">|             12.15|</span>
+<span class="go">|             13.75|</span>
+<span class="go">|             11.25|</span>
+<span class="go">|11.166666666666666|</span>
+<span class="go">|12.666666666666666|</span>
+<span class="go">|11.416666666666666|</span>
+<span class="go">+------------------+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="cm">/** @return a projection of the initial DataFrame such that all columns containing hours spent on primary needs</span>
+<span class="cm">    *         are summed together in a single column (and same for work and leisure). The “teage” column is also</span>
+<span class="cm">    *         projected to three values: &quot;young&quot;, &quot;active&quot;, &quot;elder&quot;.</span>
+<span class="cm">    *</span>
+<span class="cm">    * @param primaryNeedsColumns List of columns containing time spent on “primary needs”</span>
+<span class="cm">    * @param workColumns List of columns containing time spent working</span>
+<span class="cm">    * @param otherColumns List of columns containing time spent doing other activities</span>
+<span class="cm">    * @param df DataFrame whose schema matches the given column lists</span>
+<span class="cm">    *</span>
+<span class="cm">    * This methods builds an intermediate DataFrame that sums up all the columns of each group of activity into</span>
+<span class="cm">    * a single column.</span>
+<span class="cm">    *</span>
+<span class="cm">    * The resulting DataFrame should have the following columns:</span>
+<span class="cm">    * - working: value computed from the “telfs” column of the given DataFrame:</span>
+<span class="cm">    *   - &quot;working&quot; if 1 &lt;= telfs &lt; 3</span>
+<span class="cm">    *   - &quot;not working&quot; otherwise</span>
+<span class="cm">    * - sex: value computed from the “tesex” column of the given DataFrame:</span>
+<span class="cm">    *   - &quot;male&quot; if tesex = 1, &quot;female&quot; otherwise</span>
+<span class="cm">    * - age: value computed from the “teage” column of the given DataFrame:</span>
+<span class="cm">    *   - &quot;young&quot; if 15 &lt;= teage &lt;= 22,</span>
+<span class="cm">    *   - &quot;active&quot; if 23 &lt;= teage &lt;= 55,</span>
+<span class="cm">    *   - &quot;elder&quot; otherwise</span>
+<span class="cm">    * - primaryNeeds: sum of all the `primaryNeedsColumns`, in hours</span>
+<span class="cm">    * - work: sum of all the `workColumns`, in hours</span>
+<span class="cm">    * - other: sum of all the `otherColumns`, in hours</span>
+<span class="cm">    *</span>
+<span class="cm">    * Finally, the resulting DataFrame should exclude people that are not employable (ie telfs = 5).</span>
+<span class="cm">    *</span>
+<span class="cm">    * Note that the initial DataFrame contains time in &#39;&#39;minutes&#39;&#39;. You have to convert it into &#39;&#39;hours&#39;&#39;.</span>
+<span class="cm">    */</span>
+    
+<span class="k">def</span> <span class="n">timeUsageSummary</span><span class="o">(</span>
+    <span class="n">primaryNeedsColumns</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Column</span><span class="o">],</span>
+    <span class="n">workColumns</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Column</span><span class="o">],</span>
+    <span class="n">otherColumns</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Column</span><span class="o">],</span>
+    <span class="n">df</span><span class="k">:</span> <span class="kt">DataFrame</span>
+  <span class="o">)</span><span class="k">:</span> <span class="kt">DataFrame</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="c1">// Transform the data from the initial dataset into data that make</span>
+    <span class="c1">// more sense for our use case</span>
+    <span class="c1">// Hint: you can use the `when` and `otherwise` Spark functions</span>
+    <span class="c1">// Hint: don’t forget to give your columns the expected name with the `as` method</span>
+    <span class="k">val</span> <span class="n">workingStatusProjection</span><span class="k">:</span> <span class="kt">Column</span> <span class="o">=</span> <span class="n">when</span><span class="o">(</span><span class="n">col</span><span class="o">(</span><span class="s">&quot;telfs&quot;</span><span class="o">).</span><span class="n">between</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">),</span> <span class="s">&quot;working&quot;</span><span class="o">)</span>
+                                          <span class="o">.</span><span class="n">otherwise</span><span class="o">(</span><span class="s">&quot;not working&quot;</span><span class="o">)</span>
+                                          <span class="o">.</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;working&quot;</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">sexProjection</span><span class="k">:</span> <span class="kt">Column</span> <span class="o">=</span> <span class="n">when</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;tesex&quot;</span> <span class="o">===</span> <span class="mi">1</span><span class="o">,</span> <span class="s">&quot;male&quot;</span><span class="o">)</span>
+                                <span class="o">.</span><span class="n">otherwise</span><span class="o">(</span><span class="s">&quot;female&quot;</span><span class="o">)</span>
+                                <span class="o">.</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;sex&quot;</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">ageProjection</span><span class="k">:</span> <span class="kt">Column</span> <span class="o">=</span> <span class="n">when</span><span class="o">(</span><span class="n">col</span><span class="o">(</span><span class="s">&quot;teage&quot;</span><span class="o">).</span><span class="n">between</span><span class="o">(</span><span class="mi">15</span><span class="o">,</span> <span class="mi">22</span><span class="o">),</span> <span class="s">&quot;young&quot;</span><span class="o">)</span>
+                                <span class="o">.</span><span class="n">when</span><span class="o">(</span><span class="n">col</span><span class="o">(</span><span class="s">&quot;teage&quot;</span><span class="o">).</span><span class="n">between</span><span class="o">(</span><span class="mi">23</span><span class="o">,</span> <span class="mi">55</span><span class="o">),</span> <span class="s">&quot;active&quot;</span><span class="o">)</span>
+                                <span class="o">.</span><span class="n">otherwise</span><span class="o">(</span><span class="s">&quot;elder&quot;</span><span class="o">)</span>
+                                <span class="o">.</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;age&quot;</span><span class="o">)</span>
+
+    <span class="c1">// Create columns that sum columns of the initial dataset</span>
+    <span class="c1">// Hint: you want to create a complex column expression that sums other columns</span>
+    <span class="c1">//       by using the `+` operator between them</span>
+    <span class="c1">// Hint: don’t forget to convert the value to hours</span>
+    <span class="k">val</span> <span class="n">primaryNeedsProjection</span><span class="k">:</span> <span class="kt">Column</span> <span class="o">=</span> <span class="o">(</span><span class="n">primaryNeedsColumns</span><span class="o">.</span><span class="n">reduce</span><span class="o">(</span><span class="k">_</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span> <span class="o">/</span> <span class="mi">60</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;primaryNeeds&quot;</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">workProjection</span><span class="k">:</span> <span class="kt">Column</span> <span class="o">=</span> <span class="o">(</span><span class="n">workColumns</span><span class="o">.</span><span class="n">reduce</span><span class="o">(</span><span class="k">_</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span> <span class="o">/</span> <span class="mi">60</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;work&quot;</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">otherProjection</span><span class="k">:</span> <span class="kt">Column</span> <span class="o">=</span> <span class="o">(</span><span class="n">otherColumns</span><span class="o">.</span><span class="n">reduce</span><span class="o">(</span><span class="k">_</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span> <span class="o">/</span> <span class="mi">60</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">)</span>
+    
+    <span class="n">df</span>
+      <span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="n">workingStatusProjection</span><span class="o">,</span> <span class="n">sexProjection</span><span class="o">,</span> <span class="n">ageProjection</span><span class="o">,</span> <span class="n">primaryNeedsProjection</span><span class="o">,</span> <span class="n">workProjection</span><span class="o">,</span> <span class="n">otherProjection</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">where</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;telfs&quot;</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="o">)</span> <span class="c1">// Discard people who are not in labor force</span>
+  <span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">timeUsageSummary: (primaryNeedsColumns: List[org.apache.spark.sql.Column], workColumns: List[org.apache.spark.sql.Column], otherColumns: List[org.apache.spark.sql.Column], df: org.apache.spark.sql.DataFrame)org.apache.spark.sql.DataFrame</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="o">(</span><span class="n">primaryNeedsColumns</span><span class="o">,</span> <span class="n">workColumns</span><span class="o">,</span> <span class="n">otherColumns</span><span class="o">)</span> <span class="k">=</span> <span class="n">classifiedColumns</span><span class="o">(</span><span class="n">columns</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">summaryDF</span> <span class="k">=</span> <span class="n">timeUsageSummary</span><span class="o">(</span><span class="n">primaryNeedsColumns</span><span class="o">,</span> <span class="n">workColumns</span><span class="o">,</span> <span class="n">otherColumns</span><span class="o">,</span> <span class="n">initDF</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">primaryNeedsColumns: List[org.apache.spark.sql.Column] = List(t010101, t010102, t010199, t010201, t010299, t010301, t010399, t010401, t010499, t010501, t010599, t019999, t030101, t030102, t030103, t030104, t030105, t030108, t030109, t030110, t030111, t030112, t030186, t030199, t030201, t030202, t030203, t030204, t030299, t030301, t030302, t030303, t030399, t030401, t030402, t030403, t030404, t030405, t030499, t030501, t030502, t030503, t030504, t030599, t039999, t110101, t110199, t110281, t110289, t119999, t180101, t180199, t180381, t180382, t180399)</span>
+<span class="go">workColumns: List[org.apache.spark.sql.Column] = List(t050101, t050102, t050103, t050189, t050201, t050202, t050203, t050204, t050289, t050301, t050302, t050303, t050304, t050389, t050403, t050404, t050405, t050481, t050499, t059999, t18050...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">summaryDF</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-----------+------+------+------------------+------------------+------------------+</span>
+<span class="go">|    working|   sex|   age|      primaryNeeds|              work|             other|</span>
+<span class="go">+-----------+------+------+------------------+------------------+------------------+</span>
+<span class="go">|    working|  male| elder|             15.25|               0.0|              8.75|</span>
+<span class="go">|    working|female|active|13.833333333333334|               0.0|10.166666666666666|</span>
+<span class="go">|    working|female|active|11.916666666666666|               0.0|12.083333333333334|</span>
+<span class="go">|not working|female|active|13.083333333333334|               2.0| 8.916666666666666|</span>
+<span class="go">|    working|  male|active|11.783333333333333| 8.583333333333334|3.6333333333333333|</span>
+<span class="go">|    working|female|active|              17.0|               0.0|               7.0|</span>
+<span class="go">|    working|female|active|12.783333333333333| 8.566666666666666|              2.65|</span>
+<span class="go">|    working|female| young|               9.0| 9.083333333333334| 5.916666666666667|</span>
+<span class="go">|    working|female|active|13.166666666666666|               0.0|10.833333333333334|</span>
+<span class="go">|    working|female|active| 6.683333333333334|               4.5|12.816666666666666|</span>
+<span class="go">|    working|  male|active| 9.833333333333334|12.133333333333333| 2.033333333333333|</span>
+<span class="go">|    working|female|active|12.416666666666666|               0.0|11.583333333333334|</span>
+<span class="go">|    working|female|active|11.633333333333333| 6.333333333333333| 6.033333333333333|</span>
+<span class="go">|    working|female|active|             12.15|               9.0|              2.85|</span>
+<span class="go">|    working|female|active|             13.75|              0.75|               9.5|</span>
+<span class="go">|    working|female|active|11.166666666666666|1.0833333333333333|             11.75|</span>
+<span class="go">|    working|female| young|11.416666666666666|               0.0|12.583333333333334|</span>
+<span class="go">|    working|female|active|              15.8|               0.0|               8.2|</span>
+<span class="go">|    working|  male|active| 9.666666666666666|11.616666666666667| 2.716666666666667|</span>
+<span class="go">|    working|female|active|              12.1| 7.966666666666667| 3.933333333333333|</span>
+<span class="go">+-----------+------+------+------------------+------------------+------------------+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">summaryDF</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class=" -Symbol">&#39;sex</span> <span class="o">===</span> <span class="s">&quot;male&quot;</span><span class="o">).</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-------+----+------+------------------+------------------+------------------+</span>
+<span class="go">|working| sex|   age|      primaryNeeds|              work|             other|</span>
+<span class="go">+-------+----+------+------------------+------------------+------------------+</span>
+<span class="go">|working|male| elder|             15.25|               0.0|              8.75|</span>
+<span class="go">|working|male|active|11.783333333333333| 8.583333333333334|3.6333333333333333|</span>
+<span class="go">|working|male|active| 9.833333333333334|12.133333333333333| 2.033333333333333|</span>
+<span class="go">|working|male|active| 9.666666666666666|11.616666666666667| 2.716666666666667|</span>
+<span class="go">|working|male|active| 9.833333333333334|              9.75| 4.416666666666667|</span>
+<span class="go">|working|male| young|14.333333333333334|               0.0| 9.666666666666666|</span>
+<span class="go">|working|male|active|              17.0|              2.75|              4.25|</span>
+<span class="go">|working|male|active| 9.333333333333334| 9.916666666666666|              4.75|</span>
+<span class="go">|working|male|active| 9.183333333333334| 9.083333333333334| 5.233333333333333|</span>
+<span class="go">|working|male|active|              8.25|               3.0|             12.75|</span>
+<span class="go">|working|male|active| 9.383333333333333| 8.666666666666666| 5.633333333333334|</span>
+<span class="go">|working|male|active|10.833333333333334|               0.0|13.166666666666666|</span>
+<span class="go">|working|male|active|15.833333333333334|               0.0| 8.166666666666666|</span>
+<span class="go">|working|male|active|11.083333333333334|               0.0|12.916666666666666|</span>
+<span class="go">|working|male|active|              13.0|               0.0|              11.0|</span>
+<span class="go">|working|male|active|11.216666666666667|               0.0|12.783333333333333|</span>
+<span class="go">|working|male|active|11.583333333333334| 8.416666666666666|3.1666666666666665|</span>
+<span class="go">|working|male|active|              12.7|               0.0|              11.3|</span>
+<span class="go">|working|male|active| 7.416666666666667|15.583333333333334|               1.0|</span>
+<span class="go">|working|male|active| 6.666666666666667|13.166666666666666| 4.166666666666667|</span>
+<span class="go">+-------+----+------+------------------+------------------+------------------+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">org.apache.spark.sql.functions._</span>
+<span class="n">summaryDF</span><span class="o">.</span><span class="n">groupBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;working&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;sex&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;age&quot;</span><span class="o">).</span><span class="n">agg</span><span class="o">(</span><span class="n">round</span><span class="o">(</span><span class="n">avg</span><span class="o">(</span><span class="s">&quot;primaryNeeds&quot;</span><span class="o">),</span> <span class="mi">1</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;primaryNeeds&quot;</span><span class="o">),</span> <span class="n">round</span><span class="o">(</span><span class="n">avg</span><span class="o">(</span><span class="s">&quot;work&quot;</span><span class="o">),</span> <span class="mi">1</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;work&quot;</span><span class="o">),</span> <span class="n">round</span><span class="o">(</span><span class="n">avg</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">),</span> <span class="mi">1</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">)).</span><span class="n">orderBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;working&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;sex&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;age&quot;</span><span class="o">).</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-----------+------+------+------------+----+-----+</span>
+<span class="go">|    working|   sex|   age|primaryNeeds|work|other|</span>
+<span class="go">+-----------+------+------+------------+----+-----+</span>
+<span class="go">|not working|female|active|        12.4| 0.5| 10.8|</span>
+<span class="go">|not working|female| elder|        10.9| 0.4| 12.4|</span>
+<span class="go">|not working|female| young|        12.5| 0.2| 11.1|</span>
+<span class="go">|not working|  male|active|        11.4| 0.9| 11.4|</span>
+<span class="go">|not working|  male| elder|        10.7| 0.7| 12.3|</span>
+<span class="go">|not working|  male| young|        11.6| 0.2| 11.9|</span>
+<span class="go">|    working|female|active|        11.5| 4.2|  8.1|</span>
+<span class="go">|    working|female| elder|        10.6| 3.9|  9.3|</span>
+<span class="go">|    working|female| young|        11.6| 3.3|  8.9|</span>
+<span class="go">|    working|  male|active|        10.8| 5.2|  7.8|</span>
+<span class="go">|    working|  male| elder|        10.4| 4.8|  8.6|</span>
+<span class="go">|    working|  male| young|        10.9| 3.7|  9.2|</span>
+<span class="go">+-----------+------+------+------------+----+-----+</span>
+
+<span class="go">import org.apache.spark.sql.functions._</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">org.apache.spark.sql.functions._</span>
+  <span class="cm">/** @return the average daily time (in hours) spent in primary needs, working or leisure, grouped by the different</span>
+<span class="cm">    *         ages of life (young, active or elder), sex and working status.</span>
+<span class="cm">    * @param summed DataFrame returned by `timeUsageSumByClass`</span>
+<span class="cm">    *</span>
+<span class="cm">    * The resulting DataFrame should have the following columns:</span>
+<span class="cm">    * - working: the “working” column of the `summed` DataFrame,</span>
+<span class="cm">    * - sex: the “sex” column of the `summed` DataFrame,</span>
+<span class="cm">    * - age: the “age” column of the `summed` DataFrame,</span>
+<span class="cm">    * - primaryNeeds: the average value of the “primaryNeeds” columns of all the people that have the same working</span>
+<span class="cm">    *   status, sex and age, rounded with a scale of 1 (using the `round` function),</span>
+<span class="cm">    * - work: the average value of the “work” columns of all the people that have the same working status, sex</span>
+<span class="cm">    *   and age, rounded with a scale of 1 (using the `round` function),</span>
+<span class="cm">    * - other: the average value of the “other” columns all the people that have the same working status, sex and</span>
+<span class="cm">    *   age, rounded with a scale of 1 (using the `round` function).</span>
+<span class="cm">    *</span>
+<span class="cm">    * Finally, the resulting DataFrame should be sorted by working status, sex and age.</span>
+<span class="cm">    */</span>
+  <span class="k">def</span> <span class="n">timeUsageGrouped</span><span class="o">(</span><span class="n">summed</span><span class="k">:</span> <span class="kt">DataFrame</span><span class="o">)</span><span class="k">:</span> <span class="kt">DataFrame</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">summed</span><span class="o">.</span><span class="n">groupBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;working&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;sex&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;age&quot;</span><span class="o">).</span><span class="n">agg</span><span class="o">(</span><span class="n">round</span><span class="o">(</span><span class="n">avg</span><span class="o">(</span><span class="s">&quot;primaryNeeds&quot;</span><span class="o">),</span> <span class="mi">1</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;primaryNeeds&quot;</span><span class="o">),</span> <span class="n">round</span><span class="o">(</span><span class="n">avg</span><span class="o">(</span><span class="s">&quot;work&quot;</span><span class="o">),</span> <span class="mi">1</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;work&quot;</span><span class="o">),</span> <span class="n">round</span><span class="o">(</span><span class="n">avg</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">),</span> <span class="mi">1</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">)).</span><span class="n">orderBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;working&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;sex&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;age&quot;</span><span class="o">)</span>
+  <span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import org.apache.spark.sql.functions._</span>
+<span class="go">timeUsageGrouped: (summed: org.apache.spark.sql.DataFrame)org.apache.spark.sql.DataFrame</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">finalDF</span> <span class="k">=</span> <span class="n">timeUsageGrouped</span><span class="o">(</span><span class="n">summaryDF</span><span class="o">)</span>
+<span class="n">finalDF</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-----------+------+------+------------+----+-----+</span>
+<span class="go">|    working|   sex|   age|primaryNeeds|work|other|</span>
+<span class="go">+-----------+------+------+------------+----+-----+</span>
+<span class="go">|not working|female|active|        12.4| 0.5| 10.8|</span>
+<span class="go">|not working|female| elder|        10.9| 0.4| 12.4|</span>
+<span class="go">|not working|female| young|        12.5| 0.2| 11.1|</span>
+<span class="go">|not working|  male|active|        11.4| 0.9| 11.4|</span>
+<span class="go">|not working|  male| elder|        10.7| 0.7| 12.3|</span>
+<span class="go">|not working|  male| young|        11.6| 0.2| 11.9|</span>
+<span class="go">|    working|female|active|        11.5| 4.2|  8.1|</span>
+<span class="go">|    working|female| elder|        10.6| 3.9|  9.3|</span>
+<span class="go">|    working|female| young|        11.6| 3.3|  8.9|</span>
+<span class="go">|    working|  male|active|        10.8| 5.2|  7.8|</span>
+<span class="go">|    working|  male| elder|        10.4| 4.8|  8.6|</span>
+<span class="go">|    working|  male| young|        10.9| 3.7|  9.2|</span>
+<span class="go">+-----------+------+------+------------+----+-----+</span>
+
+<span class="go">finalDF: org.apache.spark.sql.DataFrame = [working: string, sex: string ... 4 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">finalDF</span><span class="o">.</span><span class="n">rdd</span><span class="o">.</span><span class="n">getNumPartitions</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res76: Int = 12</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Bucketing</span>
+<span class="c1">// https://jaceklaskowski.gitbooks.io/mastering-spark-sql/spark-sql-bucketing.html</span>
+
+<span class="k">import</span> <span class="nn">org.apache.spark.sql.SaveMode</span>
+
+<span class="n">finalDF</span><span class="o">.</span><span class="n">write</span>
+        <span class="o">.</span><span class="n">bucketBy</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;working&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">sortBy</span><span class="o">(</span><span class="s">&quot;working&quot;</span><span class="o">,</span> <span class="s">&quot;sex&quot;</span><span class="o">,</span> <span class="s">&quot;age&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">mode</span><span class="o">(</span><span class="nc">SaveMode</span><span class="o">.</span><span class="nc">Overwrite</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">saveAsTable</span><span class="o">(</span><span class="s">&quot;timeusage_final_table&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import org.apache.spark.sql.SaveMode</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// List the tables</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">listTables</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------------------+--------+-----------+---------+-----------+</span>
+<span class="go">|                name|database|description|tableType|isTemporary|</span>
+<span class="go">+--------------------+--------+-----------+---------+-----------+</span>
+<span class="go">|timeusage_final_t...| default|       null|  MANAGED|      false|</span>
+<span class="go">+--------------------+--------+-----------+---------+-----------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="o">(</span><span class="s">&quot;select * from timeusage_final_table&quot;</span><span class="o">).</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-----------+------+------+------------+----+-----+</span>
+<span class="go">|    working|   sex|   age|primaryNeeds|work|other|</span>
+<span class="go">+-----------+------+------+------------+----+-----+</span>
+<span class="go">|    working|  male| young|        10.9| 3.7|  9.2|</span>
+<span class="go">|    working|female| young|        11.6| 3.3|  8.9|</span>
+<span class="go">|    working|female| elder|        10.6| 3.9|  9.3|</span>
+<span class="go">|    working|female|active|        11.5| 4.2|  8.1|</span>
+<span class="go">|not working|female|active|        12.4| 0.5| 10.8|</span>
+<span class="go">|not working|  male| elder|        10.7| 0.7| 12.3|</span>
+<span class="go">|not working|female| elder|        10.9| 0.4| 12.4|</span>
+<span class="go">|not working|  male|active|        11.4| 0.9| 11.4|</span>
+<span class="go">|not working|  male| young|        11.6| 0.2| 11.9|</span>
+<span class="go">|    working|  male| elder|        10.4| 4.8|  8.6|</span>
+<span class="go">|    working|  male|active|        10.8| 5.2|  7.8|</span>
+<span class="go">|not working|female| young|        12.5| 0.2| 11.1|</span>
+<span class="go">+-----------+------+------+------------+----+-----+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">tableDF</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">table</span><span class="o">(</span><span class="s">&quot;timeusage_final_table&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">tableDF: org.apache.spark.sql.DataFrame = [working: string, sex: string ... 4 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">tableDF</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-----------+------+------+------------+----+-----+</span>
+<span class="go">|    working|   sex|   age|primaryNeeds|work|other|</span>
+<span class="go">+-----------+------+------+------------+----+-----+</span>
+<span class="go">|    working|  male| young|        10.9| 3.7|  9.2|</span>
+<span class="go">|    working|female| young|        11.6| 3.3|  8.9|</span>
+<span class="go">|    working|female| elder|        10.6| 3.9|  9.3|</span>
+<span class="go">|    working|female|active|        11.5| 4.2|  8.1|</span>
+<span class="go">|not working|female|active|        12.4| 0.5| 10.8|</span>
+<span class="go">|not working|  male| elder|        10.7| 0.7| 12.3|</span>
+<span class="go">|not working|female| elder|        10.9| 0.4| 12.4|</span>
+<span class="go">|not working|  male|active|        11.4| 0.9| 11.4|</span>
+<span class="go">|not working|  male| young|        11.6| 0.2| 11.9|</span>
+<span class="go">|    working|  male| elder|        10.4| 4.8|  8.6|</span>
+<span class="go">|    working|  male|active|        10.8| 5.2|  7.8|</span>
+<span class="go">|not working|female| young|        12.5| 0.2| 11.1|</span>
+<span class="go">+-----------+------+------+------------+----+-----+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">tableDF</span><span class="o">.</span><span class="n">rdd</span><span class="o">.</span><span class="n">getNumPartitions</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res89: Int = 1</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">tableDF</span><span class="o">.</span><span class="n">count</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res90: Long = 12</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">  * Models a row of the summarized data set</span>
+<span class="cm">  * @param working Working status (either &quot;working&quot; or &quot;not working&quot;)</span>
+<span class="cm">  * @param sex Sex (either &quot;male&quot; or &quot;female&quot;)</span>
+<span class="cm">  * @param age Age (either &quot;young&quot;, &quot;active&quot; or &quot;elder&quot;)</span>
+<span class="cm">  * @param primaryNeeds Number of daily hours spent on primary needs</span>
+<span class="cm">  * @param work Number of daily hours spent on work</span>
+<span class="cm">  * @param other Number of daily hours spent on other activities</span>
+<span class="cm">  */</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">TimeUsageRow</span><span class="o">(</span>
+  <span class="n">working</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+  <span class="n">sex</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+  <span class="n">age</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>   
+  <span class="n">primaryNeeds</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span>
+  <span class="n">work</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span>    
+  <span class="n">other</span><span class="k">:</span> <span class="kt">Double</span>
+<span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">defined class TimeUsageRow</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">summaryDF</span><span class="o">.</span><span class="n">printSchema</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">root</span>
+<span class="go"> |-- working: string (nullable = false)</span>
+<span class="go"> |-- sex: string (nullable = false)</span>
+<span class="go"> |-- age: string (nullable = false)</span>
+<span class="go"> |-- primaryNeeds: double (nullable = true)</span>
+<span class="go"> |-- work: double (nullable = true)</span>
+<span class="go"> |-- other: double (nullable = true)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">summaryDS</span> <span class="k">=</span> <span class="n">summaryDF</span><span class="o">.</span><span class="n">as</span><span class="o">[</span><span class="kt">TimeUsageRow</span><span class="o">]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">summaryDS: org.apache.spark.sql.Dataset[TimeUsageRow] = [working: string, sex: string ... 4 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">summaryDS</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-----------+------+------+------------------+------------------+------------------+</span>
+<span class="go">|    working|   sex|   age|      primaryNeeds|              work|             other|</span>
+<span class="go">+-----------+------+------+------------------+------------------+------------------+</span>
+<span class="go">|    working|  male| elder|             15.25|               0.0|              8.75|</span>
+<span class="go">|    working|female|active|13.833333333333334|               0.0|10.166666666666666|</span>
+<span class="go">|    working|female|active|11.916666666666666|               0.0|12.083333333333334|</span>
+<span class="go">|not working|female|active|13.083333333333334|               2.0| 8.916666666666666|</span>
+<span class="go">|    working|  male|active|11.783333333333333| 8.583333333333334|3.6333333333333333|</span>
+<span class="go">|    working|female|active|              17.0|               0.0|               7.0|</span>
+<span class="go">|    working|female|active|12.783333333333333| 8.566666666666666|              2.65|</span>
+<span class="go">|    working|female| young|               9.0| 9.083333333333334| 5.916666666666667|</span>
+<span class="go">|    working|female|active|13.166666666666666|               0.0|10.833333333333334|</span>
+<span class="go">|    working|female|active| 6.683333333333334|               4.5|12.816666666666666|</span>
+<span class="go">|    working|  male|active| 9.833333333333334|12.133333333333333| 2.033333333333333|</span>
+<span class="go">|    working|female|active|12.416666666666666|               0.0|11.583333333333334|</span>
+<span class="go">|    working|female|active|11.633333333333333| 6.333333333333333| 6.033333333333333|</span>
+<span class="go">|    working|female|active|             12.15|               9.0|              2.85|</span>
+<span class="go">|    working|female|active|             13.75|              0.75|               9.5|</span>
+<span class="go">|    working|female|active|11.166666666666666|1.0833333333333333|             11.75|</span>
+<span class="go">|    working|female| young|11.416666666666666|               0.0|12.583333333333334|</span>
+<span class="go">|    working|female|active|              15.8|               0.0|               8.2|</span>
+<span class="go">|    working|  male|active| 9.666666666666666|11.616666666666667| 2.716666666666667|</span>
+<span class="go">|    working|female|active|              12.1| 7.966666666666667| 3.933333333333333|</span>
+<span class="go">+-----------+------+------+------------------+------------------+------------------+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">org.apache.spark.sql.expressions.scalalang.typed</span>
+
+<span class="n">summaryDS</span><span class="o">.</span><span class="n">groupByKey</span><span class="o">(</span><span class="n">s</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="n">working</span><span class="o">,</span> <span class="n">s</span><span class="o">.</span><span class="n">sex</span><span class="o">,</span> <span class="n">s</span><span class="o">.</span><span class="n">age</span><span class="o">))</span>
+         <span class="o">.</span><span class="n">agg</span><span class="o">(</span><span class="n">typed</span><span class="o">.</span><span class="n">avg</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">primaryNeeds</span><span class="o">),</span> <span class="n">typed</span><span class="o">.</span><span class="n">avg</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">work</span><span class="o">),</span> <span class="n">typed</span><span class="o">.</span><span class="n">avg</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">other</span><span class="o">))</span>
+         <span class="o">.</span><span class="n">toDF</span><span class="o">(</span><span class="s">&quot;key&quot;</span><span class="o">,</span> <span class="s">&quot;primaryNeeds&quot;</span><span class="o">,</span> <span class="s">&quot;work&quot;</span><span class="o">,</span> <span class="s">&quot;other&quot;</span><span class="o">)</span>
+         <span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;key&quot;</span><span class="o">,</span> <span class="n">round</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;primaryNeeds&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;primaryNeeds&quot;</span><span class="o">),</span> <span class="n">round</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;work&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;work&quot;</span><span class="o">),</span> <span class="n">round</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;other&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">))</span>
+         <span class="o">.</span><span class="n">orderBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;key&quot;</span><span class="o">)</span>
+         <span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------------------+------------+----+-----+</span>
+<span class="go">|                 key|primaryNeeds|work|other|</span>
+<span class="go">+--------------------+------------+----+-----+</span>
+<span class="go">|[not working, fem...|        12.4| 0.5| 10.8|</span>
+<span class="go">|[not working, fem...|        10.9| 0.4| 12.4|</span>
+<span class="go">|[not working, fem...|        12.5| 0.2| 11.1|</span>
+<span class="go">|[not working, mal...|        11.4| 0.9| 11.4|</span>
+<span class="go">|[not working, mal...|        10.7| 0.7| 12.3|</span>
+<span class="go">|[not working, mal...|        11.6| 0.2| 11.9|</span>
+<span class="go">|[working, female,...|        11.5| 4.2|  8.1|</span>
+<span class="go">|[working, female,...|        10.6| 3.9|  9.3|</span>
+<span class="go">|[working, female,...|        11.6| 3.3|  8.9|</span>
+<span class="go">|[working, male, a...|        10.8| 5.2|  7.8|</span>
+<span class="go">|[working, male, e...|        10.4| 4.8|  8.6|</span>
+<span class="go">|[working, male, y...|        10.9| 3.7|  9.2|</span>
+<span class="go">+--------------------+------------+----+-----+</span>
+
+<span class="go">import org.apache.spark.sql.expressions.scalalang.typed</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">    * @return Same as `timeUsageGrouped`, but using the typed API when possible</span>
+<span class="cm">    * @param summed Dataset returned by the `timeUsageSummaryTyped` method</span>
+<span class="cm">    *</span>
+<span class="cm">    * Note that, though they have the same type (`Dataset[TimeUsageRow]`), the input</span>
+<span class="cm">    * dataset contains one element per respondent, whereas the resulting dataset</span>
+<span class="cm">    * contains one element per group (whose time spent on each activity kind has</span>
+<span class="cm">    * been aggregated).</span>
+<span class="cm">    *</span>
+<span class="cm">    * Hint: you should use the `groupByKey` and `typed.avg` methods.</span>
+<span class="cm">    */</span>
+  <span class="k">def</span> <span class="n">timeUsageGroupedTyped</span><span class="o">(</span><span class="n">summed</span><span class="k">:</span> <span class="kt">Dataset</span><span class="o">[</span><span class="kt">TimeUsageRow</span><span class="o">])</span><span class="k">:</span> <span class="kt">Dataset</span><span class="o">[</span><span class="kt">TimeUsageRow</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">import</span> <span class="nn">org.apache.spark.sql.expressions.scalalang.typed</span>
+    <span class="o">???</span>
+  <span class="o">}</span>
+</pre></div>

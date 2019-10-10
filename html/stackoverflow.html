@@ -1,0 +1,272 @@
+<link rel="stylesheet" type="text/css" href="style.css">
+<h2>StackOverflow</h2>
+
+<div class="highlight"><pre><span></span><span class="c1">// Input file</span>
+<span class="n">z</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="s">&quot;stackoverflow&quot;</span><span class="o">,</span> <span class="s">&quot;/home/ubuntu/test_spark/stackoverflow/stackoverflow.csv&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>%sh
+head <span class="o">{</span>stackoverflow<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">1,27233496,,,0,C#</span>
+<span class="go">1,23698767,,,9,C#</span>
+<span class="go">1,5484340,,,0,C#</span>
+<span class="go">2,5494879,,5484340,1,</span>
+<span class="go">1,9419744,,,2,Objective-C</span>
+<span class="go">1,26875732,,,1,C#</span>
+<span class="go">1,9002525,,,2,C++</span>
+<span class="go">2,9003401,,9002525,4,</span>
+<span class="go">2,9003942,,9002525,1,</span>
+<span class="go">2,9005311,,9002525,0,</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="cm">/** A raw stackoverflow posting, either a question or an answer */</span>
+
+<span class="k">type</span> <span class="kt">QID</span> <span class="o">=</span> <span class="nc">Int</span>
+<span class="k">type</span> <span class="kt">HighScore</span> <span class="o">=</span> <span class="nc">Int</span>
+<span class="k">type</span> <span class="kt">LangIndex</span> <span class="o">=</span> <span class="nc">Int</span>
+
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Posting</span><span class="o">(</span><span class="n">postingType</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">id</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">acceptedAnswer</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Int</span><span class="o">],</span> <span class="n">parentId</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">QID</span><span class="o">],</span> <span class="n">score</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">tags</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">Serializable</span>
+
+<span class="k">type</span> <span class="kt">Question</span> <span class="o">=</span> <span class="nc">Posting</span>
+<span class="k">type</span> <span class="kt">Answer</span> <span class="o">=</span> <span class="nc">Posting</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">defined type alias QID</span>
+<span class="go">defined type alias HighScore</span>
+<span class="go">defined type alias LangIndex</span>
+<span class="go">defined class Posting</span>
+<span class="go">defined type alias Question</span>
+<span class="go">defined type alias Answer</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Start reading and transforming csv file</span>
+
+<span class="k">val</span> <span class="n">lines</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;stackoverflow&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+
+<span class="n">lines</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">lines: org.apache.spark.rdd.RDD[String] = /home/ubuntu/test_spark/stackoverflow/stackoverflow.csv MapPartitionsRDD[697] at textFile at &lt;console&gt;:169</span>
+<span class="go">res159: Array[String] = Array(1,27233496,,,0,C#, 1,23698767,,,9,C#, 1,5484340,,,0,C#, 2,5494879,,5484340,1,, 1,9419744,,,2,Objective-C)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="cm">/** Load postings from the given file */</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * &lt;postTypeId&gt;,&lt;id&gt;,[&lt;acceptedAnswer&gt;],[&lt;parentId&gt;],&lt;score&gt;,[&lt;tag&gt;]</span>
+<span class="cm"> *</span>
+<span class="cm"> * A short explanation of the comma-separated fields follows.</span>
+<span class="cm"> * &lt;postTypeId&gt;:     Type of the post. Type 1 = question, type 2 = answer.</span>
+<span class="cm"> * &lt;id&gt;:             Unique id of the post (regardless of type).</span>
+<span class="cm"> * &lt;acceptedAnswer&gt;: Id of the accepted answer post. This information is optional, so maybe be missingindicated by an empty string.</span>
+<span class="cm"> * &lt;parentId&gt;:       For an answer: id of the corresponding question. For a question:missing, indicated by an empty string.</span>
+<span class="cm"> * &lt;score&gt;:          The StackOverflow score (based on user votes).</span>
+<span class="cm"> * &lt;tag&gt;:            The tag indicates the programming language that the post is about, in case it&#39;s a question, or missing in case it&#39;s an answer.</span>
+<span class="cm">**/</span>
+
+
+<span class="k">import</span> <span class="nn">org.apache.spark.rdd.RDD</span>
+
+<span class="k">def</span> <span class="n">rawPostings</span><span class="o">(</span><span class="n">lines</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">Posting</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="n">lines</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">line</span> <span class="k">=&gt;</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">elems</span> <span class="k">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;,&quot;</span><span class="o">)</span>
+        <span class="nc">Posting</span><span class="o">(</span><span class="n">postingType</span> <span class="k">=</span> <span class="n">elems</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">toInt</span><span class="o">,</span>
+                <span class="n">id</span> <span class="k">=</span> <span class="n">elems</span><span class="o">(</span><span class="mi">1</span><span class="o">).</span><span class="n">toInt</span><span class="o">,</span>
+                <span class="n">acceptedAnswer</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">elems</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span> <span class="o">==</span> <span class="s">&quot;&quot;</span><span class="o">)</span> <span class="nc">None</span> <span class="k">else</span> <span class="nc">Some</span><span class="o">(</span><span class="n">elems</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">toInt</span><span class="o">),</span>
+                <span class="n">parentId</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">elems</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span> <span class="o">==</span> <span class="s">&quot;&quot;</span><span class="o">)</span> <span class="nc">None</span> <span class="k">else</span> <span class="nc">Some</span><span class="o">(</span><span class="n">elems</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="n">toInt</span><span class="o">),</span>
+                <span class="n">score</span> <span class="k">=</span> <span class="n">elems</span><span class="o">(</span><span class="mi">4</span><span class="o">).</span><span class="n">toInt</span><span class="o">,</span>
+                <span class="n">tags</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">elems</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="o">)</span> <span class="nc">Some</span><span class="o">(</span><span class="n">elems</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="n">intern</span><span class="o">())</span> <span class="k">else</span> <span class="nc">None</span><span class="o">)</span>
+    <span class="o">})</span>
+<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import org.apache.spark.rdd.RDD</span>
+<span class="go">rawPostings: (lines: org.apache.spark.rdd.RDD[String])org.apache.spark.rdd.RDD[Posting]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">raw</span> <span class="k">=</span> <span class="n">rawPostings</span><span class="o">(</span><span class="n">lines</span><span class="o">)</span>
+<span class="n">raw</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">raw: org.apache.spark.rdd.RDD[Posting] = MapPartitionsRDD[698] at map at &lt;console&gt;:185</span>
+<span class="go">res160: Array[Posting] = Array(Posting(1,27233496,None,None,0,Some(C#)), Posting(1,23698767,None,None,9,Some(C#)), Posting(1,5484340,None,None,0,Some(C#)), Posting(2,5494879,None,Some(5484340),1,None), Posting(1,9419744,None,None,2,Some(Objective-C)))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">org.apache.spark.HashPartitioner</span>
+<span class="k">val</span> <span class="n">q</span> <span class="k">=</span> <span class="n">raw</span>
+        <span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">postingType</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+        <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">question</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">question</span><span class="o">.</span><span class="n">id</span><span class="o">,</span> <span class="n">question</span><span class="o">))</span>
+        <span class="o">.</span><span class="n">partitionBy</span><span class="o">(</span><span class="k">new</span> <span class="nc">HashPartitioner</span><span class="o">(</span><span class="mi">100</span><span class="o">))</span>
+<span class="n">q</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import org.apache.spark.HashPartitioner</span>
+<span class="go">q: org.apache.spark.rdd.RDD[(Int, Posting)] = ShuffledRDD[701] at partitionBy at &lt;console&gt;:170</span>
+<span class="go">res161: Array[(Int, Posting)] = Array((3406000,Posting(1,3406000,None,None,0,Some(C#))), (17520100,Posting(1,17520100,None,None,1,Some(JavaScript))), (23620700,Posting(1,23620700,None,None,0,Some(PHP))), (4026400,Posting(1,4026400,None,None,1,Some(PHP))), (17933700,Posting(1,17933700,None,None,3,Some(Ruby))))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">q</span><span class="o">.</span><span class="n">partitions</span><span class="o">.</span><span class="n">length</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res162: Int = 100</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// ** repartition is not an action **</span>
+
+<span class="k">val</span> <span class="n">q1</span> <span class="k">=</span> <span class="n">q</span><span class="o">.</span><span class="n">repartition</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">q1: org.apache.spark.rdd.RDD[(Int, Posting)] = MapPartitionsRDD[705] at repartition at &lt;console&gt;:165</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">answers</span> <span class="k">=</span> <span class="n">raw</span>
+              <span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">postingType</span> <span class="o">==</span> <span class="mi">2</span><span class="o">)</span>
+              <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">answer</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">answer</span><span class="o">.</span><span class="n">parentId</span><span class="o">.</span><span class="n">get</span><span class="o">,</span> <span class="n">answer</span><span class="o">))</span>
+              <span class="o">.</span><span class="n">partitionBy</span><span class="o">(</span><span class="k">new</span> <span class="nc">HashPartitioner</span><span class="o">(</span><span class="mi">100</span><span class="o">))</span>
+<span class="n">answers</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">answers: org.apache.spark.rdd.RDD[(QID, Posting)] = ShuffledRDD[644] at partitionBy at &lt;console&gt;:154</span>
+<span class="go">res142: Array[(QID, Posting)] = Array((3406000,Posting(2,3406081,None,Some(3406000),0,None)), (3406000,Posting(2,3408739,None,Some(3406000),0,None)), (17933700,Posting(2,17935422,None,Some(17933700),5,None)), (16124200,Posting(2,16125106,None,Some(16124200),1,None)), (3302600,Posting(2,3302670,None,Some(3302600),1,None)))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">answers</span><span class="o">.</span><span class="n">partitions</span><span class="o">.</span><span class="n">length</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res84: Int = 100</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">joined</span> <span class="k">=</span> <span class="n">q</span><span class="o">.</span><span class="n">join</span><span class="o">(</span><span class="n">answers</span><span class="o">)</span>
+<span class="n">joined</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">joined: org.apache.spark.rdd.RDD[(Int, (Posting, Posting))] = MapPartitionsRDD[647] at join at &lt;console&gt;:153</span>
+<span class="go">res143: Array[(Int, (Posting, Posting))] = Array((7885200,(Posting(1,7885200,None,None,0,Some(JavaScript)),Posting(2,7885231,None,Some(7885200),2,None))), (637100,(Posting(1,637100,None,None,8,Some(Java)),Posting(2,637468,None,Some(637100),8,None))), (637100,(Posting(1,637100,None,None,8,Some(Java)),Posting(2,637656,None,Some(637100),0,None))), (637100,(Posting(1,637100,None,None,8,Some(Java)),Posting(2,638396,None,Some(637100),0,None))), (637100,(Posting(1,637100,None,None,8,Some(Java)),Posting(2,641458,None,Some(637100),0,None))))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">groupedPostings</span> <span class="k">=</span> <span class="n">joined</span><span class="o">.</span><span class="n">groupByKey</span><span class="o">()</span>
+<span class="n">groupedPostings</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">groupedPostings: org.apache.spark.rdd.RDD[(Int, Iterable[(Posting, Posting)])] = MapPartitionsRDD[648] at groupByKey at &lt;console&gt;:151</span>
+<span class="go">res144: Array[(Int, Iterable[(Posting, Posting)])] = Array((7885200,CompactBuffer((Posting(1,7885200,None,None,0,Some(JavaScript)),Posting(2,7885231,None,Some(7885200),2,None)))), (20746400,CompactBuffer((Posting(1,20746400,None,None,1,Some(C#)),Posting(2,20746520,None,Some(20746400),2,None)), (Posting(1,20746400,None,None,1,Some(C#)),Posting(2,20746573,None,Some(20746400),2,None)), (Posting(1,20746400,None,None,1,Some(C#)),Posting(2,20752699,None,Some(20746400),1,None)))), (637100,CompactBuffer((Posting(1,637100,None,None,8,Some(Java)),Posting(2,637468,None,Some(637100),8,None)), (Posting(1,637100,None,None,8,Some(Java)),Posting(2,637656,None,Some(637100...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="cm">/** Group the questions and answers together */</span>
+
+<span class="k">def</span> <span class="n">groupedPostings</span><span class="o">(</span><span class="n">postings</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[</span><span class="kt">Posting</span><span class="o">])</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">QID</span>, <span class="kt">Iterable</span><span class="o">[(</span><span class="kt">Question</span>, <span class="kt">Answer</span><span class="o">)])]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="c1">// Create questions rdd (id, question)</span>
+    <span class="k">val</span> <span class="n">questions</span> <span class="k">=</span> <span class="n">postings</span>
+                    <span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">postingType</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">question</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">question</span><span class="o">.</span><span class="n">id</span><span class="o">,</span> <span class="n">question</span><span class="o">))</span>
+                    <span class="o">.</span><span class="n">partitionBy</span><span class="o">(</span><span class="k">new</span> <span class="nc">HashPartitioner</span><span class="o">(</span><span class="mi">100</span><span class="o">))</span>
+                    
+    <span class="c1">// Create answers rdd (parentId, answer)</span>
+    <span class="k">val</span> <span class="n">answers</span> <span class="k">=</span> <span class="n">postings</span>
+                  <span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">postingType</span> <span class="o">==</span> <span class="mi">2</span><span class="o">)</span>
+                  <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">answer</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">answer</span><span class="o">.</span><span class="n">parentId</span><span class="o">.</span><span class="n">get</span><span class="o">,</span> <span class="n">answer</span><span class="o">))</span>
+                  <span class="o">.</span><span class="n">partitionBy</span><span class="o">(</span><span class="k">new</span> <span class="nc">HashPartitioner</span><span class="o">(</span><span class="mi">100</span><span class="o">))</span>
+                  
+    <span class="c1">// 1 question will have multiple answers</span>
+    <span class="c1">// Join both the rdds (inner join)</span>
+    <span class="k">val</span> <span class="n">joined</span> <span class="k">=</span> <span class="n">questions</span><span class="o">.</span><span class="n">join</span><span class="o">(</span><span class="n">answers</span><span class="o">)</span>
+    
+    <span class="c1">// Finally group the results</span>
+    <span class="n">joined</span><span class="o">.</span><span class="n">groupByKey</span><span class="o">()</span>
+<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">groupedPostings: (postings: org.apache.spark.rdd.RDD[Posting])org.apache.spark.rdd.RDD[(QID, Iterable[(Question, Answer)])]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">grouped</span> <span class="k">=</span> <span class="n">groupedPostings</span><span class="o">(</span><span class="n">raw</span><span class="o">)</span>
+<span class="n">grouped</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">grouped: org.apache.spark.rdd.RDD[(QID, Iterable[(Question, Answer)])] = MapPartitionsRDD[658] at groupByKey at &lt;console&gt;:179</span>
+<span class="go">res145: Array[(QID, Iterable[(Question, Answer)])] = Array((7885200,CompactBuffer((Posting(1,7885200,None,None,0,Some(JavaScript)),Posting(2,7885231,None,Some(7885200),2,None)))), (20746400,CompactBuffer((Posting(1,20746400,None,None,1,Some(C#)),Posting(2,20746520,None,Some(20746400),2,None)), (Posting(1,20746400,None,None,1,Some(C#)),Posting(2,20746573,None,Some(20746400),2,None)), (Posting(1,20746400,None,None,1,Some(C#)),Posting(2,20752699,None,Some(20746400),1,None)))), (637100,CompactBuffer((Posting(1,637100,None,None,8,Some(Java)),Posting(2,637468,None,Some(637100),8,None)), (Posting(1,637100,None,None,8,Some(Java)),Posting(2,637656,None,Some(637100),0,None...</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Compute score</span>
+
+<span class="c1">// val scored: RDD[(Question, HighScore)] = ???</span>
+
+<span class="k">val</span> <span class="n">score</span> <span class="k">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">map</span><span class="o">{</span><span class="k">case</span> <span class="o">(</span><span class="n">qid</span><span class="o">,</span> <span class="n">qu_ans</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+    <span class="c1">// val question = qu_ans.head match {</span>
+    <span class="c1">//     case (q: Question, ans: Answer) =&gt; q</span>
+    <span class="c1">// }</span>
+    <span class="c1">//(question, 1)</span>
+    
+    <span class="k">val</span> <span class="n">scores</span> <span class="k">=</span> <span class="n">qu_ans</span><span class="o">.</span><span class="n">map</span><span class="o">{</span><span class="k">case</span> <span class="o">(</span><span class="n">q</span><span class="o">,</span> <span class="n">ans</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">ans</span><span class="o">.</span><span class="n">score</span><span class="o">}</span>
+    
+    <span class="o">(</span><span class="n">qu_ans</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span> <span class="n">scores</span><span class="o">,</span> <span class="n">scores</span><span class="o">.</span><span class="n">max</span><span class="o">)</span>
+<span class="o">}}</span>
+
+<span class="n">score</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">score: org.apache.spark.rdd.RDD[(Question, Iterable[Int], Int)] = MapPartitionsRDD[659] at map at &lt;console&gt;:155</span>
+<span class="go">res146: Array[(Question, Iterable[Int], Int)] = Array((Posting(1,7885200,None,None,0,Some(JavaScript)),List(2),2), (Posting(1,20746400,None,None,1,Some(C#)),List(2, 2, 1),2), (Posting(1,637100,None,None,8,Some(Java)),List(8, 0, 0, 0),8), (Posting(1,15967400,None,None,4,Some(Java)),List(2, 2, 1, 1),2), (Posting(1,9422300,None,None,1,Some(Java)),List(3),3))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="cm">/** Compute the maximum score for each posting */</span>
+<span class="k">def</span> <span class="n">scoredPostings</span><span class="o">(</span><span class="n">grouped</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">QID</span>, <span class="kt">Iterable</span><span class="o">[(</span><span class="kt">Question</span>, <span class="kt">Answer</span><span class="o">)])])</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">Question</span>, <span class="kt">HighScore</span><span class="o">)]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">score</span> <span class="k">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">map</span><span class="o">{</span><span class="k">case</span><span class="o">(</span><span class="n">qid</span><span class="o">,</span> <span class="n">qu_ans</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+        <span class="o">(</span><span class="n">qu_ans</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span> <span class="n">qu_ans</span><span class="o">.</span><span class="n">map</span><span class="o">{</span><span class="k">case</span><span class="o">(</span><span class="n">q</span><span class="o">,</span> <span class="n">ans</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">ans</span><span class="o">.</span><span class="n">score</span><span class="o">}.</span><span class="n">max</span><span class="o">)</span>
+    <span class="o">}}</span>
+    <span class="n">score</span>
+<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">scoredPostings: (grouped: org.apache.spark.rdd.RDD[(QID, Iterable[(Question, Answer)])])org.apache.spark.rdd.RDD[(Question, HighScore)]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">scored</span> <span class="k">=</span> <span class="n">scoredPostings</span><span class="o">(</span><span class="n">grouped</span><span class="o">)</span>
+<span class="n">scored</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">scored: org.apache.spark.rdd.RDD[(Question, HighScore)] = MapPartitionsRDD[660] at map at &lt;console&gt;:160</span>
+<span class="go">res147: Array[(Question, HighScore)] = Array((Posting(1,7885200,None,None,0,Some(JavaScript)),2), (Posting(1,20746400,None,None,1,Some(C#)),2), (Posting(1,637100,None,None,8,Some(Java)),8), (Posting(1,15967400,None,None,4,Some(Java)),2), (Posting(1,9422300,None,None,1,Some(Java)),3))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="cm">/** Languages */</span>
+<span class="k">val</span> <span class="n">langs</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span>
+    <span class="s">&quot;JavaScript&quot;</span><span class="o">,</span> <span class="s">&quot;Java&quot;</span><span class="o">,</span> <span class="s">&quot;PHP&quot;</span><span class="o">,</span> <span class="s">&quot;Python&quot;</span><span class="o">,</span> <span class="s">&quot;C#&quot;</span><span class="o">,</span> <span class="s">&quot;C++&quot;</span><span class="o">,</span> <span class="s">&quot;Ruby&quot;</span><span class="o">,</span> <span class="s">&quot;CSS&quot;</span><span class="o">,</span>
+    <span class="s">&quot;Objective-C&quot;</span><span class="o">,</span> <span class="s">&quot;Perl&quot;</span><span class="o">,</span> <span class="s">&quot;Scala&quot;</span><span class="o">,</span> <span class="s">&quot;Haskell&quot;</span><span class="o">,</span> <span class="s">&quot;MATLAB&quot;</span><span class="o">,</span> <span class="s">&quot;Clojure&quot;</span><span class="o">,</span> <span class="s">&quot;Groovy&quot;</span><span class="o">)</span>
+
+<span class="cm">/** Compute the vectors for the kmeans */</span>
+<span class="k">def</span> <span class="n">vectorPostings</span><span class="o">(</span><span class="n">scored</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">Question</span>, <span class="kt">HighScore</span><span class="o">)])</span><span class="k">:</span> <span class="kt">RDD</span><span class="o">[(</span><span class="kt">LangIndex</span>, <span class="kt">HighScore</span><span class="o">)]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">vector</span> <span class="k">=</span> <span class="n">scored</span><span class="o">.</span><span class="n">map</span><span class="o">{</span><span class="k">case</span><span class="o">(</span><span class="n">q</span><span class="o">,</span> <span class="n">highScore</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">tag</span> <span class="k">=</span> <span class="n">q</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">getOrElse</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">)</span>
+        <span class="k">val</span> <span class="n">index</span> <span class="k">=</span> <span class="n">langs</span><span class="o">.</span><span class="n">indexOf</span><span class="o">(</span><span class="n">tag</span><span class="o">)</span>
+        <span class="o">(</span><span class="n">index</span> <span class="o">*</span> <span class="mi">50000</span><span class="o">,</span> <span class="n">highScore</span><span class="o">)</span>
+    <span class="o">}}</span>
+    <span class="n">vector</span>
+<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">langs: List[String] = List(JavaScript, Java, PHP, Python, C#, C++, Ruby, CSS, Objective-C, Perl, Scala, Haskell, MATLAB, Clojure, Groovy)</span>
+<span class="go">vectorPostings: (scored: org.apache.spark.rdd.RDD[(Question, HighScore)])org.apache.spark.rdd.RDD[(LangIndex, HighScore)]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">vectors</span> <span class="k">=</span> <span class="n">vectorPostings</span><span class="o">(</span><span class="n">scored</span><span class="o">)</span>
+<span class="n">vectors</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">vectors: org.apache.spark.rdd.RDD[(LangIndex, HighScore)] = MapPartitionsRDD[661] at map at &lt;console&gt;:164</span>
+<span class="go">res148: Array[(LangIndex, HighScore)] = Array((0,2), (200000,2), (50000,8), (50000,2), (50000,3))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">assert</span><span class="o">(</span><span class="n">vectors</span><span class="o">.</span><span class="n">count</span><span class="o">()</span> <span class="o">==</span> <span class="mi">2121822</span><span class="o">,</span> <span class="s">&quot;Incorrect number of vectors: &quot;</span> <span class="o">+</span> <span class="n">vectors</span><span class="o">.</span><span class="n">count</span><span class="o">())</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">vectors</span><span class="o">.</span><span class="n">count</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res157: Long = 2121822</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">vectors</span><span class="o">.</span><span class="n">par</span>
+</pre></div>

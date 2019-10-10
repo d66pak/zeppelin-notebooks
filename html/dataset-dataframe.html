@@ -1,0 +1,1139 @@
+<link rel="stylesheet" type="text/css" href="style.css">
+<h1>Datasets, DataFrames, and Spark SQL</h1>
+
+<div class="highlight"><pre><span></span>%sh <span class="nb">pwd</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">/data/test_spark/zeppelin-0.8.1-bin-netinst</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Input files</span>
+<span class="n">z</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="s">&quot;flight-data-2018&quot;</span><span class="o">,</span> <span class="s">&quot;/home/ubuntu/test_spark/flight/flightdata2018.json&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>%sh
+
+ls -l <span class="o">{</span>flight-data-2018<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">-rw-rw-r-- 1 ubuntu ubuntu 66074026 May 17 16:53 /home/ubuntu/test_spark/flight/flightdata2018.json</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>%sh
+
+head <span class="o">{</span>flight-data-2018<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">{&quot;id&quot;:&quot;ATL_BOS_2018-01-01_DL_104&quot;,&quot;fldate&quot;:&quot;2018-01-01&quot;,&quot;month&quot;:1,&quot;dofW&quot;:1,&quot;carrier&quot;:&quot;DL&quot;,&quot;src&quot;:&quot;ATL&quot;,&quot;dst&quot;:&quot;BOS&quot;,&quot;crsdephour&quot;:9,&quot;crsdeptime&quot;:850,&quot;depdelay&quot;:0.0,&quot;crsarrtime&quot;:1116,&quot;arrdelay&quot;:0.0,&quot;crselapsedtime&quot;:146.0,&quot;dist&quot;:946.0}</span>
+<span class="go">{&quot;id&quot;:&quot;ATL_BOS_2018-01-01_DL_1200&quot;,&quot;fldate&quot;:&quot;2018-01-01&quot;,&quot;month&quot;:1,&quot;dofW&quot;:1,&quot;carrier&quot;:&quot;DL&quot;,&quot;src&quot;:&quot;ATL&quot;,&quot;dst&quot;:&quot;BOS&quot;,&quot;crsdephour&quot;:11,&quot;crsdeptime&quot;:1122,&quot;depdelay&quot;:8.0,&quot;crsarrtime&quot;:1349,&quot;arrdelay&quot;:0.0,&quot;crselapsedtime&quot;:147.0,&quot;dist&quot;:946.0}</span>
+<span class="go">{&quot;id&quot;:&quot;ATL_BOS_2018-01-01_DL_1500&quot;,&quot;fldate&quot;:&quot;2018-01-01&quot;,&quot;month&quot;:1,&quot;dofW&quot;:1,&quot;carrier&quot;:&quot;DL&quot;,&quot;src&quot;:&quot;ATL&quot;,&quot;dst&quot;:&quot;BOS&quot;,&quot;crsdephour&quot;:14,&quot;crsdeptime&quot;:1356,&quot;depdelay&quot;:9.0,&quot;crsarrtime&quot;:1623,&quot;arrdelay&quot;:0.0,&quot;crselapsedtime&quot;:147.0,&quot;dist&quot;:946.0}</span>
+<span class="go">{&quot;id&quot;:&quot;ATL_BOS_2018-01-01_DL_1800&quot;,&quot;fldate&quot;:&quot;2018-01-01&quot;,&quot;month&quot;:1,&quot;dofW&quot;:1,&quot;carrier&quot;:&quot;DL&quot;,&quot;src&quot;:&quot;ATL&quot;,&quot;dst&quot;:&quot;BOS&quot;,&quot;crsdephour&quot;:16,&quot;crsdeptime&quot;:1620,&quot;depdelay&quot;:0.0,&quot;crsarrtime&quot;:1851,&quot;arrdelay&quot;:3.0,&quot;crselapsedtime&quot;:151.0,&quot;dist&quot;:946.0}</span>
+<span class="go">{&quot;id&quot;:&quot;ATL_BOS_2018-01-01_DL_2100&quot;,&quot;fldate&quot;:&quot;2018-01-01&quot;,&quot;month&quot;:1,&quot;dofW&quot;:1,&quot;carrier&quot;:&quot;DL&quot;,&quot;src&quot;:&quot;ATL&quot;,&quot;dst&quot;:&quot;BOS&quot;,&quot;crsdephour&quot;:19,&quot;crsdeptime&quot;:1940,&quot;depdelay&quot;:6.0,&quot;crsarrtime&quot;:2210,&quot;arrdelay&quot;:0.0,&quot;crselapsedtime&quot;:150.0,&quot;dist&quot;:946.0}</span>
+<span class="go">{&quot;id&quot;:&quot;ATL_BOS_2018-01-01_DL_2792&quot;,&quot;fldate&quot;:&quot;2018-01-01&quot;,&quot;month&quot;:1,&quot;dofW&quot;:1,&quot;carrier&quot;:&quot;DL&quot;,&quot;src&quot;:&quot;ATL&quot;,&quot;dst&quot;:&quot;BOS&quot;,&quot;crsdephour&quot;:12,&quot;crsdeptime&quot;:1248,&quot;depdelay&quot;:0.0,&quot;crsarrtime&quot;:1513,&quot;arrdelay&quot;:0.0,&quot;crselapsedtime&quot;:145.0,&quot;dist&quot;:946.0}</span>
+<span class="go">{&quot;id&quot;:&quot;ATL_BOS_2018-01-01_DL_903&quot;,&quot;fldate&quot;:&quot;2018-01-01&quot;,&quot;month&quot;:1,&quot;dofW&quot;:1,&quot;carrier&quot;:&quot;DL&quot;,&quot;src&quot;:&quot;ATL&quot;,&quot;dst&quot;:&quot;BOS&quot;,&quot;crsdephour&quot;:22,&quot;crsdeptime&quot;:2215,&quot;depdelay&quot;:0.0,&quot;crsarrtime&quot;:39,&quot;arrdelay&quot;:0.0,&quot;crselapsedtime&quot;:144.0,&quot;dist&quot;:946.0}</span>
+<span class="go">{&quot;id&quot;:&quot;ATL_BOS_2018-01-01_DL_980&quot;,&quot;fldate&quot;:&quot;2018-01-01&quot;,&quot;month&quot;:1,&quot;dofW&quot;:1,&quot;carrier&quot;:&quot;DL&quot;,&quot;src&quot;:&quot;ATL&quot;,&quot;dst&quot;:&quot;BOS&quot;,&quot;crsdephour&quot;:15,&quot;crsdeptime&quot;:1500,&quot;depdelay&quot;:21.0,&quot;crsarrtime&quot;:1734,&quot;arrdelay&quot;:33.0,&quot;crselapsedtime&quot;:154.0,&quot;dist&quot;:946.0}</span>
+<span class="go">{&quot;id&quot;:&quot;ATL_BOS_2018-01-01_WN_1633&quot;,&quot;fldate&quot;:&quot;2018-01-01&quot;,&quot;month&quot;:1,&quot;dofW&quot;:1,&quot;carrier&quot;:&quot;WN&quot;,&quot;src&quot;:&quot;ATL&quot;,&quot;dst&quot;:&quot;BOS&quot;,&quot;crsdephour&quot;:15,&quot;crsdeptime&quot;:1500,&quot;depdelay&quot;:198.0,&quot;crsarrtime&quot;:1725,&quot;arrdelay&quot;:208.0,&quot;crselapsedtime&quot;:145.0,&quot;dist&quot;:946.0}</span>
+<span class="go">{&quot;id&quot;:&quot;ATL_BOS_2018-01-01_WN_170&quot;,&quot;fldate&quot;:&quot;2018-01-01&quot;,&quot;month&quot;:1,&quot;dofW&quot;:1,&quot;carrier&quot;:&quot;WN&quot;,&quot;src&quot;:&quot;ATL&quot;,&quot;dst&quot;:&quot;BOS&quot;,&quot;crsdephour&quot;:21,&quot;crsdeptime&quot;:2055,&quot;depdelay&quot;:14.0,&quot;crsarrtime&quot;:2330,&quot;arrdelay&quot;:0.0,&quot;crselapsedtime&quot;:155.0,&quot;dist&quot;:946.0}</span>
+</pre></div>
+
+<p>The flight data is in JSON files, with each flight having the following information:</p>
+<ul>
+<li>id: ID composed of carrier, date, origin, destination, flight number</li>
+<li>dofW: day of week (1=Monday, 7=Sunday)</li>
+<li>carrier: carrier code</li>
+<li>origin: origin airport code</li>
+<li>dest: destination airport code</li>
+<li>crsdephour: scheduled departure hour</li>
+<li>crsdeptime: scheduled departure time</li>
+<li>depdelay: departure delay in minutes</li>
+<li>crsarrtime: scheduled arrival time</li>
+<li>arrdelay: arrival delay minutes</li>
+<li>crselapsedtime: elapsed time</li>
+<li>dist: distance</li>
+</ul>
+
+<div class="highlight"><pre><span></span><span class="c1">// Read JSON as DF (auto infer schema)</span>
+<span class="k">val</span> <span class="n">flightDF_autoinfer</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;json&quot;</span><span class="o">).</span><span class="n">load</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;flight-data-2018&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+<span class="c1">// flightDF_autoinfer.printSchema</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">flightDF_autoinfer: org.apache.spark.sql.DataFrame = [arrdelay: double, carrier: string ... 12 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDF_autoinfer</span><span class="o">.</span><span class="n">printSchema</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">root</span>
+<span class="go"> |-- arrdelay: double (nullable = true)</span>
+<span class="go"> |-- carrier: string (nullable = true)</span>
+<span class="go"> |-- crsarrtime: long (nullable = true)</span>
+<span class="go"> |-- crsdephour: long (nullable = true)</span>
+<span class="go"> |-- crsdeptime: long (nullable = true)</span>
+<span class="go"> |-- crselapsedtime: double (nullable = true)</span>
+<span class="go"> |-- depdelay: double (nullable = true)</span>
+<span class="go"> |-- dist: double (nullable = true)</span>
+<span class="go"> |-- dofW: long (nullable = true)</span>
+<span class="go"> |-- dst: string (nullable = true)</span>
+<span class="go"> |-- fldate: string (nullable = true)</span>
+<span class="go"> |-- id: string (nullable = true)</span>
+<span class="go"> |-- month: long (nullable = true)</span>
+<span class="go"> |-- src: string (nullable = true)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDF_autoinfer</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="s">&quot;crsdephour == 10&quot;</span><span class="o">).</span><span class="n">show</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------+-------+----------+----------+----------+--------------+--------+-----+----+---+----------+--------------------+-----+---+</span>
+<span class="go">|arrdelay|carrier|crsarrtime|crsdephour|crsdeptime|crselapsedtime|depdelay| dist|dofW|dst|    fldate|                  id|month|src|</span>
+<span class="go">+--------+-------+----------+----------+----------+--------------+--------+-----+----+---+----------+--------------------+-----+---+</span>
+<span class="go">|   191.0|     WN|      1250|        10|      1015|         155.0|   215.0|946.0|   1|BOS|2018-01-01|ATL_BOS_2018-01-0...|    1|ATL|</span>
+<span class="go">|     0.0|     DL|      1124|        10|      1008|          76.0|     0.0|226.0|   1|CLT|2018-01-01|ATL_CLT_2018-01-0...|    1|ATL|</span>
+<span class="go">|     7.0|     AA|      1131|        10|      1000|         151.0|     0.0|731.0|   1|DFW|2018-01-01|ATL_DFW_2018-01-0...|    1|ATL|</span>
+<span class="go">|    37.0|     DL|      1120|        10|       950|         150.0|     0.0|731.0|   1|DFW|2018-01-01|ATL_DFW_2018-01-0...|    1|ATL|</span>
+<span class="go">|    67.0|     DL|      1216|        10|      1010|         126.0|     0.0|746.0|   1|EWR|2018-01-01|ATL_EWR_2018-01-0...|    1|ATL|</span>
+<span class="go">+--------+-------+----------+----------+----------+--------------+--------+-----+----+---+----------+--------------------+-----+---+</span>
+<span class="go">only showing top 5 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDF_autoinfer</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">col</span><span class="o">(</span><span class="s">&quot;crsdephour&quot;</span><span class="o">)</span> <span class="o">===</span> <span class="mi">10</span><span class="o">).</span><span class="n">show</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------+-------+----------+----------+----------+--------------+--------+-----+----+---+----------+--------------------+-----+---+</span>
+<span class="go">|arrdelay|carrier|crsarrtime|crsdephour|crsdeptime|crselapsedtime|depdelay| dist|dofW|dst|    fldate|                  id|month|src|</span>
+<span class="go">+--------+-------+----------+----------+----------+--------------+--------+-----+----+---+----------+--------------------+-----+---+</span>
+<span class="go">|   191.0|     WN|      1250|        10|      1015|         155.0|   215.0|946.0|   1|BOS|2018-01-01|ATL_BOS_2018-01-0...|    1|ATL|</span>
+<span class="go">|     0.0|     DL|      1124|        10|      1008|          76.0|     0.0|226.0|   1|CLT|2018-01-01|ATL_CLT_2018-01-0...|    1|ATL|</span>
+<span class="go">|     7.0|     AA|      1131|        10|      1000|         151.0|     0.0|731.0|   1|DFW|2018-01-01|ATL_DFW_2018-01-0...|    1|ATL|</span>
+<span class="go">|    37.0|     DL|      1120|        10|       950|         150.0|     0.0|731.0|   1|DFW|2018-01-01|ATL_DFW_2018-01-0...|    1|ATL|</span>
+<span class="go">|    67.0|     DL|      1216|        10|      1010|         126.0|     0.0|746.0|   1|EWR|2018-01-01|ATL_EWR_2018-01-0...|    1|ATL|</span>
+<span class="go">+--------+-------+----------+----------+----------+--------------+--------+-----+----+---+----------+--------------------+-----+---+</span>
+<span class="go">only showing top 5 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDF_autoinfer</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;crsdephour&quot;</span> <span class="o">===</span> <span class="mi">10</span><span class="o">).</span><span class="n">show</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------+-------+----------+----------+----------+--------------+--------+-----+----+---+----------+--------------------+-----+---+</span>
+<span class="go">|arrdelay|carrier|crsarrtime|crsdephour|crsdeptime|crselapsedtime|depdelay| dist|dofW|dst|    fldate|                  id|month|src|</span>
+<span class="go">+--------+-------+----------+----------+----------+--------------+--------+-----+----+---+----------+--------------------+-----+---+</span>
+<span class="go">|   191.0|     WN|      1250|        10|      1015|         155.0|   215.0|946.0|   1|BOS|2018-01-01|ATL_BOS_2018-01-0...|    1|ATL|</span>
+<span class="go">|     0.0|     DL|      1124|        10|      1008|          76.0|     0.0|226.0|   1|CLT|2018-01-01|ATL_CLT_2018-01-0...|    1|ATL|</span>
+<span class="go">|     7.0|     AA|      1131|        10|      1000|         151.0|     0.0|731.0|   1|DFW|2018-01-01|ATL_DFW_2018-01-0...|    1|ATL|</span>
+<span class="go">|    37.0|     DL|      1120|        10|       950|         150.0|     0.0|731.0|   1|DFW|2018-01-01|ATL_DFW_2018-01-0...|    1|ATL|</span>
+<span class="go">|    67.0|     DL|      1216|        10|      1010|         126.0|     0.0|746.0|   1|EWR|2018-01-01|ATL_EWR_2018-01-0...|    1|ATL|</span>
+<span class="go">+--------+-------+----------+----------+----------+--------------+--------+-----+----+---+----------+--------------------+-----+---+</span>
+<span class="go">only showing top 5 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">c1</span> <span class="k">=</span> <span class="n">col</span><span class="o">(</span><span class="s">&quot;crsdephour&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">c1: org.apache.spark.sql.Column = crsdephour</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">c2</span> <span class="k">=</span> <span class="n">$</span><span class="s">&quot;crsdephour&quot;</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">c2: org.apache.spark.sql.ColumnName = crsdephour</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Read JSON as DF (Provide schema manually)</span>
+
+<span class="k">val</span> <span class="n">schemaStr</span> <span class="k">=</span> <span class="s">&quot;&quot;&quot;id String, fldate Date, month Integer, dofW Integer, carrier String, src String,</span>
+<span class="s">                  |dst String, crsdephour Integer, crsdeptime Integer, depdelay Double, crsarrtime Integer,</span>
+<span class="s">                  |arrdelay Double, crselapsedtime Double, dist Double&quot;&quot;&quot;</span><span class="o">.</span><span class="n">stripMargin</span><span class="o">.</span><span class="n">replaceAll</span><span class="o">(</span><span class="s">&quot;\n&quot;</span><span class="o">,</span> <span class="s">&quot; &quot;</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">flightDF</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;json&quot;</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">schema</span><span class="o">(</span><span class="n">schemaStr</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;flight-data-2018&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">flightDF: org.apache.spark.sql.DataFrame = [id: string, fldate: date ... 12 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDF</span><span class="o">.</span><span class="n">printSchema</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">root</span>
+<span class="go"> |-- id: string (nullable = true)</span>
+<span class="go"> |-- fldate: date (nullable = true)</span>
+<span class="go"> |-- month: integer (nullable = true)</span>
+<span class="go"> |-- dofW: integer (nullable = true)</span>
+<span class="go"> |-- carrier: string (nullable = true)</span>
+<span class="go"> |-- src: string (nullable = true)</span>
+<span class="go"> |-- dst: string (nullable = true)</span>
+<span class="go"> |-- crsdephour: integer (nullable = true)</span>
+<span class="go"> |-- crsdeptime: integer (nullable = true)</span>
+<span class="go"> |-- depdelay: double (nullable = true)</span>
+<span class="go"> |-- crsarrtime: integer (nullable = true)</span>
+<span class="go"> |-- arrdelay: double (nullable = true)</span>
+<span class="go"> |-- crselapsedtime: double (nullable = true)</span>
+<span class="go"> |-- dist: double (nullable = true)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDF</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|                  id|    fldate|month|dofW|carrier|src|dst|crsdephour|crsdeptime|depdelay|crsarrtime|arrdelay|crselapsedtime| dist|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|         9|       850|     0.0|      1116|     0.0|         146.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        11|      1122|     8.0|      1349|     0.0|         147.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        14|      1356|     9.0|      1623|     0.0|         147.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        16|      1620|     0.0|      1851|     3.0|         151.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        19|      1940|     6.0|      2210|     0.0|         150.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        12|      1248|     0.0|      1513|     0.0|         145.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        22|      2215|     0.0|        39|     0.0|         144.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        15|      1500|    21.0|      1734|    33.0|         154.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        15|      1500|   198.0|      1725|   208.0|         145.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        21|      2055|    14.0|      2330|     0.0|         155.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        10|      1015|   215.0|      1250|   191.0|         155.0|946.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        11|      1114|     0.0|      1238|     0.0|          84.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|         8|       845|     0.0|      1011|     0.0|          86.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        15|      1548|     0.0|      1710|     0.0|          82.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|         7|       705|     0.0|       821|     0.0|          76.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        12|      1226|     0.0|      1347|     0.0|          81.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        22|      2205|     0.0|      2319|     1.0|          74.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        22|      2210|    11.0|      2324|     0.0|          74.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        15|      1543|     1.0|      1659|     0.0|          76.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        10|      1008|     0.0|      1124|     0.0|          76.0|226.0|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// take() method returns Array of Row objects</span>
+
+<span class="n">flightDF</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res115: Array[org.apache.spark.sql.Row] = Array([ATL_BOS_2018-01-01_DL_104,2018-01-01,1,1,DL,ATL,BOS,9,850,0.0,1116,0.0,146.0,946.0], [ATL_BOS_2018-01-01_DL_1200,2018-01-01,1,1,DL,ATL,BOS,11,1122,8.0,1349,0.0,147.0,946.0])</span>
+</pre></div>
+
+<h3>Loading data into <em>DataSet</em> of typed objects</h3>
+
+<div class="highlight"><pre><span></span><span class="c1">// Create case class</span>
+<span class="k">import</span> <span class="nn">java.sql.Date</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.sql.types._</span>
+<span class="k">import</span> <span class="nn">spark.implicits._</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Flight</span><span class="o">(</span><span class="n">id</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">fldate</span><span class="k">:</span> <span class="kt">Date</span><span class="o">,</span> <span class="n">month</span><span class="k">:</span> <span class="kt">Integer</span><span class="o">,</span> <span class="n">dofW</span><span class="k">:</span> <span class="kt">Integer</span><span class="o">,</span> <span class="n">carrier</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">src</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+                  <span class="n">dst</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">crsdephour</span><span class="k">:</span> <span class="kt">Integer</span><span class="o">,</span> <span class="n">crsdeptime</span><span class="k">:</span> <span class="kt">Integer</span><span class="o">,</span> <span class="n">depdelay</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">crsarrtime</span><span class="k">:</span> <span class="kt">Integer</span><span class="o">,</span>
+                  <span class="n">arrdelay</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">crselapsedtime</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">dist</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Serializable</span>
+
+<span class="k">val</span> <span class="n">schemaStr1</span> <span class="k">=</span> <span class="s">&quot;&quot;&quot;id String, fldate Date, month Integer, dofW Integer, carrier String, src String,</span>
+<span class="s">                   |dst String, crsdephour Integer, crsdeptime Integer, depdelay Double, crsarrtime Integer,</span>
+<span class="s">                   |arrdelay Double, crselapsedtime Double, dist Double&quot;&quot;&quot;</span><span class="o">.</span><span class="n">stripMargin</span><span class="o">.</span><span class="n">replaceAll</span><span class="o">(</span><span class="s">&quot;\n&quot;</span><span class="o">,</span> <span class="s">&quot; &quot;</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">flightDS</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;json&quot;</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">schema</span><span class="o">(</span><span class="n">schemaStr1</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="n">z</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="s">&quot;flight-data-2018&quot;</span><span class="o">).</span><span class="n">toString</span><span class="o">)</span>
+                    <span class="o">.</span><span class="n">as</span><span class="o">[</span><span class="kt">Flight</span><span class="o">]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import java.sql.Date</span>
+<span class="go">import org.apache.spark.sql.types._</span>
+<span class="go">import spark.implicits._</span>
+<span class="go">defined class Flight</span>
+<span class="go">flightDS: org.apache.spark.sql.Dataset[Flight] = [id: string, fldate: date ... 12 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDF_autoinfer</span><span class="o">.</span><span class="n">printSchema</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">root</span>
+<span class="go"> |-- arrdelay: double (nullable = true)</span>
+<span class="go"> |-- carrier: string (nullable = true)</span>
+<span class="go"> |-- crsarrtime: long (nullable = true)</span>
+<span class="go"> |-- crsdephour: long (nullable = true)</span>
+<span class="go"> |-- crsdeptime: long (nullable = true)</span>
+<span class="go"> |-- crselapsedtime: double (nullable = true)</span>
+<span class="go"> |-- depdelay: double (nullable = true)</span>
+<span class="go"> |-- dist: double (nullable = true)</span>
+<span class="go"> |-- dofW: long (nullable = true)</span>
+<span class="go"> |-- dst: string (nullable = true)</span>
+<span class="go"> |-- fldate: string (nullable = true)</span>
+<span class="go"> |-- id: string (nullable = true)</span>
+<span class="go"> |-- month: long (nullable = true)</span>
+<span class="go"> |-- src: string (nullable = true)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Another way, using auto infer schema</span>
+
+<span class="c1">// NOTE: In this case make sure that auto inferred data types are matching the case class</span>
+
+<span class="k">import</span> <span class="nn">java.sql.Date</span>
+<span class="k">import</span> <span class="nn">spark.implicits._</span>
+
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Flight1</span><span class="o">(</span><span class="n">id</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">fldate</span><span class="k">:</span> <span class="kt">Date</span><span class="o">,</span> <span class="n">month</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">dofW</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">carrier</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">src</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+                   <span class="n">dst</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">crsdephour</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">crsdeptime</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">depdelay</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">crsarrtime</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span>
+                   <span class="n">arrdelay</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">crselapsedtime</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">dist</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Serializable</span>
+
+
+<span class="c1">// val flightDS_autoinfer = spark.read.format(&quot;json&quot;).load(z.get(&quot;flight-data-2018&quot;).toString).as[Flight1]</span>
+<span class="c1">// same as below</span>
+
+<span class="k">val</span> <span class="n">flightDS_autoinfer</span> <span class="k">=</span> <span class="n">flightDF_autoinfer</span><span class="o">.</span><span class="n">as</span><span class="o">[</span><span class="kt">Flight1</span><span class="o">]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import java.sql.Date</span>
+<span class="go">import spark.implicits._</span>
+<span class="go">defined class Flight1</span>
+<span class="go">flightDS_autoinfer: org.apache.spark.sql.Dataset[Flight1] = [arrdelay: double, carrier: string ... 12 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res35: Array[Flight] = Array(Flight(ATL_BOS_2018-01-01_DL_104,2018-01-01,1,1,DL,ATL,BOS,9,850,0.0,1116,0.0,146.0,946.0), Flight(ATL_BOS_2018-01-01_DL_1200,2018-01-01,1,1,DL,ATL,BOS,11,1122,8.0,1349,0.0,147.0,946.0))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS_autoinfer</span><span class="o">.</span><span class="n">take</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res36: Array[Flight1] = Array(Flight1(ATL_BOS_2018-01-01_DL_104,2018-01-01,1,1,DL,ATL,BOS,9,850,0.0,1116,0.0,146.0,946.0), Flight1(ATL_BOS_2018-01-01_DL_1200,2018-01-01,1,1,DL,ATL,BOS,11,1122,8.0,1349,0.0,147.0,946.0))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">printSchema</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">root</span>
+<span class="go"> |-- id: string (nullable = true)</span>
+<span class="go"> |-- fldate: date (nullable = true)</span>
+<span class="go"> |-- month: integer (nullable = true)</span>
+<span class="go"> |-- dofW: integer (nullable = true)</span>
+<span class="go"> |-- carrier: string (nullable = true)</span>
+<span class="go"> |-- src: string (nullable = true)</span>
+<span class="go"> |-- dst: string (nullable = true)</span>
+<span class="go"> |-- crsdephour: integer (nullable = true)</span>
+<span class="go"> |-- crsdeptime: integer (nullable = true)</span>
+<span class="go"> |-- depdelay: double (nullable = true)</span>
+<span class="go"> |-- crsarrtime: integer (nullable = true)</span>
+<span class="go"> |-- arrdelay: double (nullable = true)</span>
+<span class="go"> |-- crselapsedtime: double (nullable = true)</span>
+<span class="go"> |-- dist: double (nullable = true)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">show</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|                  id|    fldate|month|dofW|carrier|src|dst|crsdephour|crsdeptime|depdelay|crsarrtime|arrdelay|crselapsedtime| dist|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|         9|       850|     0.0|      1116|     0.0|         146.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        11|      1122|     8.0|      1349|     0.0|         147.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        14|      1356|     9.0|      1623|     0.0|         147.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        16|      1620|     0.0|      1851|     3.0|         151.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        19|      1940|     6.0|      2210|     0.0|         150.0|946.0|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">only showing top 5 rows</span>
+</pre></div>
+
+<h3>Common Dataset typed transformations &ldquo;Dataset[T]&rdquo;</h3>
+<ul>
+<li>filter</li>
+<li>map</li>
+<li>groupByKey</li>
+</ul>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">flight</span> <span class="k">=&gt;</span> <span class="n">flight</span><span class="o">.</span><span class="n">crsdephour</span> <span class="o">==</span> <span class="mi">10</span><span class="o">).</span><span class="n">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res3: Array[Flight] = Array(Flight(ATL_BOS_2018-01-01_WN_1726,2018-01-01,1,1,WN,ATL,BOS,10,1015,215.0,1250,191.0,155.0,946.0), Flight(ATL_CLT_2018-01-01_DL_2251,2018-01-01,1,1,DL,ATL,CLT,10,1008,0.0,1124,0.0,76.0,226.0), Flight(ATL_DFW_2018-01-01_AA_841,2018-01-01,1,1,AA,ATL,DFW,10,1000,0.0,1131,7.0,151.0,731.0))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">crsdephour</span> <span class="o">==</span> <span class="mi">10</span><span class="o">).</span><span class="n">take</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res4: Array[Flight] = Array(Flight(ATL_BOS_2018-01-01_WN_1726,2018-01-01,1,1,WN,ATL,BOS,10,1015,215.0,1250,191.0,155.0,946.0), Flight(ATL_CLT_2018-01-01_DL_2251,2018-01-01,1,1,DL,ATL,CLT,10,1008,0.0,1124,0.0,76.0,226.0), Flight(ATL_DFW_2018-01-01_AA_841,2018-01-01,1,1,AA,ATL,DFW,10,1000,0.0,1131,7.0,151.0,731.0))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;crsdephour&quot;</span> <span class="o">===</span> <span class="mi">10</span><span class="o">).</span><span class="n">show</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|                  id|    fldate|month|dofW|carrier|src|dst|crsdephour|crsdeptime|depdelay|crsarrtime|arrdelay|crselapsedtime| dist|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        10|      1015|   215.0|      1250|   191.0|         155.0|946.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        10|      1008|     0.0|      1124|     0.0|          76.0|226.0|</span>
+<span class="go">|ATL_DFW_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|DFW|        10|      1000|     0.0|      1131|     7.0|         151.0|731.0|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">only showing top 3 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">where</span><span class="o">(</span><span class="s">&quot;crsdephour = 10&quot;</span><span class="o">).</span><span class="n">show</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|                  id|    fldate|month|dofW|carrier|src|dst|crsdephour|crsdeptime|depdelay|crsarrtime|arrdelay|crselapsedtime| dist|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        10|      1015|   215.0|      1250|   191.0|         155.0|946.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        10|      1008|     0.0|      1124|     0.0|          76.0|226.0|</span>
+<span class="go">|ATL_DFW_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|DFW|        10|      1000|     0.0|      1131|     7.0|         151.0|731.0|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">only showing top 3 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">explain</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">== Parsed Logical Plan ==</span>
+<span class="go">Relation[id#2082,fldate#2083,month#2084,dofW#2085,carrier#2086,src#2087,dst#2088,crsdephour#2089,crsdeptime#2090,depdelay#2091,crsarrtime#2092,arrdelay#2093,crselapsedtime#2094,dist#2095] json</span>
+
+<span class="go">== Analyzed Logical Plan ==</span>
+<span class="go">id: string, fldate: date, month: int, dofW: int, carrier: string, src: string, dst: string, crsdephour: int, crsdeptime: int, depdelay: double, crsarrtime: int, arrdelay: double, crselapsedtime: double, dist: double</span>
+<span class="go">Relation[id#2082,fldate#2083,month#2084,dofW#2085,carrier#2086,src#2087,dst#2088,crsdephour#2089,crsdeptime#2090,depdelay#2091,crsarrtime#2092,arrdelay#2093,crselapsedtime#2094,dist#2095] json</span>
+
+<span class="go">== Optimized Logical Plan ==</span>
+<span class="go">InMemoryRelation [id#2082, fldate#2083, month#2084, dofW#2085, carrier#2086, src#2087, dst#2088, crsdephour#2089, crsdeptime#2090, depdelay#2091, crsarrtime#2092, arrdelay#2093, crselapsedtime#2094, dist#2095], StorageLevel(disk, memory, deserialized, 1 replicas)</span>
+<span class="go">   +- *(1) FileScan json [id#0,fldate#1,month#2,dofW#3,carrier#4,src#5,dst#6,crsdephour#7,crsdeptime#8,depdelay#9,crsarrtime#10,arrdelay#11,crselapsedtime#12,dist#13] Batched: false, Format: JSON, Location: InMemoryFileIndex[file:/home/ubuntu/test_spark/flight/flightdata2018.json], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;id:string,fldate:date,month:int,dofW:int,carrier:string,src:string,dst:string,crsdephour:i...</span>
+
+<span class="go">== Physical Plan ==</span>
+<span class="go">InMemoryTableScan [id#2082, fldate#2083, month#2084, dofW#2085, carrier#2086, src#2087, dst#2088, crsdephour#2089, crsdeptime#2090, depdelay#2091, crsarrtime#2092, arrdelay#2093, crselapsedtime#2094, dist#2095]</span>
+<span class="go">   +- InMemoryRelation [id#2082, fldate#2083, month#2084, dofW#2085, carrier#2086, src#2087, dst#2088, crsdephour#2089, crsdeptime#2090, depdelay#2091, crsarrtime#2092, arrdelay#2093, crselapsedtime#2094, dist#2095], StorageLevel(disk, memory, deserialized, 1 replicas)</span>
+<span class="go">         +- *(1) FileScan json [id#0,fldate#1,month#2,dofW#3,carrier#4,src#5,dst#6,crsdephour#7,crsdeptime#8,depdelay#9,crsarrtime#10,arrdelay#11,crselapsedtime#12,dist#13] Batched: false, Format: JSON, Location: InMemoryFileIndex[file:/home/ubuntu/test_spark/flight/flightdata2018.json], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;id:string,fldate:date,month:int,dofW:int,carrier:string,src:string,dst:string,crsdephour:i...</span>
+</pre></div>
+
+<h3>Common Dataset untyped transformations &ldquo;Dataframe = Dataset[Row]&rdquo;</h3>
+<ul>
+<li>select</li>
+<li>join</li>
+<li>groupBy</li>
+</ul>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">groupBy</span><span class="o">(</span><span class="n">col</span><span class="o">(</span><span class="s">&quot;carrier&quot;</span><span class="o">)).</span><span class="n">count</span><span class="o">().</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-------+------+</span>
+<span class="go">|carrier| count|</span>
+<span class="go">+-------+------+</span>
+<span class="go">|     UA| 98978|</span>
+<span class="go">|     AA|109427|</span>
+<span class="go">|     DL| 58195|</span>
+<span class="go">|     WN| 16028|</span>
+<span class="go">+-------+------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">groupBy</span><span class="o">(</span><span class="s">&quot;carrier&quot;</span><span class="o">).</span><span class="n">count</span><span class="o">().</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-------+------+</span>
+<span class="go">|carrier| count|</span>
+<span class="go">+-------+------+</span>
+<span class="go">|     UA| 98978|</span>
+<span class="go">|     AA|109427|</span>
+<span class="go">|     DL| 58195|</span>
+<span class="go">|     WN| 16028|</span>
+<span class="go">+-------+------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDF</span><span class="o">.</span><span class="n">groupBy</span><span class="o">(</span><span class="s">&quot;carrier&quot;</span><span class="o">).</span><span class="n">count</span><span class="o">().</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-------+------+</span>
+<span class="go">|carrier| count|</span>
+<span class="go">+-------+------+</span>
+<span class="go">|     UA| 98978|</span>
+<span class="go">|     AA|109427|</span>
+<span class="go">|     DL| 58195|</span>
+<span class="go">|     WN| 16028|</span>
+<span class="go">+-------+------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDF</span><span class="o">.</span><span class="n">explain</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">== Parsed Logical Plan ==</span>
+<span class="go">Relation[id#0,fldate#1,month#2,dofW#3,carrier#4,src#5,dst#6,crsdephour#7,crsdeptime#8,depdelay#9,crsarrtime#10,arrdelay#11,crselapsedtime#12,dist#13] json</span>
+
+<span class="go">== Analyzed Logical Plan ==</span>
+<span class="go">id: string, fldate: date, month: int, dofW: int, carrier: string, src: string, dst: string, crsdephour: int, crsdeptime: int, depdelay: double, crsarrtime: int, arrdelay: double, crselapsedtime: double, dist: double</span>
+<span class="go">Relation[id#0,fldate#1,month#2,dofW#3,carrier#4,src#5,dst#6,crsdephour#7,crsdeptime#8,depdelay#9,crsarrtime#10,arrdelay#11,crselapsedtime#12,dist#13] json</span>
+
+<span class="go">== Optimized Logical Plan ==</span>
+<span class="go">InMemoryRelation [id#0, fldate#1, month#2, dofW#3, carrier#4, src#5, dst#6, crsdephour#7, crsdeptime#8, depdelay#9, crsarrtime#10, arrdelay#11, crselapsedtime#12, dist#13], StorageLevel(disk, memory, deserialized, 1 replicas)</span>
+<span class="go">   +- *(1) FileScan json [id#0,fldate#1,month#2,dofW#3,carrier#4,src#5,dst#6,crsdephour#7,crsdeptime#8,depdelay#9,crsarrtime#10,arrdelay#11,crselapsedtime#12,dist#13] Batched: false, Format: JSON, Location: InMemoryFileIndex[file:/home/ubuntu/test_spark/flight/flightdata2018.json], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;id:string,fldate:date,month:int,dofW:int,carrier:string,src:string,dst:string,crsdephour:i...</span>
+
+<span class="go">== Physical Plan ==</span>
+<span class="go">InMemoryTableScan [id#0, fldate#1, month#2, dofW#3, carrier#4, src#5, dst#6, crsdephour#7, crsdeptime#8, depdelay#9, crsarrtime#10, arrdelay#11, crselapsedtime#12, dist#13]</span>
+<span class="go">   +- InMemoryRelation [id#0, fldate#1, month#2, dofW#3, carrier#4, src#5, dst#6, crsdephour#7, crsdeptime#8, depdelay#9, crsarrtime#10, arrdelay#11, crselapsedtime#12, dist#13], StorageLevel(disk, memory, deserialized, 1 replicas)</span>
+<span class="go">         +- *(1) FileScan json [id#0,fldate#1,month#2,dofW#3,carrier#4,src#5,dst#6,crsdephour#7,crsdeptime#8,depdelay#9,crsarrtime#10,arrdelay#11,crselapsedtime#12,dist#13] Batched: false, Format: JSON, Location: InMemoryFileIndex[file:/home/ubuntu/test_spark/flight/flightdata2018.json], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;id:string,fldate:date,month:int,dofW:int,carrier:string,src:string,dst:string,crsdephour:i...</span>
+</pre></div>
+
+<h3>Commonly used Dataset actions</h3>
+<ul>
+<li>show(n)</li>
+<li>take(n)</li>
+<li>count</li>
+</ul>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="s">&quot;crsdephour&quot;</span><span class="o">).</span><span class="n">where</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;crsdephour&quot;</span> <span class="o">===</span> <span class="mi">10</span><span class="o">).</span><span class="n">show</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------------------+----------+</span>
+<span class="go">|                  id|crsdephour|</span>
+<span class="go">+--------------------+----------+</span>
+<span class="go">|ATL_BOS_2018-01-0...|        10|</span>
+<span class="go">|ATL_CLT_2018-01-0...|        10|</span>
+<span class="go">|ATL_DFW_2018-01-0...|        10|</span>
+<span class="go">+--------------------+----------+</span>
+<span class="go">only showing top 3 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">depdelay</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="o">).</span><span class="n">groupBy</span><span class="o">(</span><span class="s">&quot;dst&quot;</span><span class="o">).</span><span class="n">count</span><span class="o">().</span><span class="n">orderBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;count&quot;</span><span class="o">.</span><span class="n">desc</span><span class="o">).</span><span class="n">show</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+---+-----+</span>
+<span class="go">|dst|count|</span>
+<span class="go">+---+-----+</span>
+<span class="go">|ORD| 3465|</span>
+<span class="go">|SFO| 2946|</span>
+<span class="go">|EWR| 2796|</span>
+<span class="go">+---+-----+</span>
+<span class="go">only showing top 3 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">depdelay</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="o">).</span><span class="n">groupBy</span><span class="o">(</span><span class="s">&quot;dst&quot;</span><span class="o">).</span><span class="n">count</span><span class="o">().</span><span class="n">orderBy</span><span class="o">(</span><span class="n">desc</span><span class="o">(</span><span class="s">&quot;count&quot;</span><span class="o">)).</span><span class="n">show</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+---+-----+</span>
+<span class="go">|dst|count|</span>
+<span class="go">+---+-----+</span>
+<span class="go">|ORD| 3465|</span>
+<span class="go">|SFO| 2946|</span>
+<span class="go">|EWR| 2796|</span>
+<span class="go">+---+-----+</span>
+<span class="go">only showing top 3 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">depdelay</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="o">).</span><span class="n">groupBy</span><span class="o">(</span><span class="s">&quot;dst&quot;</span><span class="o">).</span><span class="n">count</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res31: org.apache.spark.sql.DataFrame = [dst: string, count: bigint]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">desc</span><span class="o">(</span><span class="s">&quot;count&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res28: org.apache.spark.sql.Column = count DESC NULLS LAST</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">$</span><span class="s">&quot;count&quot;</span><span class="o">.</span><span class="n">desc</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res29: org.apache.spark.sql.Column = count DESC NULLS LAST</span>
+</pre></div>
+
+<h3>Spark SQL</h3>
+
+<div class="highlight"><pre><span></span><span class="c1">// Cache flight dataframe</span>
+<span class="n">flightDF</span><span class="o">.</span><span class="n">cache</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">res2: flightDF.type = [id: string, fldate: date ... 12 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// create table view of DF</span>
+<span class="n">flightDF</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="o">(</span><span class="s">&quot;flights&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// cache flights table in memory</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">cacheTable</span><span class="o">(</span><span class="s">&quot;flights&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Spark SQL</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="o">(</span><span class="s">&quot;select * from flights limit 4&quot;</span><span class="o">).</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|                  id|    fldate|month|dofW|carrier|src|dst|crsdephour|crsdeptime|depdelay|crsarrtime|arrdelay|crselapsedtime| dist|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|         9|       850|     0.0|      1116|     0.0|         146.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        11|      1122|     8.0|      1349|     0.0|         147.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        14|      1356|     9.0|      1623|     0.0|         147.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        16|      1620|     0.0|      1851|     3.0|         151.0|946.0|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> <span class="k">select</span> <span class="n">carrier</span><span class="p">,</span> <span class="k">avg</span><span class="p">(</span><span class="n">depdelay</span><span class="p">)</span> <span class="k">from</span> <span class="n">flights</span> <span class="k">group</span> <span class="k">by</span> <span class="n">carrier</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">carrier	avg(depdelay)</span>
+<span class="go">UA	14.442583200307139</span>
+<span class="go">AA	14.129090626627798</span>
+<span class="go">DL	14.26168914855228</span>
+<span class="go">WN	17.70183428999251</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;carrier&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;src&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;dst&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;depdelay&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;crsdephour&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;crsdephour&quot;</span><span class="o">).</span><span class="n">filter</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;depdelay&quot;</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="o">).</span><span class="n">orderBy</span><span class="o">(</span><span class="n">desc</span><span class="o">(</span><span class="s">&quot;depdelay&quot;</span><span class="o">)).</span><span class="n">show</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+-------+---+---+--------+----------+----------+</span>
+<span class="go">|carrier|src|dst|depdelay|crsdephour|crsdephour|</span>
+<span class="go">+-------+---+---+--------+----------+----------+</span>
+<span class="go">|     AA|IAH|MIA|  1559.0|        11|        11|</span>
+<span class="go">|     AA|IAH|DFW|  1445.0|        18|        18|</span>
+<span class="go">|     AA|BOS|DFW|  1345.0|        10|        10|</span>
+<span class="go">|     UA|BOS|ORD|  1334.0|         9|         9|</span>
+<span class="go">|     AA|LAX|MIA|  1283.0|         9|         9|</span>
+<span class="go">+-------+---+---+--------+----------+----------+</span>
+<span class="go">only showing top 5 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span>
+<span class="k">select</span> <span class="n">dofW</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="n">depdelay</span><span class="p">)</span>
+<span class="k">from</span> <span class="n">flights</span> <span class="k">where</span> <span class="n">depdelay</span> <span class="o">&gt;</span> <span class="mi">40</span>
+<span class="k">group</span> <span class="k">by</span> <span class="n">dofW</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">dofW	count(depdelay)</span>
+<span class="go">1	4680</span>
+<span class="go">6	2598</span>
+<span class="go">3	3986</span>
+<span class="go">5	4677</span>
+<span class="go">4	4809</span>
+<span class="go">7	4163</span>
+<span class="go">2	4406</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;dofW&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;depdelay&quot;</span><span class="o">).</span><span class="n">filter</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;depdelay&quot;</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="o">).</span><span class="n">groupBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;dofW&quot;</span><span class="o">).</span><span class="n">count</span><span class="o">().</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+----+-----+</span>
+<span class="go">|dofW|count|</span>
+<span class="go">+----+-----+</span>
+<span class="go">|   1| 4680|</span>
+<span class="go">|   6| 2598|</span>
+<span class="go">|   3| 3986|</span>
+<span class="go">|   5| 4677|</span>
+<span class="go">|   4| 4809|</span>
+<span class="go">|   7| 4163|</span>
+<span class="go">|   2| 4406|</span>
+<span class="go">+----+-----+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span>
+<span class="k">select</span> <span class="n">crsdephour</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="n">depdelay</span><span class="p">)</span>
+<span class="k">from</span> <span class="n">flights</span> <span class="k">where</span> <span class="n">depdelay</span> <span class="o">&gt;</span> <span class="mi">40</span>
+<span class="k">group</span> <span class="k">by</span> <span class="n">crsdephour</span> <span class="k">order</span> <span class="k">by</span> <span class="n">crsdephour</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">crsdephour	count(depdelay)</span>
+<span class="go">0	106</span>
+<span class="go">1	51</span>
+<span class="go">5	175</span>
+<span class="go">6	518</span>
+<span class="go">7	1068</span>
+<span class="go">8	1067</span>
+<span class="go">9	1112</span>
+<span class="go">10	1472</span>
+<span class="go">11	1321</span>
+<span class="go">12	1893</span>
+<span class="go">13	1728</span>
+<span class="go">14	2041</span>
+<span class="go">15	1969</span>
+<span class="go">16	2309</span>
+<span class="go">17	2434</span>
+<span class="go">18	2929</span>
+<span class="go">19	2198</span>
+<span class="go">20	2260</span>
+<span class="go">21	1180</span>
+<span class="go">22	1066</span>
+<span class="go">23	364</span>
+<span class="go">24	58</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;crsdephour&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;depdelay&quot;</span><span class="o">).</span><span class="n">filter</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;depdelay&quot;</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="o">).</span><span class="n">groupBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;crsdephour&quot;</span><span class="o">).</span><span class="n">count</span><span class="o">().</span><span class="n">orderBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;crsdephour&quot;</span><span class="o">).</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+----------+-----+</span>
+<span class="go">|crsdephour|count|</span>
+<span class="go">+----------+-----+</span>
+<span class="go">|         0|  106|</span>
+<span class="go">|         1|   51|</span>
+<span class="go">|         5|  175|</span>
+<span class="go">|         6|  518|</span>
+<span class="go">|         7| 1068|</span>
+<span class="go">|         8| 1067|</span>
+<span class="go">|         9| 1112|</span>
+<span class="go">|        10| 1472|</span>
+<span class="go">|        11| 1321|</span>
+<span class="go">|        12| 1893|</span>
+<span class="go">|        13| 1728|</span>
+<span class="go">|        14| 2041|</span>
+<span class="go">|        15| 1969|</span>
+<span class="go">|        16| 2309|</span>
+<span class="go">|        17| 2434|</span>
+<span class="go">|        18| 2929|</span>
+<span class="go">|        19| 2198|</span>
+<span class="go">|        20| 2260|</span>
+<span class="go">|        21| 1180|</span>
+<span class="go">|        22| 1066|</span>
+<span class="go">+----------+-----+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span>
+<span class="k">select</span> <span class="n">src</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="n">depdelay</span><span class="p">)</span>
+<span class="k">from</span> <span class="n">flights</span> <span class="k">where</span> <span class="n">depdelay</span> <span class="o">&gt;</span> <span class="mi">40</span>
+<span class="k">group</span> <span class="k">by</span> <span class="n">src</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="k">count</span><span class="p">(</span><span class="n">depdelay</span><span class="p">)</span> <span class="k">desc</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">src	count(depdelay)</span>
+<span class="go">ORD	4033</span>
+<span class="go">ATL	3106</span>
+<span class="go">DFW	2782</span>
+<span class="go">EWR	2328</span>
+<span class="go">DEN	2304</span>
+<span class="go">MIA	2294</span>
+<span class="go">SFO	2261</span>
+<span class="go">LAX	2126</span>
+<span class="go">LGA	1944</span>
+<span class="go">IAH	1829</span>
+<span class="go">CLT	1755</span>
+<span class="go">BOS	1711</span>
+<span class="go">SEA	846</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;src&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;depdelay&quot;</span><span class="o">).</span><span class="n">filter</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;depdelay&quot;</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="o">).</span><span class="n">groupBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;src&quot;</span><span class="o">).</span><span class="n">count</span><span class="o">().</span><span class="n">withColumnRenamed</span><span class="o">(</span><span class="s">&quot;count&quot;</span><span class="o">,</span> <span class="s">&quot;total&quot;</span><span class="o">).</span><span class="n">orderBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;total&quot;</span><span class="o">.</span><span class="n">desc</span><span class="o">).</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+---+-----+</span>
+<span class="go">|src|total|</span>
+<span class="go">+---+-----+</span>
+<span class="go">|ORD| 4033|</span>
+<span class="go">|ATL| 3106|</span>
+<span class="go">|DFW| 2782|</span>
+<span class="go">|EWR| 2328|</span>
+<span class="go">|DEN| 2304|</span>
+<span class="go">|MIA| 2294|</span>
+<span class="go">|SFO| 2261|</span>
+<span class="go">|LAX| 2126|</span>
+<span class="go">|LGA| 1944|</span>
+<span class="go">|IAH| 1829|</span>
+<span class="go">|CLT| 1755|</span>
+<span class="go">|BOS| 1711|</span>
+<span class="go">|SEA|  846|</span>
+<span class="go">+---+-----+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span>
+<span class="k">select</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="n">depdelay</span><span class="p">)</span>
+<span class="k">from</span> <span class="n">flights</span> <span class="k">where</span> <span class="n">depdelay</span> <span class="o">&gt;</span> <span class="mi">40</span>
+<span class="k">group</span> <span class="k">by</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="k">count</span><span class="p">(</span><span class="n">depdelay</span><span class="p">)</span> <span class="k">desc</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">src	dst	count(depdelay)</span>
+<span class="go">ORD	LGA	588</span>
+<span class="go">LAX	SFO	578</span>
+<span class="go">ATL	EWR	561</span>
+<span class="go">LGA	ORD	532</span>
+<span class="go">ORD	SFO	470</span>
+<span class="go">SFO	LAX	463</span>
+<span class="go">ATL	LGA	445</span>
+<span class="go">ORD	LAX	425</span>
+<span class="go">ORD	DFW	423</span>
+<span class="go">DEN	SFO	388</span>
+<span class="go">EWR	ATL	381</span>
+<span class="go">DFW	ORD	377</span>
+<span class="go">MIA	LGA	355</span>
+<span class="go">ORD	EWR	347</span>
+<span class="go">LGA	ATL	344</span>
+<span class="go">SFO	ORD	343</span>
+<span class="go">DFW	ATL	328</span>
+<span class="go">ORD	ATL	326</span>
+<span class="go">ORD	BOS	318</span>
+<span class="go">DEN	LAX	311</span>
+<span class="go">LAX	DEN	303</span>
+<span class="go">ORD	DEN	302</span>
+<span class="go">SFO	DEN	299</span>
+<span class="go">MIA	ATL	299</span>
+<span class="go">LAX	ORD	298</span>
+<span class="go">EWR	ORD	297</span>
+<span class="go">ATL	DFW	293</span>
+<span class="go">BOS	LGA	279</span>
+<span class="go">LGA	BOS	276</span>
+<span class="go">DEN	EWR	275</span>
+<span class="go">ATL	LAX	275</span>
+<span class="go">ATL	ORD	273</span>
+<span class="go">BOS	EWR	269</span>
+<span class="go">DFW	SFO	269</span>
+<span class="go">IAH	EWR	269</span>
+<span class="go">BOS	ORD	267</span>
+<span class="go">DEN	ORD	265</span>
+<span class="go">IAH	DFW	264</span>
+<span class="go">MIA	ORD	262</span>
+<span class="go">MIA	DFW	259</span>
+<span class="go">EWR	SFO	257</span>
+<span class="go">ATL	MIA	255</span>
+<span class="go">CLT	EWR	255</span>
+<span class="go">EWR	BOS	255</span>
+<span class="go">DFW	IAH	255</span>
+<span class="go">LGA	MIA	248</span>
+<span class="go">ATL	BOS	243</span>
+<span class="go">ORD	SEA	232</span>
+<span class="go">DFW	DEN	222</span>
+<span class="go">ORD	IAH	217</span>
+<span class="go">DFW	MIA	217</span>
+<span class="go">DFW	LAX	216</span>
+<span class="go">DFW	LGA	214</span>
+<span class="go">SFO	EWR	214</span>
+<span class="go">CLT	ORD	213</span>
+<span class="go">ORD	MIA	212</span>
+<span class="go">EWR	LAX	202</span>
+<span class="go">SFO	DFW	202</span>
+<span class="go">MIA	EWR	201</span>
+<span class="go">LAX	ATL	201</span>
+<span class="go">DFW	EWR	200</span>
+<span class="go">IAH	SFO	199</span>
+<span class="go">BOS	ATL	198</span>
+<span class="go">MIA	LAX	198</span>
+<span class="go">DEN	DFW	198</span>
+<span class="go">SFO	SEA	196</span>
+<span class="go">ATL	DEN	192</span>
+<span class="go">SEA	SFO	191</span>
+<span class="go">IAH	ORD	189</span>
+<span class="go">EWR	MIA	188</span>
+<span class="go">CLT	ATL	186</span>
+<span class="go">DFW	CLT	185</span>
+<span class="go">ATL	SFO	185</span>
+<span class="go">DEN	LGA	184</span>
+<span class="go">LGA	DEN	182</span>
+<span class="go">CLT	BOS	181</span>
+<span class="go">MIA	BOS	178</span>
+<span class="go">EWR	DEN	178</span>
+<span class="go">EWR	IAH	177</span>
+<span class="go">LAX	DFW	174</span>
+<span class="go">DFW	SEA	174</span>
+<span class="go">MIA	CLT	174</span>
+<span class="go">ORD	CLT	173</span>
+<span class="go">ATL	CLT	170</span>
+<span class="go">SFO	BOS	165</span>
+<span class="go">DEN	ATL	164</span>
+<span class="go">MIA	SFO	164</span>
+<span class="go">EWR	CLT	162</span>
+<span class="go">LGA	DFW	162</span>
+<span class="go">EWR	DFW	159</span>
+<span class="go">DEN	SEA	155</span>
+<span class="go">CLT	DFW	155</span>
+<span class="go">IAH	LGA	151</span>
+<span class="go">SEA	ORD	149</span>
+<span class="go">CLT	LGA	147</span>
+<span class="go">CLT	MIA	144</span>
+<span class="go">LAX	EWR	140</span>
+<span class="go">IAH	DEN	139</span>
+<span class="go">IAH	LAX	136</span>
+<span class="go">IAH	ATL	136</span>
+<span class="go">SFO	ATL	128</span>
+<span class="go">SEA	DEN	126</span>
+<span class="go">LAX	MIA	126</span>
+<span class="go">DFW	BOS	125</span>
+<span class="go">CLT	SFO	125</span>
+<span class="go">ATL	IAH	124</span>
+<span class="go">LGA	CLT	124</span>
+<span class="go">MIA	IAH	123</span>
+<span class="go">SFO	IAH	122</span>
+<span class="go">DEN	IAH	120</span>
+<span class="go">BOS	SFO	120</span>
+<span class="go">BOS	CLT	116</span>
+<span class="go">LAX	BOS	114</span>
+<span class="go">BOS	LAX	113</span>
+<span class="go">DEN	BOS	112</span>
+<span class="go">CLT	DEN	106</span>
+<span class="go">SEA	DFW	97</span>
+<span class="go">BOS	MIA	97</span>
+<span class="go">IAH	MIA	94</span>
+<span class="go">CLT	LAX	93</span>
+<span class="go">IAH	BOS	90</span>
+<span class="go">ATL	SEA	90</span>
+<span class="go">IAH	CLT	86</span>
+<span class="go">CLT	IAH	86</span>
+<span class="go">BOS	DFW	85</span>
+<span class="go">BOS	DEN	81</span>
+<span class="go">IAH	SEA	76</span>
+<span class="go">LGA	IAH	76</span>
+<span class="go">EWR	SEA	72</span>
+<span class="go">SFO	MIA	70</span>
+<span class="go">LAX	SEA	69</span>
+<span class="go">SEA	ATL	68</span>
+<span class="go">DEN	CLT	67</span>
+<span class="go">DEN	MIA	65</span>
+<span class="go">SEA	EWR	65</span>
+<span class="go">LAX	CLT	65</span>
+<span class="go">CLT	SEA	64</span>
+<span class="go">BOS	IAH	63</span>
+<span class="go">SFO	CLT	59</span>
+<span class="go">LAX	IAH	58</span>
+<span class="go">SEA	LAX	48</span>
+<span class="go">SEA	IAH	47</span>
+<span class="go">MIA	DEN	41</span>
+<span class="go">MIA	SEA	40</span>
+<span class="go">SEA	MIA	25</span>
+<span class="go">BOS	SEA	23</span>
+<span class="go">SEA	BOS	21</span>
+<span class="go">SEA	CLT	9</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;src&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;dst&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;depdelay&quot;</span><span class="o">).</span><span class="n">filter</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;depdelay&quot;</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="o">).</span><span class="n">groupBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;src&quot;</span><span class="o">,</span> <span class="n">$</span><span class="s">&quot;dst&quot;</span><span class="o">).</span><span class="n">count</span><span class="o">().</span><span class="n">orderBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;count&quot;</span><span class="o">.</span><span class="n">desc</span><span class="o">).</span><span class="n">show</span><span class="o">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+---+---+-----+</span>
+<span class="go">|src|dst|count|</span>
+<span class="go">+---+---+-----+</span>
+<span class="go">|ORD|LGA|  588|</span>
+<span class="go">|LAX|SFO|  578|</span>
+<span class="go">|ATL|EWR|  561|</span>
+<span class="go">|LGA|ORD|  532|</span>
+<span class="go">|ORD|SFO|  470|</span>
+<span class="go">|SFO|LAX|  463|</span>
+<span class="go">|ATL|LGA|  445|</span>
+<span class="go">|ORD|LAX|  425|</span>
+<span class="go">|ORD|DFW|  423|</span>
+<span class="go">|DEN|SFO|  388|</span>
+<span class="go">|EWR|ATL|  381|</span>
+<span class="go">|DFW|ORD|  377|</span>
+<span class="go">|MIA|LGA|  355|</span>
+<span class="go">|ORD|EWR|  347|</span>
+<span class="go">|LGA|ATL|  344|</span>
+<span class="go">|SFO|ORD|  343|</span>
+<span class="go">|DFW|ATL|  328|</span>
+<span class="go">|ORD|ATL|  326|</span>
+<span class="go">|ORD|BOS|  318|</span>
+<span class="go">|DEN|LAX|  311|</span>
+<span class="go">+---+---+-----+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>
+
+<h3>UDF</h3>
+<p>https://jaceklaskowski.gitbooks.io/mastering-spark-sql/spark-sql-udfs.html</p>
+
+<div class="highlight"><pre><span></span><span class="c1">// List available standard and user defined functions</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">listFunctions</span><span class="o">.</span><span class="n">show</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+----------+--------+-----------+------------------------------------------------------------+-----------+</span>
+<span class="go">|name      |database|description|className                                                   |isTemporary|</span>
+<span class="go">+----------+--------+-----------+------------------------------------------------------------+-----------+</span>
+<span class="go">|!         |null    |null       |org.apache.spark.sql.catalyst.expressions.Not               |true       |</span>
+<span class="go">|%         |null    |null       |org.apache.spark.sql.catalyst.expressions.Remainder         |true       |</span>
+<span class="go">|&amp;         |null    |null       |org.apache.spark.sql.catalyst.expressions.BitwiseAnd        |true       |</span>
+<span class="go">|*         |null    |null       |org.apache.spark.sql.catalyst.expressions.Multiply          |true       |</span>
+<span class="go">|+         |null    |null       |org.apache.spark.sql.catalyst.expressions.Add               |true       |</span>
+<span class="go">|-         |null    |null       |org.apache.spark.sql.catalyst.expressions.Subtract          |true       |</span>
+<span class="go">|/         |null    |null       |org.apache.spark.sql.catalyst.expressions.Divide            |true       |</span>
+<span class="go">|&lt;         |null    |null       |org.apache.spark.sql.catalyst.expressions.LessThan          |true       |</span>
+<span class="go">|&lt;=        |null    |null       |org.apache.spark.sql.catalyst.expressions.LessThanOrEqual   |true       |</span>
+<span class="go">|&lt;=&gt;       |null    |null       |org.apache.spark.sql.catalyst.expressions.EqualNullSafe     |true       |</span>
+<span class="go">|=         |null    |null       |org.apache.spark.sql.catalyst.expressions.EqualTo           |true       |</span>
+<span class="go">|==        |null    |null       |org.apache.spark.sql.catalyst.expressions.EqualTo           |true       |</span>
+<span class="go">|&gt;         |null    |null       |org.apache.spark.sql.catalyst.expressions.GreaterThan       |true       |</span>
+<span class="go">|&gt;=        |null    |null       |org.apache.spark.sql.catalyst.expressions.GreaterThanOrEqual|true       |</span>
+<span class="go">|^         |null    |null       |org.apache.spark.sql.catalyst.expressions.BitwiseXor        |true       |</span>
+<span class="go">|abs       |null    |null       |org.apache.spark.sql.catalyst.expressions.Abs               |true       |</span>
+<span class="go">|acos      |null    |null       |org.apache.spark.sql.catalyst.expressions.Acos              |true       |</span>
+<span class="go">|add_months|null    |null       |org.apache.spark.sql.catalyst.expressions.AddMonths         |true       |</span>
+<span class="go">|aggregate |null    |null       |org.apache.spark.sql.catalyst.expressions.ArrayAggregate    |true       |</span>
+<span class="go">|and       |null    |null       |org.apache.spark.sql.catalyst.expressions.And               |true       |</span>
+<span class="go">+----------+--------+-----------+------------------------------------------------------------+-----------+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">show</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|id                        |fldate    |month|dofW|carrier|src|dst|crsdephour|crsdeptime|depdelay|crsarrtime|arrdelay|crselapsedtime|dist |</span>
+<span class="go">+--------------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|ATL_BOS_2018-01-01_DL_104 |2018-01-01|1    |1   |DL     |ATL|BOS|9         |850       |0.0     |1116      |0.0     |146.0         |946.0|</span>
+<span class="go">|ATL_BOS_2018-01-01_DL_1200|2018-01-01|1    |1   |DL     |ATL|BOS|11        |1122      |8.0     |1349      |0.0     |147.0         |946.0|</span>
+<span class="go">|ATL_BOS_2018-01-01_DL_1500|2018-01-01|1    |1   |DL     |ATL|BOS|14        |1356      |9.0     |1623      |0.0     |147.0         |946.0|</span>
+<span class="go">|ATL_BOS_2018-01-01_DL_1800|2018-01-01|1    |1   |DL     |ATL|BOS|16        |1620      |0.0     |1851      |3.0     |151.0         |946.0|</span>
+<span class="go">|ATL_BOS_2018-01-01_DL_2100|2018-01-01|1    |1   |DL     |ATL|BOS|19        |1940      |6.0     |2210      |0.0     |150.0         |946.0|</span>
+<span class="go">|ATL_BOS_2018-01-01_DL_2792|2018-01-01|1    |1   |DL     |ATL|BOS|12        |1248      |0.0     |1513      |0.0     |145.0         |946.0|</span>
+<span class="go">|ATL_BOS_2018-01-01_DL_903 |2018-01-01|1    |1   |DL     |ATL|BOS|22        |2215      |0.0     |39        |0.0     |144.0         |946.0|</span>
+<span class="go">|ATL_BOS_2018-01-01_DL_980 |2018-01-01|1    |1   |DL     |ATL|BOS|15        |1500      |21.0    |1734      |33.0    |154.0         |946.0|</span>
+<span class="go">|ATL_BOS_2018-01-01_WN_1633|2018-01-01|1    |1   |WN     |ATL|BOS|15        |1500      |198.0   |1725      |208.0   |145.0         |946.0|</span>
+<span class="go">|ATL_BOS_2018-01-01_WN_170 |2018-01-01|1    |1   |WN     |ATL|BOS|21        |2055      |14.0    |2330      |0.0     |155.0         |946.0|</span>
+<span class="go">|ATL_BOS_2018-01-01_WN_1726|2018-01-01|1    |1   |WN     |ATL|BOS|10        |1015      |215.0   |1250      |191.0   |155.0         |946.0|</span>
+<span class="go">|ATL_CLT_2018-01-01_AA_1973|2018-01-01|1    |1   |AA     |ATL|CLT|11        |1114      |0.0     |1238      |0.0     |84.0          |226.0|</span>
+<span class="go">|ATL_CLT_2018-01-01_AA_2010|2018-01-01|1    |1   |AA     |ATL|CLT|8         |845       |0.0     |1011      |0.0     |86.0          |226.0|</span>
+<span class="go">|ATL_CLT_2018-01-01_AA_2018|2018-01-01|1    |1   |AA     |ATL|CLT|15        |1548      |0.0     |1710      |0.0     |82.0          |226.0|</span>
+<span class="go">|ATL_CLT_2018-01-01_AA_2095|2018-01-01|1    |1   |AA     |ATL|CLT|7         |705       |0.0     |821       |0.0     |76.0          |226.0|</span>
+<span class="go">|ATL_CLT_2018-01-01_AA_2472|2018-01-01|1    |1   |AA     |ATL|CLT|12        |1226      |0.0     |1347      |0.0     |81.0          |226.0|</span>
+<span class="go">|ATL_CLT_2018-01-01_AA_757 |2018-01-01|1    |1   |AA     |ATL|CLT|22        |2205      |0.0     |2319      |1.0     |74.0          |226.0|</span>
+<span class="go">|ATL_CLT_2018-01-01_DL_2052|2018-01-01|1    |1   |DL     |ATL|CLT|22        |2210      |11.0    |2324      |0.0     |74.0          |226.0|</span>
+<span class="go">|ATL_CLT_2018-01-01_DL_2133|2018-01-01|1    |1   |DL     |ATL|CLT|15        |1543      |1.0     |1659      |0.0     |76.0          |226.0|</span>
+<span class="go">|ATL_CLT_2018-01-01_DL_2251|2018-01-01|1    |1   |DL     |ATL|CLT|10        |1008      |0.0     |1124      |0.0     |76.0          |226.0|</span>
+<span class="go">+--------------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Using inbuild UDF (Preferred way)</span>
+
+<span class="k">import</span> <span class="nn">org.apache.spark.sql.functions._</span>
+
+<span class="n">flightDS</span><span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="n">lower</span><span class="o">(</span><span class=" -Symbol">&#39;carrier</span><span class="o">)).</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------------+</span>
+<span class="go">|lower(carrier)|</span>
+<span class="go">+--------------+</span>
+<span class="go">|            dl|</span>
+<span class="go">|            dl|</span>
+<span class="go">|            dl|</span>
+<span class="go">|            dl|</span>
+<span class="go">|            dl|</span>
+<span class="go">|            dl|</span>
+<span class="go">|            dl|</span>
+<span class="go">|            dl|</span>
+<span class="go">|            wn|</span>
+<span class="go">|            wn|</span>
+<span class="go">|            wn|</span>
+<span class="go">|            aa|</span>
+<span class="go">|            aa|</span>
+<span class="go">|            aa|</span>
+<span class="go">|            aa|</span>
+<span class="go">|            aa|</span>
+<span class="go">|            aa|</span>
+<span class="go">|            dl|</span>
+<span class="go">|            dl|</span>
+<span class="go">|            dl|</span>
+<span class="go">+--------------+</span>
+<span class="go">only showing top 20 rows</span>
+
+<span class="go">import org.apache.spark.sql.functions._</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="c1">// Create UDF</span>
+
+<span class="k">val</span> <span class="n">myLower</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=&gt;</span> <span class="nc">String</span> <span class="k">=</span> <span class="k">_</span><span class="o">.</span><span class="n">toLowerCase</span>
+
+<span class="k">val</span> <span class="n">lowerUDF</span> <span class="k">=</span> <span class="n">udf</span><span class="o">(</span><span class="n">myLower</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">myLower: String =&gt; String = &lt;function1&gt;</span>
+<span class="go">lowerUDF: org.apache.spark.sql.expressions.UserDefinedFunction = UserDefinedFunction(&lt;function1&gt;,StringType,Some(List(StringType)))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">withColumn</span><span class="o">(</span><span class="s">&quot;lower_src&quot;</span><span class="o">,</span> <span class="n">lowerUDF</span><span class="o">(</span><span class=" -Symbol">&#39;src</span><span class="o">)).</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+---------+</span>
+<span class="go">|                  id|    fldate|month|dofW|carrier|src|dst|crsdephour|crsdeptime|depdelay|crsarrtime|arrdelay|crselapsedtime| dist|lower_src|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+---------+</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|         9|       850|     0.0|      1116|     0.0|         146.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        11|      1122|     8.0|      1349|     0.0|         147.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        14|      1356|     9.0|      1623|     0.0|         147.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        16|      1620|     0.0|      1851|     3.0|         151.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        19|      1940|     6.0|      2210|     0.0|         150.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        12|      1248|     0.0|      1513|     0.0|         145.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        22|      2215|     0.0|        39|     0.0|         144.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        15|      1500|    21.0|      1734|    33.0|         154.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        15|      1500|   198.0|      1725|   208.0|         145.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        21|      2055|    14.0|      2330|     0.0|         155.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        10|      1015|   215.0|      1250|   191.0|         155.0|946.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        11|      1114|     0.0|      1238|     0.0|          84.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|         8|       845|     0.0|      1011|     0.0|          86.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        15|      1548|     0.0|      1710|     0.0|          82.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|         7|       705|     0.0|       821|     0.0|          76.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        12|      1226|     0.0|      1347|     0.0|          81.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        22|      2205|     0.0|      2319|     1.0|          74.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        22|      2210|    11.0|      2324|     0.0|          74.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        15|      1543|     1.0|      1659|     0.0|          76.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        10|      1008|     0.0|      1124|     0.0|          76.0|226.0|      atl|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+---------+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">lowerNullCheck</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">str</span> <span class="k">=</span> <span class="nc">Option</span><span class="o">(</span><span class="n">s</span><span class="o">).</span><span class="n">getOrElse</span><span class="o">(</span><span class="k">return</span> <span class="nc">None</span><span class="o">)</span>
+    <span class="nc">Some</span><span class="o">(</span><span class="n">str</span><span class="o">.</span><span class="n">toLowerCase</span><span class="o">().</span><span class="n">replaceAll</span><span class="o">(</span><span class="s">&quot;\\s+&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="k">val</span> <span class="n">lowerWithNullCheck</span> <span class="k">=</span> <span class="n">udf</span><span class="o">[</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span>, <span class="kt">String</span><span class="o">](</span><span class="n">lowerNullCheck</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">lowerNullCheck: (s: String)Option[String]</span>
+<span class="go">lowerWithNullCheck: org.apache.spark.sql.expressions.UserDefinedFunction = UserDefinedFunction(&lt;function1&gt;,StringType,Some(List(StringType)))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">withColumn</span><span class="o">(</span><span class="s">&quot;lower_src&quot;</span><span class="o">,</span> <span class="n">lowerWithNullCheck</span><span class="o">(</span><span class=" -Symbol">&#39;src</span><span class="o">)).</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+---------+</span>
+<span class="go">|                  id|    fldate|month|dofW|carrier|src|dst|crsdephour|crsdeptime|depdelay|crsarrtime|arrdelay|crselapsedtime| dist|lower_src|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+---------+</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|         9|       850|     0.0|      1116|     0.0|         146.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        11|      1122|     8.0|      1349|     0.0|         147.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        14|      1356|     9.0|      1623|     0.0|         147.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        16|      1620|     0.0|      1851|     3.0|         151.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        19|      1940|     6.0|      2210|     0.0|         150.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        12|      1248|     0.0|      1513|     0.0|         145.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        22|      2215|     0.0|        39|     0.0|         144.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        15|      1500|    21.0|      1734|    33.0|         154.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        15|      1500|   198.0|      1725|   208.0|         145.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        21|      2055|    14.0|      2330|     0.0|         155.0|946.0|      atl|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        10|      1015|   215.0|      1250|   191.0|         155.0|946.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        11|      1114|     0.0|      1238|     0.0|          84.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|         8|       845|     0.0|      1011|     0.0|          86.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        15|      1548|     0.0|      1710|     0.0|          82.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|         7|       705|     0.0|       821|     0.0|          76.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        12|      1226|     0.0|      1347|     0.0|          81.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        22|      2205|     0.0|      2319|     1.0|          74.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        22|      2210|    11.0|      2324|     0.0|          74.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        15|      1543|     1.0|      1659|     0.0|          76.0|226.0|      atl|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        10|      1008|     0.0|      1124|     0.0|          76.0|226.0|      atl|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+---------+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>
+
+<h3>Since UDFs are not efficient, create methods that accept Column as parameter</h3>
+<p><strong>Advantages</strong></p>
+<ul>
+<li>More efficient as it can be optimised</li>
+<li>Not a blackbox</li>
+<li>No need to register as UDF</li>
+<li>No need to handle NULL (if you are only using inbuild sql functions)</li>
+</ul>
+
+<div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">org.apache.spark.sql.functions._</span>
+
+<span class="k">def</span> <span class="n">lowerColumnNullCheck</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">Column</span><span class="o">)</span><span class="k">:</span> <span class="kt">Column</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">functions</span><span class="o">.</span><span class="n">lower</span><span class="o">(</span><span class="n">regexp_replace</span><span class="o">(</span><span class="n">c</span><span class="o">,</span> <span class="s">&quot;\\s+&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">))</span>
+<span class="o">}</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">import org.apache.spark.sql.functions._</span>
+<span class="go">lowerColumnNullCheck: (c: org.apache.spark.sql.Column)org.apache.spark.sql.Column</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">flightDS</span><span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="n">lowerColumnNullCheck</span><span class="o">(</span><span class=" -Symbol">&#39;src</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;lower_src&quot;</span><span class="o">)).</span><span class="n">show</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+---------+</span>
+<span class="go">|lower_src|</span>
+<span class="go">+---------+</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">|      atl|</span>
+<span class="go">+---------+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>

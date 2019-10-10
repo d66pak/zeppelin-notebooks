@@ -1,0 +1,56 @@
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<h1>Datasets, DataFrames, and Spark SQL</h1>
+
+
+<div class="highlight"><pre><span></span><span class="c1">// Another way, using auto infer schema</span>
+
+<span class="c1">// NOTE: In this case make sure that auto inferred data types are matching the case class</span>
+
+<span class="k">import</span> <span class="nn">java.sql.Date</span>
+<span class="k">import</span> <span class="nn">spark.implicits._</span>
+
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Flight1</span><span class="o">(</span><span class="n">id</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">fldate</span><span class="k">:</span> <span class="kt">Date</span><span class="o">,</span> <span class="n">month</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">dofW</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">carrier</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">src</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">dst</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">crsdephour</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">crsdeptime</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">depdelay</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">crsarrtime</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">arrdelay</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">crselapsedtime</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">dist</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Serializable</span>
+
+
+<span class="c1">// val flightDS_autoinfer = spark.read.format(&quot;json&quot;).load(z.get(&quot;flight-data-2018&quot;).toString).as[Flight1]</span>
+<span class="c1">// same as below</span>
+
+<span class="k">val</span> <span class="n">flightDS_autoinfer</span> <span class="k">=</span> <span class="n">flightDF_autoinfer</span><span class="o">.</span><span class="n">as</span><span class="o">[</span><span class="kt">Flight1</span><span class="o">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|                  id|    fldate|month|dofW|carrier|src|dst|crsdephour|crsdeptime|depdelay|crsarrtime|arrdelay|crselapsedtime| dist|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|         9|       850|     0.0|      1116|     0.0|         146.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        11|      1122|     8.0|      1349|     0.0|         147.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        14|      1356|     9.0|      1623|     0.0|         147.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        16|      1620|     0.0|      1851|     3.0|         151.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        19|      1940|     6.0|      2210|     0.0|         150.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        12|      1248|     0.0|      1513|     0.0|         145.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        22|      2215|     0.0|        39|     0.0|         144.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|BOS|        15|      1500|    21.0|      1734|    33.0|         154.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        15|      1500|   198.0|      1725|   208.0|         145.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        21|      2055|    14.0|      2330|     0.0|         155.0|946.0|</span>
+<span class="go">|ATL_BOS_2018-01-0...|2018-01-01|    1|   1|     WN|ATL|BOS|        10|      1015|   215.0|      1250|   191.0|         155.0|946.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        11|      1114|     0.0|      1238|     0.0|          84.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|         8|       845|     0.0|      1011|     0.0|          86.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        15|      1548|     0.0|      1710|     0.0|          82.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|         7|       705|     0.0|       821|     0.0|          76.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        12|      1226|     0.0|      1347|     0.0|          81.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     AA|ATL|CLT|        22|      2205|     0.0|      2319|     1.0|          74.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        22|      2210|    11.0|      2324|     0.0|          74.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        15|      1543|     1.0|      1659|     0.0|          76.0|226.0|</span>
+<span class="go">|ATL_CLT_2018-01-0...|2018-01-01|    1|   1|     DL|ATL|CLT|        10|      1008|     0.0|      1124|     0.0|          76.0|226.0|</span>
+<span class="go">+--------------------+----------+-----+----+-------+---+---+----------+----------+--------+----------+--------+--------------+-----+</span>
+<span class="go">only showing top 20 rows</span>
+</pre></div>
+
+
+<h3>Common Dataset typed transformations &ldquo;Dataset[T]&rdquo;</h3>
+<ul>
+<li>filter</li>
+<li>map</li>
+<li>groupByKey</li>
+</ul>

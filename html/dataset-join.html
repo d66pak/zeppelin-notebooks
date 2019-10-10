@@ -1,0 +1,199 @@
+<link rel="stylesheet" type="text/css" href="style.css">
+<p>DataSet join</p>
+
+<div class="highlight"><pre><span></span><span class="k">case</span> <span class="k">class</span> <span class="nc">Person</span><span class="o">(</span><span class="n">familyId</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">cityId</span><span class="k">:</span> <span class="kt">Long</span><span class="o">)</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">City</span><span class="o">(</span><span class="n">cityId</span><span class="k">:</span> <span class="kt">Long</span><span class="o">,</span> <span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">family</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span>
+  <span class="nc">Person</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="s">&quot;Agata&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">),</span>
+  <span class="nc">Person</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Iweta&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">),</span>
+  <span class="nc">Person</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">&quot;Patryk&quot;</span><span class="o">,</span> <span class="mi">2</span><span class="o">),</span>
+  <span class="nc">Person</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="s">&quot;Maksym&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">))</span>
+
+<span class="k">val</span> <span class="n">cities</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span>
+  <span class="nc">City</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="s">&quot;Warsaw&quot;</span><span class="o">),</span>
+  <span class="nc">City</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Washington&quot;</span><span class="o">),</span>
+  <span class="nc">City</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">&quot;Sopot&quot;</span><span class="o">))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">defined class Person</span>
+<span class="go">defined class City</span>
+<span class="go">family: Seq[Person] = List(Person(0,Agata,0), Person(1,Iweta,0), Person(2,Patryk,2), Person(3,Maksym,0))</span>
+<span class="go">cities: Seq[City] = List(City(0,Warsaw), City(1,Washington), City(2,Sopot))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">familyDS</span> <span class="k">=</span> <span class="n">family</span><span class="o">.</span><span class="n">toDS</span>
+<span class="k">val</span> <span class="n">cityDS</span> <span class="k">=</span> <span class="n">cities</span><span class="o">.</span><span class="n">toDS</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">familyDS: org.apache.spark.sql.Dataset[Person] = [familyId: bigint, name: string ... 1 more field]</span>
+<span class="go">cityDS: org.apache.spark.sql.Dataset[City] = [cityId: bigint, name: string]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">cityFamily</span> <span class="k">=</span> <span class="n">cityDS</span><span class="o">.</span><span class="n">join</span><span class="o">(</span><span class="n">familyDS</span><span class="o">,</span> <span class="n">cityDS</span><span class="o">(</span><span class="s">&quot;cityId&quot;</span><span class="o">)</span> <span class="o">===</span> <span class="n">familyDS</span><span class="o">(</span><span class="s">&quot;cityId&quot;</span><span class="o">),</span> <span class="s">&quot;left&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">cityFamily: org.apache.spark.sql.DataFrame = [cityId: bigint, name: string ... 3 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">cityFamily</span><span class="o">.</span><span class="n">show</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+------+----------+--------+------+------+</span>
+<span class="go">|cityId|      name|familyId|  name|cityId|</span>
+<span class="go">+------+----------+--------+------+------+</span>
+<span class="go">|     0|    Warsaw|       3|Maksym|     0|</span>
+<span class="go">|     0|    Warsaw|       1| Iweta|     0|</span>
+<span class="go">|     0|    Warsaw|       0| Agata|     0|</span>
+<span class="go">|     1|Washington|    null|  null|  null|</span>
+<span class="go">|     2|     Sopot|       2|Patryk|     2|</span>
+<span class="go">+------+----------+--------+------+------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">cityDS</span><span class="o">.</span><span class="n">join</span><span class="o">(</span><span class="n">familyDS</span><span class="o">,</span> <span class="n">cityDS</span><span class="o">(</span><span class="s">&quot;cityId&quot;</span><span class="o">)</span> <span class="o">===</span> <span class="n">familyDS</span><span class="o">(</span><span class="s">&quot;cityId&quot;</span><span class="o">),</span> <span class="s">&quot;left&quot;</span><span class="o">).</span><span class="n">select</span><span class="o">(</span><span class="n">cityDS</span><span class="o">(</span><span class="s">&quot;cityId&quot;</span><span class="o">),</span> <span class="n">cityDS</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">),</span> <span class="n">$</span><span class="s">&quot;familyId&quot;</span><span class="o">,</span> <span class="n">familyDS</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;fname&quot;</span><span class="o">),</span> <span class="n">familyDS</span><span class="o">(</span><span class="s">&quot;cityId&quot;</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;fcityId&quot;</span><span class="o">)).</span><span class="n">show</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+------+----------+--------+------+-------+</span>
+<span class="go">|cityId|      name|familyId| fname|fcityId|</span>
+<span class="go">+------+----------+--------+------+-------+</span>
+<span class="go">|     0|    Warsaw|       3|Maksym|      0|</span>
+<span class="go">|     0|    Warsaw|       1| Iweta|      0|</span>
+<span class="go">|     0|    Warsaw|       0| Agata|      0|</span>
+<span class="go">|     1|Washington|    null|  null|   null|</span>
+<span class="go">|     2|     Sopot|       2|Patryk|      2|</span>
+<span class="go">+------+----------+--------+------+-------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">joined</span> <span class="k">=</span> <span class="n">cityDS</span><span class="o">.</span><span class="n">join</span><span class="o">(</span><span class="n">familyDS</span><span class="o">,</span> <span class="n">cityDS</span><span class="o">(</span><span class="s">&quot;cityId&quot;</span><span class="o">)</span> <span class="o">===</span> <span class="n">familyDS</span><span class="o">(</span><span class="s">&quot;cityId&quot;</span><span class="o">),</span> <span class="s">&quot;left&quot;</span><span class="o">).</span><span class="n">select</span><span class="o">(</span><span class="n">cityDS</span><span class="o">(</span><span class="s">&quot;cityId&quot;</span><span class="o">),</span> <span class="n">cityDS</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">),</span> <span class="n">$</span><span class="s">&quot;familyId&quot;</span><span class="o">,</span> <span class="n">familyDS</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;fname&quot;</span><span class="o">),</span> <span class="n">familyDS</span><span class="o">(</span><span class="s">&quot;cityId&quot;</span><span class="o">).</span><span class="n">as</span><span class="o">(</span><span class="s">&quot;fcityId&quot;</span><span class="o">))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">joined: org.apache.spark.sql.DataFrame = [cityId: bigint, name: string ... 3 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">cityDF</span> <span class="k">=</span> <span class="n">cities</span><span class="o">.</span><span class="n">toDF</span>
+<span class="k">val</span> <span class="n">familyDF</span> <span class="k">=</span> <span class="n">family</span><span class="o">.</span><span class="n">toDF</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">cityDF: org.apache.spark.sql.DataFrame = [cityId: bigint, name: string]</span>
+<span class="go">familyDF: org.apache.spark.sql.DataFrame = [familyId: bigint, name: string ... 1 more field]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">joinedDF</span> <span class="k">=</span> <span class="n">cityDF</span><span class="o">.</span><span class="n">join</span><span class="o">(</span><span class="n">familyDF</span><span class="o">,</span> <span class="nc">Seq</span><span class="o">(</span><span class="s">&quot;cityId&quot;</span><span class="o">),</span> <span class="s">&quot;left&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">joinedDF: org.apache.spark.sql.DataFrame = [cityId: bigint, name: string ... 2 more fields]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">joinedDF</span><span class="o">.</span><span class="n">show</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+------+----------+--------+------+</span>
+<span class="go">|cityId|      name|familyId|  name|</span>
+<span class="go">+------+----------+--------+------+</span>
+<span class="go">|     0|    Warsaw|       3|Maksym|</span>
+<span class="go">|     0|    Warsaw|       1| Iweta|</span>
+<span class="go">|     0|    Warsaw|       0| Agata|</span>
+<span class="go">|     1|Washington|    null|  null|</span>
+<span class="go">|     2|     Sopot|       2|Patryk|</span>
+<span class="go">+------+----------+--------+------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">joinedDF</span><span class="o">.</span><span class="n">select</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;cityDF.name&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">org.apache.spark.sql.AnalysisException: cannot resolve &#39;`cityDF.name`&#39; given input columns: [cityId, name, familyId, name];;</span>
+<span class="go">&#39;Project [&#39;cityDF.name]</span>
+<span class="go">+- Project [cityId#10732L, name#10733, familyId#10740L, name#10741]</span>
+<span class="go">   +- Join LeftOuter, (cityId#10732L = cityId#10742L)</span>
+<span class="go">      :- LocalRelation [cityId#10732L, name#10733]</span>
+<span class="go">      +- LocalRelation [familyId#10740L, name#10741, cityId#10742L]</span>
+
+<span class="go">  at org.apache.spark.sql.catalyst.analysis.package$AnalysisErrorAt.failAnalysis(package.scala:42)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1$$anonfun$apply$3.applyOrElse(CheckAnalysis.scala:110)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1$$anonfun$apply$3.applyOrElse(CheckAnalysis.scala:107)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$transformUp$1.apply(TreeNode.scala:278)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$transformUp$1.apply(TreeNode.scala:278)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.trees.CurrentOrigin$.withOrigin(TreeNode.scala:70)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.trees.TreeNode.transformUp(TreeNode.scala:277)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$transformExpressionsUp$1.apply(QueryPlan.scala:93)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$transformExpressionsUp$1.apply(QueryPlan.scala:93)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$1.apply(QueryPlan.scala:105)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$1.apply(QueryPlan.scala:105)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.trees.CurrentOrigin$.withOrigin(TreeNode.scala:70)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.plans.QueryPlan.transformExpression$1(QueryPlan.scala:104)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.plans.QueryPlan.org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$1(QueryPlan.scala:116)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$1$2.apply(QueryPlan.scala:121)</span>
+<span class="go">  at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:234)</span>
+<span class="go">  at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:234)</span>
+<span class="go">  at scala.collection.mutable.ResizableArray$class.foreach(ResizableArray.scala:59)</span>
+<span class="go">  at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:48)</span>
+<span class="go">  at scala.collection.TraversableLike$class.map(TraversableLike.scala:234)</span>
+<span class="go">  at scala.collection.AbstractTraversable.map(Traversable.scala:104)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.plans.QueryPlan.org$apache$spark$sql$catalyst$plans$QueryPlan$$recursiveTransform$1(QueryPlan.scala:121)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.plans.QueryPlan$$anonfun$2.apply(QueryPlan.scala:126)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.trees.TreeNode.mapProductIterator(TreeNode.scala:187)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.plans.QueryPlan.mapExpressions(QueryPlan.scala:126)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.plans.QueryPlan.transformExpressionsUp(QueryPlan.scala:93)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1.apply(CheckAnalysis.scala:107)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$$anonfun$checkAnalysis$1.apply(CheckAnalysis.scala:85)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:127)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.analysis.CheckAnalysis$class.checkAnalysis(CheckAnalysis.scala:85)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.analysis.Analyzer.checkAnalysis(Analyzer.scala:95)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.analysis.Analyzer$$anonfun$executeAndCheck$1.apply(Analyzer.scala:108)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.analysis.Analyzer$$anonfun$executeAndCheck$1.apply(Analyzer.scala:105)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper$.markInAnalyzer(AnalysisHelper.scala:201)</span>
+<span class="go">  at org.apache.spark.sql.catalyst.analysis.Analyzer.executeAndCheck(Analyzer.scala:105)</span>
+<span class="go">  at org.apache.spark.sql.execution.QueryExecution.analyzed$lzycompute(QueryExecution.scala:57)</span>
+<span class="go">  at org.apache.spark.sql.execution.QueryExecution.analyzed(QueryExecution.scala:55)</span>
+<span class="go">  at org.apache.spark.sql.execution.QueryExecution.assertAnalyzed(QueryExecution.scala:47)</span>
+<span class="go">  at org.apache.spark.sql.Dataset$.ofRows(Dataset.scala:79)</span>
+<span class="go">  at org.apache.spark.sql.Dataset.org$apache$spark$sql$Dataset$$withPlan(Dataset.scala:3407)</span>
+<span class="go">  at org.apache.spark.sql.Dataset.select(Dataset.scala:1335)</span>
+<span class="go">  ... 125 elided</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">joined</span><span class="o">.</span><span class="n">groupBy</span><span class="o">(</span><span class="n">$</span><span class="s">&quot;cityId&quot;</span><span class="o">).</span><span class="n">count</span><span class="o">.</span><span class="n">show</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+------+-----+</span>
+<span class="go">|cityId|count|</span>
+<span class="go">+------+-----+</span>
+<span class="go">|     0|    3|</span>
+<span class="go">|     1|    1|</span>
+<span class="go">|     2|    1|</span>
+<span class="go">+------+-----+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">cityFamilyJoinWith</span> <span class="k">=</span> <span class="n">cityDS</span><span class="o">.</span><span class="n">joinWith</span><span class="o">(</span><span class="n">familyDS</span><span class="o">,</span> <span class="n">cityDS</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span> <span class="o">===</span> <span class="n">familyDS</span><span class="o">(</span><span class="s">&quot;cityID&quot;</span><span class="o">),</span> <span class="s">&quot;left&quot;</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">cityFamilyJoinWith: org.apache.spark.sql.Dataset[(City, Person)] = [_1: struct&lt;id: bigint, name: string&gt;, _2: struct&lt;id: bigint, name: string ... 1 more field&gt;]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">cityDS</span><span class="o">.</span><span class="n">join</span><span class="o">(</span><span class="n">familyDS</span><span class="o">,</span> <span class="nc">Seq</span><span class="o">(</span><span class="s">&quot;cityId&quot;</span><span class="o">),</span> <span class="s">&quot;left&quot;</span><span class="o">).</span><span class="n">show</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+------+----------+--------+------+</span>
+<span class="go">|cityId|      name|familyId|  name|</span>
+<span class="go">+------+----------+--------+------+</span>
+<span class="go">|     0|    Warsaw|       3|Maksym|</span>
+<span class="go">|     0|    Warsaw|       1| Iweta|</span>
+<span class="go">|     0|    Warsaw|       0| Agata|</span>
+<span class="go">|     1|Washington|    null|  null|</span>
+<span class="go">|     2|     Sopot|       2|Patryk|</span>
+<span class="go">+------+----------+--------+------+</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">cityFamilyJoinWith</span><span class="o">.</span><span class="n">show</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="go">+---------------+--------------+</span>
+<span class="go">|             _1|            _2|</span>
+<span class="go">+---------------+--------------+</span>
+<span class="go">|    [0, Warsaw]|[3, Maksym, 0]|</span>
+<span class="go">|    [0, Warsaw]| [1, Iweta, 0]|</span>
+<span class="go">|    [0, Warsaw]| [0, Agata, 0]|</span>
+<span class="go">|[1, Washington]|          null|</span>
+<span class="go">|     [2, Sopot]|[2, Patryk, 2]|</span>
+<span class="go">+---------------+--------------+</span>
+</pre></div>

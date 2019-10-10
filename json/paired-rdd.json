@@ -1,0 +1,3262 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n#",
+      "user": "deepak",
+      "dateUpdated": "2019-03-12 15:12:50.160",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch1\u003e\u003c/h1\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552362865768_1822668459",
+      "id": "20190312-145425_490339662",
+      "dateCreated": "2019-03-12 14:54:25.768",
+      "dateStarted": "2019-03-12 15:12:50.168",
+      "dateFinished": "2019-03-12 15:12:50.171",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n### Read csv file and create paired RDD",
+      "user": "deepak",
+      "dateUpdated": "2019-03-12 15:43:26.020",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch3\u003eRead csv file and create paired RDD\u003c/h3\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552362892465_-241515068",
+      "id": "20190312-145452_1867711240",
+      "dateCreated": "2019-03-12 14:54:52.465",
+      "dateStarted": "2019-03-12 15:43:26.021",
+      "dateFinished": "2019-03-12 15:43:26.024",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sh pwd",
+      "user": "deepak",
+      "dateUpdated": "2019-03-12 15:39:35.138",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/sh"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "/home/ubuntu/test_spark/zeppelin-0.8.1-bin-netinst\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552364157966_126582608",
+      "id": "20190312-151557_676133273",
+      "dateCreated": "2019-03-12 15:15:57.967",
+      "dateStarted": "2019-03-12 15:39:35.146",
+      "dateFinished": "2019-03-12 15:39:37.150",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Input files\nz.put(\"transactionFile\", \"/home/ubuntu/test_spark/sia/ch04_data_transactions.txt\")\nz.put(\"productFile\", \"/home/ubuntu/test_spark/sia/ch04_data_products.txt\")\n",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 13:45:40.259",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1552365828786_-92542080",
+      "id": "20190312-154348_1042000927",
+      "dateCreated": "2019-03-12 15:43:48.786",
+      "dateStarted": "2019-08-27 13:45:40.307",
+      "dateFinished": "2019-08-27 13:45:40.704",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sh\nls -l {transactionFile}\nls -l {productFile}",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 13:45:45.238",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/sh"
+      },
+      "settings": {
+        "params": {
+          "transactionFile": "",
+          "productFile": ""
+        },
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "-rw-rw-r-- 1 ubuntu ubuntu 34996 Mar 12 15:46 /home/ubuntu/test_spark/sia/ch04_data_transactions.txt\n-rw-rw-r-- 1 ubuntu ubuntu 3466 Mar 12 15:46 /home/ubuntu/test_spark/sia/ch04_data_products.txt\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552364252789_214427605",
+      "id": "20190312-151732_1885074883",
+      "dateCreated": "2019-03-12 15:17:32.789",
+      "dateStarted": "2019-08-27 13:45:45.283",
+      "dateFinished": "2019-08-27 13:45:45.296",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sh\nhead {transactionFile}\necho\necho\nhead {productFile}",
+      "user": "deepak",
+      "dateUpdated": "2019-05-02 14:36:43.839",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/sh"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "2015-03-30#6:55 AM#51#68#1#9506.21\n2015-03-30#7:39 PM#99#86#5#4107.59\n2015-03-30#11:57 AM#79#58#7#2987.22\n2015-03-30#12:46 AM#51#50#6#7501.89\n2015-03-30#11:39 AM#86#24#5#8370.2\n2015-03-30#10:35 AM#63#19#5#1023.57\n2015-03-30#2:30 AM#23#77#7#5892.41\n2015-03-30#7:41 PM#49#58#4#9298.18\n2015-03-30#9:18 AM#97#86#8#9462.89\n2015-03-30#10:06 PM#94#26#4#4199.15\n\n\n1#ROBITUSSIN PEAK COLD NIGHTTIME COLD PLUS FLU#9721.89#10\n2#Mattel Little Mommy Doctor Doll#6060.78#6\n3#Cute baby doll, battery#1808.79#2\n4#Bear doll#51.06#6\n5#LEGO Legends of Chima#849.36#6\n6#LEGO Castle#4777.51#10\n7#LEGO Mixels#8720.91#1\n8#LEGO Star Wars#7592.44#4\n9#LEGO Lord of the Rings#851.67#2\n10#LEGO The Hobbit#7314.55#9\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556771702451_-1646828318",
+      "id": "20190502-143502_1012244698",
+      "dateCreated": "2019-05-02 14:35:02.451",
+      "dateStarted": "2019-05-02 14:36:43.878",
+      "dateFinished": "2019-05-02 14:36:43.898",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Read transaction file into RDD using csv format\n\nval transFile \u003d sc.textFile(z.get(\"transactionFile\").toString)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 13:59:12.063",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "transFile: org.apache.spark.rdd.RDD[String] \u003d /home/ubuntu/test_spark/sia/ch04_data_transactions.txt MapPartitionsRDD[596] at textFile at \u003cconsole\u003e:153\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552366761105_1382889774",
+      "id": "20190312-155921_1016296353",
+      "dateCreated": "2019-03-12 15:59:21.106",
+      "dateStarted": "2019-08-27 13:59:12.109",
+      "dateFinished": "2019-08-27 13:59:12.522",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "transFile.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 13:59:16.828",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res118: Array[String] \u003d Array(2015-03-30#6:55 AM#51#68#1#9506.21, 2015-03-30#7:39 PM#99#86#5#4107.59, 2015-03-30#11:57 AM#79#58#7#2987.22, 2015-03-30#12:46 AM#51#50#6#7501.89, 2015-03-30#11:39 AM#86#24#5#8370.2)\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d163"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1552368111900_945939149",
+      "id": "20190312-162151_1399420643",
+      "dateCreated": "2019-03-12 16:21:51.900",
+      "dateStarted": "2019-08-27 13:59:16.878",
+      "dateFinished": "2019-08-27 13:59:17.430",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val transData \u003d transFile.map(_.split(\"#\"))\ntransData.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 13:59:21.356",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "transData: org.apache.spark.rdd.RDD[Array[String]] \u003d MapPartitionsRDD[597] at map at \u003cconsole\u003e:149\nres119: Array[Array[String]] \u003d Array(Array(2015-03-30, 6:55 AM, 51, 68, 1, 9506.21), Array(2015-03-30, 7:39 PM, 99, 86, 5, 4107.59), Array(2015-03-30, 11:57 AM, 79, 58, 7, 2987.22), Array(2015-03-30, 12:46 AM, 51, 50, 6, 7501.89), Array(2015-03-30, 11:39 AM, 86, 24, 5, 8370.2))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d164"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1552368667743_2070432823",
+      "id": "20190312-163107_263086501",
+      "dateCreated": "2019-03-12 16:31:07.743",
+      "dateStarted": "2019-08-27 13:59:21.402",
+      "dateFinished": "2019-08-27 13:59:21.917",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n#### Create paired RDD\n\n[Paired RDD Functions](https://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-02 16:35:19.632",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eCreate paired RDD\u003c/h4\u003e\n\u003cp\u003e\u003ca href\u003d\"https://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.rdd.PairRDDFunctions\"\u003ePaired RDD Functions\u003c/a\u003e\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552371154066_519796815",
+      "id": "20190312-171234_699996911",
+      "dateCreated": "2019-03-12 17:12:34.066",
+      "dateStarted": "2019-05-02 16:35:19.633",
+      "dateFinished": "2019-05-02 16:35:19.639",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "var transByCust \u003d sc.textFile(z.get(\"transactionFile\").toString)\n                        .map(_.split(\"#\"))\n                        .map(trans \u003d\u003e (trans(2).toInt, trans))\ntransByCust.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 13:59:27.077",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "transByCust: org.apache.spark.rdd.RDD[(Int, Array[String])] \u003d MapPartitionsRDD[601] at map at \u003cconsole\u003e:153\nres120: Array[(Int, Array[String])] \u003d Array((51,Array(2015-03-30, 6:55 AM, 51, 68, 1, 9506.21)), (99,Array(2015-03-30, 7:39 PM, 99, 86, 5, 4107.59)), (79,Array(2015-03-30, 11:57 AM, 79, 58, 7, 2987.22)), (51,Array(2015-03-30, 12:46 AM, 51, 50, 6, 7501.89)), (86,Array(2015-03-30, 11:39 AM, 86, 24, 5, 8370.2)))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d165"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1552371191463_-1854138985",
+      "id": "20190312-171311_921599657",
+      "dateCreated": "2019-03-12 17:13:11.463",
+      "dateStarted": "2019-08-27 13:59:27.123",
+      "dateFinished": "2019-08-27 13:59:27.666",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Another way\n\nval transByCust1 \u003d transData.keyBy(_(2).toInt)\ntransByCust1.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 13:59:40.747",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "transByCust1: org.apache.spark.rdd.RDD[(Int, Array[String])] \u003d MapPartitionsRDD[602] at keyBy at \u003cconsole\u003e:151\nres121: Array[(Int, Array[String])] \u003d Array((51,Array(2015-03-30, 6:55 AM, 51, 68, 1, 9506.21)), (99,Array(2015-03-30, 7:39 PM, 99, 86, 5, 4107.59)), (79,Array(2015-03-30, 11:57 AM, 79, 58, 7, 2987.22)), (51,Array(2015-03-30, 12:46 AM, 51, 50, 6, 7501.89)), (86,Array(2015-03-30, 11:39 AM, 86, 24, 5, 8370.2)))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d166"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1557469051839_-1885280731",
+      "id": "20190510-161731_517738146",
+      "dateCreated": "2019-05-10 16:17:31.839",
+      "dateStarted": "2019-08-27 13:59:40.798",
+      "dateFinished": "2019-08-27 13:59:41.336",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "transByCust1",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 14:22:01.348",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res127: org.apache.spark.rdd.RDD[(Int, Array[String])] \u003d MapPartitionsRDD[602] at keyBy at \u003cconsole\u003e:151\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1566879712483_229447161",
+      "id": "20190827-142152_1685738512",
+      "dateCreated": "2019-08-27 14:21:52.483",
+      "dateStarted": "2019-08-27 14:22:01.397",
+      "dateFinished": "2019-08-27 14:22:01.861",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Number of unique customers\n\nval uniqueCustomerIds \u003d transByCust.keys.distinct.count",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 13:59:48.932",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "uniqueCustomerIds: Long \u003d 100\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d167"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1552441319940_1446805664",
+      "id": "20190313-124159_1276040412",
+      "dateCreated": "2019-03-13 12:41:59.940",
+      "dateStarted": "2019-08-27 13:59:48.978",
+      "dateFinished": "2019-08-27 13:59:49.822",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "transByCust.keys",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 14:00:17.180",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res122: org.apache.spark.rdd.RDD[Int] \u003d MapPartitionsRDD[607] at keys at \u003cconsole\u003e:150\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1566878403439_-1782605694",
+      "id": "20190827-140003_298100689",
+      "dateCreated": "2019-08-27 14:00:03.439",
+      "dateStarted": "2019-08-27 14:00:17.226",
+      "dateFinished": "2019-08-27 14:00:17.693",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Group by customerId\ntransByCust.countByKey.take(10)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 14:00:52.447",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res123: scala.collection.Map[Int,Long] \u003d Map(69 -\u003e 7, 88 -\u003e 5, 5 -\u003e 11, 10 -\u003e 7, 56 -\u003e 17, 42 -\u003e 7, 24 -\u003e 9, 37 -\u003e 7, 25 -\u003e 12, 52 -\u003e 9)\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d168"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1552441976731_1447388307",
+      "id": "20190313-125256_1891088904",
+      "dateCreated": "2019-03-13 12:52:56.731",
+      "dateStarted": "2019-08-27 14:00:52.492",
+      "dateFinished": "2019-08-27 14:00:53.016",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "transByCust.countByKey.values.sum",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 14:00:58.350",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res124: Long \u003d 1000\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d169"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1552442241174_1180664666",
+      "id": "20190313-125721_1031364807",
+      "dateCreated": "2019-03-13 12:57:21.174",
+      "dateStarted": "2019-08-27 14:00:58.400",
+      "dateFinished": "2019-08-27 14:00:58.911",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "transByCust.values.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 14:01:44.948",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res126: Array[Array[String]] \u003d Array(Array(2015-03-30, 6:55 AM, 51, 68, 1, 9506.21), Array(2015-03-30, 7:39 PM, 99, 86, 5, 4107.59), Array(2015-03-30, 11:57 AM, 79, 58, 7, 2987.22), Array(2015-03-30, 12:46 AM, 51, 50, 6, 7501.89), Array(2015-03-30, 11:39 AM, 86, 24, 5, 8370.2))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d170"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1566878465928_846909039",
+      "id": "20190827-140105_1626005824",
+      "dateCreated": "2019-08-27 14:01:05.928",
+      "dateStarted": "2019-08-27 14:01:44.998",
+      "dateFinished": "2019-08-27 14:01:45.440",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "transByCust.countByKey.toSeq",
+      "user": "deepak",
+      "dateUpdated": "2019-05-03 10:01:49.444",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res5: Seq[(Int, Long)] \u003d ArrayBuffer((69,7), (88,5), (5,11), (10,7), (56,17), (42,7), (24,9), (37,7), (25,12), (52,9), (14,8), (20,8), (46,9), (93,12), (57,8), (78,11), (29,9), (84,9), (61,8), (89,9), (1,9), (74,11), (6,7), (60,4), (85,9), (28,11), (38,9), (70,8), (21,13), (33,9), (92,8), (65,10), (97,12), (9,7), (53,19), (77,11), (96,8), (13,12), (41,12), (73,7), (2,15), (32,14), (34,14), (45,11), (64,10), (17,13), (22,10), (44,8), (59,9), (27,7), (71,10), (12,7), (54,7), (49,8), (86,9), (81,9), (76,15), (7,10), (39,11), (98,11), (91,13), (66,11), (3,13), (80,7), (35,10), (48,5), (63,12), (18,9), (95,8), (50,14), (67,5), (16,8), (31,14), (11,8), (72,7), (43,12), (99,12), (87,10), (40,10), (26,11), (55,13), (23,13), (8,10), (75,10), (58,13), (82,13), (36,5), (30,5), (51,18), (19,6), (4,..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552442245942_496925361",
+      "id": "20190313-125725_1819303084",
+      "dateCreated": "2019-03-13 12:57:25.942",
+      "dateStarted": "2019-05-03 10:01:49.491",
+      "dateFinished": "2019-05-03 10:01:49.850",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Customer who purchased most items\n\ntransByCust.countByKey.toSeq.sortBy(_._2).last",
+      "user": "deepak",
+      "dateUpdated": "2019-05-03 10:01:54.840",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res6: (Int, Long) \u003d (53,19)\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552442357531_-1594794625",
+      "id": "20190313-125917_1624699083",
+      "dateCreated": "2019-03-13 12:59:17.531",
+      "dateStarted": "2019-05-03 10:01:54.884",
+      "dateFinished": "2019-05-03 10:01:55.275",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n#### countByKey returns a scala object. If we want to group and sort keys in RDD\n\nOperations which can cause a shuffle include repartition operations like repartition and coalesce, ‘ByKey operations (except for counting) like groupByKey and reduceByKey, and join operations like cogroup and join.\n\nReference: [RDD Programming guide](https://spark.apache.org/docs/latest/rdd-programming-guide.html)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-02 15:06:00.715",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003ecountByKey returns a scala object. If we want to group and sort keys in RDD\u003c/h4\u003e\n\u003cp\u003eOperations which can cause a shuffle include repartition operations like repartition and coalesce, ‘ByKey operations (except for counting) like groupByKey and reduceByKey, and join operations like cogroup and join.\u003c/p\u003e\n\u003cp\u003eReference: \u003ca href\u003d\"https://spark.apache.org/docs/latest/rdd-programming-guide.html\"\u003eRDD Programming guide\u003c/a\u003e\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552443014217_1801567112",
+      "id": "20190313-131014_1552979617",
+      "dateCreated": "2019-03-13 13:10:14.217",
+      "dateStarted": "2019-05-02 15:06:00.715",
+      "dateFinished": "2019-05-02 15:06:02.672",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "transByCust.map(t \u003d\u003e (t._1, 1))\n        .reduceByKey(_ + _)\n        .sortBy(_._2, ascending\u003dfalse)\n        .take(1)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 14:36:35.929",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res128: Array[(Int, Int)] \u003d Array((53,19))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d171",
+            "http://10.130.22.177:4040/jobs/job?id\u003d172"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1552444015816_1757830692",
+      "id": "20190313-132655_1616586566",
+      "dateCreated": "2019-03-13 13:26:55.816",
+      "dateStarted": "2019-08-27 14:36:35.980",
+      "dateFinished": "2019-08-27 14:36:36.764",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// sorting doesn\u0027t cause shuffling\n\ntransByCust.map(t \u003d\u003e (t._1, 1))\n        .sortBy(t \u003d\u003e t._1)\n        .take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 14:52:40.286",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res133: Array[(Int, Int)] \u003d Array((1,1), (1,1), (1,1), (1,1), (1,1))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d174",
+            "http://10.130.22.177:4040/jobs/job?id\u003d175"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1566881267725_-334688668",
+      "id": "20190827-144747_1699169361",
+      "dateCreated": "2019-08-27 14:47:47.725",
+      "dateStarted": "2019-08-27 14:51:45.624",
+      "dateFinished": "2019-08-27 14:51:46.178",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// All transactions by customerId 53\n// NOTE: lookup() transfers results to driver\n\ntransByCust.lookup(53)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-02 16:13:15.944",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res14: Seq[Array[String]] \u003d WrappedArray(Array(2015-03-30, 6:18 AM, 53, 42, 5, 2197.85), Array(2015-03-30, 4:42 AM, 53, 44, 6, 9182.08), Array(2015-03-30, 2:51 AM, 53, 59, 5, 3154.43), Array(2015-03-30, 5:57 PM, 53, 31, 5, 6649.27), Array(2015-03-30, 6:11 AM, 53, 33, 10, 2353.72), Array(2015-03-30, 9:46 PM, 53, 93, 1, 2889.03), Array(2015-03-30, 4:15 PM, 53, 72, 7, 9157.55), Array(2015-03-30, 2:42 PM, 53, 94, 1, 921.65), Array(2015-03-30, 8:30 AM, 53, 38, 5, 4000.92), Array(2015-03-30, 6:06 AM, 53, 12, 6, 2174.02), Array(2015-03-30, 3:44 AM, 53, 47, 1, 7556.32), Array(2015-03-30, 10:25 AM, 53, 30, 2, 5107.0), Array(2015-03-30, 1:48 AM, 53, 58, 4, 718.93), Array(2015-03-30, 9:31 AM, 53, 18, 4, 8214.79), Array(2015-03-30, 9:04 AM, 53, 68, 4, 9246.59), Array(2015-03-30, 1:51 AM, 53, 40, 1,..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556777298829_-1997712558",
+      "id": "20190502-160818_1057321158",
+      "dateCreated": "2019-05-02 16:08:18.829",
+      "dateStarted": "2019-05-02 16:11:35.540",
+      "dateFinished": "2019-05-02 16:11:35.728",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Using filter() instead of lookup()\n\nval transByCust53 \u003d transByCust.filter(_._1 \u003d\u003d 53)\ntransByCust53.take(10)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-03 10:02:02.822",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "transByCust53: org.apache.spark.rdd.RDD[(Int, Array[String])] \u003d MapPartitionsRDD[18] at filter at \u003cconsole\u003e:27\nres7: Array[(Int, Array[String])] \u003d Array((53,Array(2015-03-30, 6:18 AM, 53, 42, 5, 2197.85)), (53,Array(2015-03-30, 4:42 AM, 53, 44, 6, 9182.08)), (53,Array(2015-03-30, 2:51 AM, 53, 59, 5, 3154.43)), (53,Array(2015-03-30, 5:57 PM, 53, 31, 5, 6649.27)), (53,Array(2015-03-30, 6:11 AM, 53, 33, 10, 2353.72)), (53,Array(2015-03-30, 9:46 PM, 53, 93, 1, 2889.03)), (53,Array(2015-03-30, 4:15 PM, 53, 72, 7, 9157.55)), (53,Array(2015-03-30, 2:42 PM, 53, 94, 1, 921.65)), (53,Array(2015-03-30, 8:30 AM, 53, 38, 5, 4000.92)), (53,Array(2015-03-30, 6:06 AM, 53, 12, 6, 2174.02)))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556778184342_-339705443",
+      "id": "20190502-162304_589910049",
+      "dateCreated": "2019-05-02 16:23:04.342",
+      "dateStarted": "2019-05-03 10:02:02.858",
+      "dateFinished": "2019-05-03 10:02:03.066",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n#### Modifying values in paired RDDs",
+      "user": "deepak",
+      "dateUpdated": "2019-05-03 10:03:41.856",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eModifying values in paired RDDs\u003c/h4\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556841728953_-2108175071",
+      "id": "20190503-100208_1561552222",
+      "dateCreated": "2019-05-03 10:02:08.953",
+      "dateStarted": "2019-05-03 10:03:41.854",
+      "dateFinished": "2019-05-03 10:03:41.859",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "\ntransByCust.filter(_._2(3).toInt \u003d\u003d 25).take(10)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-03 10:13:43.559",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res13: Array[(Int, Array[String])] \u003d Array((25,Array(2015-03-30, 5:55 AM, 25, 25, 1, 5089.02)), (17,Array(2015-03-30, 6:26 PM, 17, 25, 6, 7193.11)), (93,Array(2015-03-30, 7:27 AM, 93, 25, 7, 2749.15)), (100,Array(2015-03-30, 5:34 AM, 100, 25, 1, 7520.96)), (68,Array(2015-03-30, 1:07 AM, 68, 25, 9, 8391.61)), (59,Array(2015-03-30, 1:23 AM, 59, 25, 5, 5296.69)), (42,Array(2015-03-30, 9:45 AM, 42, 25, 10, 1363.97)), (77,Array(2015-03-30, 10:40 PM, 77, 25, 3, 3345.81)), (22,Array(2015-03-30, 12:53 PM, 22, 25, 9, 6996.42)), (32,Array(2015-03-30, 12:44 AM, 32, 25, 8, 8849.5)))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556842412090_-1067122201",
+      "id": "20190503-101332_318039259",
+      "dateCreated": "2019-05-03 10:13:32.090",
+      "dateStarted": "2019-05-03 10:13:43.590",
+      "dateFinished": "2019-05-03 10:13:43.783",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Modify only transactions with product id 25 and multiple purchased quantity.\n\ntransByCust \u003d transByCust.mapValues(tran \u003d\u003e {\n    if(tran(3).toInt \u003d\u003d 25 \u0026\u0026 tran(4).toInt \u003e 1) {\n        val newPrice \u003d tran(5).toDouble * 0.95\n        tran(5) \u003d f\"$newPrice%1.2f\"\n    }\n    tran\n})\n\ntransByCust.filter(_._2(3).toInt \u003d\u003d 25).take(10)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-06 12:35:35.358",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "transByCust: org.apache.spark.rdd.RDD[(Int, Array[String])] \u003d MapPartitionsRDD[4] at mapValues at \u003cconsole\u003e:27\nres3: Array[(Int, Array[String])] \u003d Array((25,Array(2015-03-30, 5:55 AM, 25, 25, 1, 5089.02)), (17,Array(2015-03-30, 6:26 PM, 17, 25, 6, 6833.45)), (93,Array(2015-03-30, 7:27 AM, 93, 25, 7, 2611.69)), (100,Array(2015-03-30, 5:34 AM, 100, 25, 1, 7520.96)), (68,Array(2015-03-30, 1:07 AM, 68, 25, 9, 7972.03)), (59,Array(2015-03-30, 1:23 AM, 59, 25, 5, 5031.86)), (42,Array(2015-03-30, 9:45 AM, 42, 25, 10, 1295.77)), (77,Array(2015-03-30, 10:40 PM, 77, 25, 3, 3178.52)), (22,Array(2015-03-30, 12:53 PM, 22, 25, 9, 6646.60)), (32,Array(2015-03-30, 12:44 AM, 32, 25, 8, 8407.03)))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556841829752_-76431733",
+      "id": "20190503-100349_956602088",
+      "dateCreated": "2019-05-03 10:03:49.752",
+      "dateStarted": "2019-05-06 12:35:35.458",
+      "dateFinished": "2019-05-06 12:35:36.156",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n#### Adding or removing values for a key\n##### flatMapValues() *Pass each value in the key-value pair RDD through a flatMap function without changing the keys; this also retains the original RDD\u0027s partitioning.*\n##### Customers who bought 5 or more dictionaries (id : 81)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-03 12:20:26.258",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eAdding or removing values for a key\u003c/h4\u003e\n\u003ch5\u003eflatMapValues() \u003cem\u003ePass each value in the key-value pair RDD through a flatMap function without changing the keys; this also retains the original RDD\u0027s partitioning.\u003c/em\u003e\u003c/h5\u003e\n\u003ch5\u003eCustomers who bought 5 or more dictionaries (id : 81)\u003c/h5\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556843180456_-317471839",
+      "id": "20190503-102620_2006870590",
+      "dateCreated": "2019-05-03 10:26:20.456",
+      "dateStarted": "2019-05-03 12:20:26.258",
+      "dateFinished": "2019-05-03 12:20:26.266",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "transByCust.filter{case (custId, tran) \u003d\u003e tran(3).toInt \u003d\u003d 81 \u0026\u0026 tran(4).toInt \u003e 5}.take(10)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-03 12:20:35.697",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res25: Array[(Int, Array[String])] \u003d Array((85,Array(2015-03-30, 1:55 PM, 85, 81, 7, 9648.24)), (82,Array(2015-03-30, 3:40 AM, 82, 81, 6, 3665.45)), (47,Array(2015-03-30, 10:39 PM, 47, 81, 10, 1122.89)), (16,Array(2015-03-30, 11:02 AM, 16, 81, 9, 9063.74)), (10,Array(2015-03-30, 2:54 PM, 10, 81, 10, 9897.61)))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556843232805_-1766677956",
+      "id": "20190503-102712_611980654",
+      "dateCreated": "2019-05-03 10:27:12.805",
+      "dateStarted": "2019-05-03 12:20:35.730",
+      "dateFinished": "2019-05-03 12:20:36.041",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "transByCust \u003d transByCust.flatMapValues(tran \u003d\u003e {\n    if (tran(3).toInt \u003d\u003d 81 \u0026\u0026 tran(4).toInt \u003e 5) {\n        val cloned \u003d tran.clone()\n        // Add a free toothbrush (id 70)\n        cloned(3) \u003d \"70\"; cloned(4) \u003d \"1\"; cloned(5) \u003d \"0.00\"\n        List(tran, cloned)\n    } else\n        List(tran)\n})\n\ntransByCust.filter{case (custId, tran) \u003d\u003e tran(3).toInt \u003d\u003d 70 \u0026\u0026 tran(5).toFloat \u003d\u003d 0}.take(10)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-06 12:36:04.372",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "transByCust: org.apache.spark.rdd.RDD[(Int, Array[String])] \u003d MapPartitionsRDD[6] at flatMapValues at \u003cconsole\u003e:25\nres4: Array[(Int, Array[String])] \u003d Array((85,Array(2015-03-30, 1:55 PM, 85, 70, 1, 0.00)), (82,Array(2015-03-30, 3:40 AM, 82, 70, 1, 0.00)), (47,Array(2015-03-30, 10:39 PM, 47, 70, 1, 0.00)), (16,Array(2015-03-30, 11:02 AM, 16, 70, 1, 0.00)), (10,Array(2015-03-30, 2:54 PM, 10, 70, 1, 0.00)))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556849912300_492985370",
+      "id": "20190503-121832_928042568",
+      "dateCreated": "2019-05-03 12:18:32.300",
+      "dateStarted": "2019-05-06 12:36:04.451",
+      "dateFinished": "2019-05-06 12:36:04.986",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n#### Reducing/Folding values by key\n##### Find the customer who spent the most",
+      "user": "deepak",
+      "dateUpdated": "2019-05-03 16:35:34.092",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eReducing/Folding values by key\u003c/h4\u003e\n\u003ch5\u003eFind the customer who spent the most\u003c/h5\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556864919843_691716719",
+      "id": "20190503-162839_1541485699",
+      "dateCreated": "2019-05-03 16:28:39.843",
+      "dateStarted": "2019-05-03 16:35:34.093",
+      "dateFinished": "2019-05-03 16:35:34.103",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// foldByKey causes shuffle\n\nval custByTotalPrice \u003d transByCust.mapValues(tran \u003d\u003e tran(5).toFloat)\n    .foldByKey(0)((p1, p2) \u003d\u003e p1 + p2)\n    .collect()",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 15:01:06.498",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "custByTotalPrice: Array[(Int, Float)] \u003d Array((34,77332.586), (52,58348.02), (96,36928.57), (4,41801.35), (16,40696.02), (82,58722.58), (66,52130.01), (28,45534.297), (54,36307.043), (80,31794.62), (98,56245.61), (30,19194.91), (14,48658.43), (50,76157.68), (36,25640.04), (24,39375.28), (64,45203.1), (92,43517.883), (74,63748.348), (90,39947.375), (72,32216.129), (70,46806.008), (18,35827.332), (12,35521.35), (38,59110.46), (20,32997.797), (78,48047.53), (10,46120.25), (94,51430.14), (84,53020.617), (100,60120.66), (56,85906.94), (76,100049.0), (22,43987.57), (46,36687.53), (48,17949.852), (32,77805.33), (62,35188.688), (42,30491.92), (40,52212.09), (6,30549.281), (8,38603.812), (86,36925.594), (58,66612.805), (44,31061.988), (88,28122.2), (60,17333.709), (26,74109.66), (68,69252.05), (..."
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d176"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1556865394978_1880113252",
+      "id": "20190503-163634_934034955",
+      "dateCreated": "2019-05-03 16:36:34.978",
+      "dateStarted": "2019-08-27 15:00:22.853",
+      "dateFinished": "2019-08-27 15:00:23.446",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Customer who spent most\ncustByTotalPrice.toSeq.sortBy(_._2).last._2",
+      "user": "deepak",
+      "dateUpdated": "2019-05-03 16:44:36.048",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res29: Float \u003d 100049.0\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556865669724_-482220534",
+      "id": "20190503-164109_1124057022",
+      "dateCreated": "2019-05-03 16:41:09.724",
+      "dateStarted": "2019-05-03 16:44:36.080",
+      "dateFinished": "2019-05-03 16:44:36.274",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n#### Merging multiple RDDs",
+      "user": "deepak",
+      "dateUpdated": "2019-05-03 16:54:05.483",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eMerging multiple RDDs\u003c/h4\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556866417273_-767964987",
+      "id": "20190503-165337_430196656",
+      "dateCreated": "2019-05-03 16:53:37.273",
+      "dateStarted": "2019-05-03 16:54:05.484",
+      "dateFinished": "2019-05-03 16:54:05.488",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val compTrans \u003d Array(Array(\"2015-03-30\", \"11:59 PM\", \"76\", \"63\", \"1\", \"0.00\"))\n\nval compTransRDD \u003d sc.parallelize(compTrans).map(tran \u003d\u003e (tran(2).toInt, tran))\n\n\ntransByCust \u003d transByCust.union(compTransRDD)\n// compTransRDD.count\ntransByCust.filter{case (c, t) \u003d\u003e t(2).toInt \u003d\u003d 76 \u0026\u0026 t(3).toInt \u003d\u003d 63}.take(10)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-06 12:36:23.260",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "compTrans: Array[Array[String]] \u003d Array(Array(2015-03-30, 11:59 PM, 76, 63, 1, 0.00))\ncompTransRDD: org.apache.spark.rdd.RDD[(Int, Array[String])] \u003d MapPartitionsRDD[9] at map at \u003cconsole\u003e:29\ntransByCust: org.apache.spark.rdd.RDD[(Int, Array[String])] \u003d UnionRDD[10] at union at \u003cconsole\u003e:32\nres5: Array[(Int, Array[String])] \u003d Array((76,Array(2015-03-30, 11:59 PM, 76, 63, 1, 0.00)))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556866449825_15958936",
+      "id": "20190503-165409_2146720080",
+      "dateCreated": "2019-05-03 16:54:09.825",
+      "dateStarted": "2019-05-06 12:36:23.325",
+      "dateFinished": "2019-05-06 12:36:23.790",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n#### Transforming and aggregatin values\n##### *aggregateByKey()* : similar to *foldByKey* and *reduceByKeyin* that it merges values and takes a zero value, but it also transforms values to another type.\n##### [Function currying](https://docs.scala-lang.org/tour/currying.html) is transforming a function with multiple arguments to a function with single argument.\n\n##### *def aggregateByKey[U](zeroValue: U)(seqOp: (U, V) ⇒ U, combOp: (U, U) ⇒ U)(implicit arg0: ClassTag[U]): RDD[(K, U)]*",
+      "user": "deepak",
+      "dateUpdated": "2019-05-06 15:04:54.066",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eTransforming and aggregatin values\u003c/h4\u003e\n\u003ch5\u003e\u003cem\u003eaggregateByKey()\u003c/em\u003e : similar to \u003cem\u003efoldByKey\u003c/em\u003e and \u003cem\u003ereduceByKeyin\u003c/em\u003e that it merges values and takes a zero value, but it also transforms values to another type.\u003c/h5\u003e\n\u003ch5\u003e\u003ca href\u003d\"https://docs.scala-lang.org/tour/currying.html\"\u003eFunction currying\u003c/a\u003e is transforming a function with multiple arguments to a function with single argument.\u003c/h5\u003e\n\u003ch5\u003e\u003cem\u003edef aggregateByKey[U](zeroValue: U)(seqOp: (U, V) ⇒ U, combOp: (U, U) ⇒ U)(implicit arg0: ClassTag[U]): RDD[(K, U)]\u003c/em\u003e\u003c/h5\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557110280471_1789725931",
+      "id": "20190506-123800_38020153",
+      "dateCreated": "2019-05-06 12:38:00.471",
+      "dateStarted": "2019-05-06 15:04:54.066",
+      "dateFinished": "2019-05-06 15:04:54.077",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Find all products that customers purchased\n\nval products \u003d transByCust.aggregateByKey(List[String]())((prods, tran) \u003d\u003e prods ::: List(tran(3)), (prods1, prods2) \u003d\u003e prods1 ::: prods2)\n\nproducts.take(10)",
+      "user": "deepak",
+      "dateUpdated": "2019-08-27 15:19:49.530",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "products: org.apache.spark.rdd.RDD[(Int, List[String])] \u003d ShuffledRDD[635] at aggregateByKey at \u003cconsole\u003e:151\nres134: Array[(Int, List[String])] \u003d Array((34,List(34, 99, 66, 58, 59, 17, 58, 5, 38, 58, 93, 22, 48, 50)), (52,List(37, 69, 82, 11, 19, 58, 67, 51, 93)), (96,List(37, 31, 17, 88, 97, 81, 58, 78)), (4,List(16, 86, 19, 49, 99, 2, 94, 35, 4, 10, 7)), (16,List(97, 97, 84, 75, 72, 28, 94, 81)), (82,List(57, 44, 51, 57, 41, 15, 99, 28, 81, 65, 97, 100, 90)), (66,List(38, 78, 17, 29, 62, 44, 55, 19, 62, 86, 58)), (28,List(76, 18, 55, 97, 61, 17, 87, 27, 95, 11, 14)), (54,List(78, 57, 51, 4, 98, 46, 47)), (80,List(83, 89, 6, 44, 79, 96, 12)))\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.130.22.177:4040/jobs/job?id\u003d177"
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1557110521146_857978620",
+      "id": "20190506-124201_1135942018",
+      "dateCreated": "2019-05-06 12:42:01.146",
+      "dateStarted": "2019-08-27 15:19:49.581",
+      "dateFinished": "2019-08-27 15:19:50.243",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n#### Find the number of partitions in RDD",
+      "user": "deepak",
+      "dateUpdated": "2019-05-06 15:42:37.734",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eFind the number of partitions in RDD\u003c/h4\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557121025622_1762208274",
+      "id": "20190506-153705_1237813047",
+      "dateCreated": "2019-05-06 15:37:05.622",
+      "dateStarted": "2019-05-06 15:42:37.735",
+      "dateFinished": "2019-05-06 15:42:37.740",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "products.partitions.size",
+      "user": "deepak",
+      "dateUpdated": "2019-05-06 15:52:29.382",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res13: Int \u003d 10\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557121893749_426396962",
+      "id": "20190506-155133_1417387948",
+      "dateCreated": "2019-05-06 15:51:33.749",
+      "dateStarted": "2019-05-06 15:52:29.430",
+      "dateFinished": "2019-05-06 15:52:29.601",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n#### Glom example\n##### glom (the word means to grab) gathers elements of each partition into an array and returns a new RDD with those arrays as elements. The number of elements in the new RDD is equal to the number of its partitions.",
+      "user": "deepak",
+      "dateUpdated": "2019-05-09 15:52:15.183",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eGlom example\u003c/h4\u003e\n\u003ch5\u003eglom (the word means to grab) gathers elements of each partition into an array and returns a new RDD with those arrays as elements. The number of elements in the new RDD is equal to the number of its partitions.\u003c/h5\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557381027953_2132672179",
+      "id": "20190509-155027_1354146247",
+      "dateCreated": "2019-05-09 15:50:27.953",
+      "dateStarted": "2019-05-09 15:52:15.183",
+      "dateFinished": "2019-05-09 15:52:15.191",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val list \u003d List.fill(500)(scala.util.Random.nextInt(100))\nval glomRdd \u003d sc.parallelize(list, 30).glom()",
+      "user": "deepak",
+      "dateUpdated": "2019-05-09 15:55:43.919",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 167.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "list: List[Int] \u003d List(66, 67, 38, 86, 78, 12, 49, 76, 15, 36, 18, 40, 28, 87, 91, 16, 91, 46, 98, 45, 85, 24, 35, 12, 90, 85, 32, 40, 41, 43, 23, 16, 23, 54, 54, 72, 99, 91, 72, 0, 59, 89, 44, 57, 53, 89, 19, 89, 97, 16, 67, 10, 40, 15, 47, 50, 70, 46, 31, 62, 70, 98, 88, 37, 30, 51, 82, 25, 54, 54, 37, 41, 1, 72, 78, 74, 23, 35, 67, 68, 98, 93, 6, 19, 24, 32, 0, 0, 99, 5, 41, 14, 24, 66, 60, 35, 10, 74, 36, 20, 67, 78, 63, 60, 45, 31, 76, 77, 71, 0, 52, 68, 71, 91, 74, 45, 64, 20, 71, 16, 53, 61, 80, 79, 36, 56, 11, 40, 17, 7, 54, 89, 7, 71, 36, 67, 93, 13, 78, 1, 47, 94, 6, 91, 48, 61, 42, 7, 16, 23, 55, 99, 11, 66, 38, 97, 57, 63, 48, 57, 9, 11, 63, 65, 72, 13, 20, 31, 27, 66, 48, 95, 34, 85, 96, 64, 53, 59, 96, 22, 48, 44, 97, 61, 46, 68, 25, 1, 7, 13, 96, 90, 55, 4, 2, 63, 69, 15,..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557381141535_-2015878282",
+      "id": "20190509-155221_30316880",
+      "dateCreated": "2019-05-09 15:52:21.535",
+      "dateStarted": "2019-05-09 15:54:57.713",
+      "dateFinished": "2019-05-09 15:54:58.240",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "glomRdd.count\nglomRdd.collect()",
+      "user": "deepak",
+      "dateUpdated": "2019-05-09 15:55:55.792",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "res4: Array[Array[Int]] \u003d Array(Array(66, 67, 38, 86, 78, 12, 49, 76, 15, 36, 18, 40, 28, 87, 91, 16), Array(91, 46, 98, 45, 85, 24, 35, 12, 90, 85, 32, 40, 41, 43, 23, 16, 23), Array(54, 54, 72, 99, 91, 72, 0, 59, 89, 44, 57, 53, 89, 19, 89, 97, 16), Array(67, 10, 40, 15, 47, 50, 70, 46, 31, 62, 70, 98, 88, 37, 30, 51), Array(82, 25, 54, 54, 37, 41, 1, 72, 78, 74, 23, 35, 67, 68, 98, 93, 6), Array(19, 24, 32, 0, 0, 99, 5, 41, 14, 24, 66, 60, 35, 10, 74, 36, 20), Array(67, 78, 63, 60, 45, 31, 76, 77, 71, 0, 52, 68, 71, 91, 74, 45), Array(64, 20, 71, 16, 53, 61, 80, 79, 36, 56, 11, 40, 17, 7, 54, 89, 7), Array(71, 36, 67, 93, 13, 78, 1, 47, 94, 6, 91, 48, 61, 42, 7, 16, 23), Array(55, 99, 11, 66, 38, 97, 57, 63, 48, 57, 9, 11, 63, 65, 72, 13), Array(20, 31, 27, 66, 48, 95, 34, 85, 96, 64..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557381326060_1363734249",
+      "id": "20190509-155526_1062283010",
+      "dateCreated": "2019-05-09 15:55:26.061",
+      "dateStarted": "2019-05-09 15:55:55.835",
+      "dateFinished": "2019-05-09 15:55:56.131",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n#### Joining data",
+      "user": "deepak",
+      "dateUpdated": "2019-05-09 16:03:02.690",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eJoining data\u003c/h4\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557381760139_1877566743",
+      "id": "20190509-160240_1491926098",
+      "dateCreated": "2019-05-09 16:02:40.139",
+      "dateStarted": "2019-05-09 16:03:02.691",
+      "dateFinished": "2019-05-09 16:03:02.696",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val transByProd \u003d transData.map(tran \u003d\u003e (tran(3).toInt, tran))\n\nval totalByProd \u003d transByProd.mapValues(t \u003d\u003e t(5).toDouble).reduceByKey((t1, t2) \u003d\u003e t1 + t2)\n\ntotalByProd.collect()",
+      "user": "deepak",
+      "dateUpdated": "2019-05-10 15:32:39.029",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "transByProd: org.apache.spark.rdd.RDD[(Int, Array[String])] \u003d MapPartitionsRDD[7] at map at \u003cconsole\u003e:25\ntotalByProd: org.apache.spark.rdd.RDD[(Int, Double)] \u003d ShuffledRDD[9] at reduceByKey at \u003cconsole\u003e:27\nres4: Array[(Int, Double)] \u003d Array((34,62592.43000000001), (52,57708.119999999995), (96,73536.78), (4,63520.21000000001), (16,46664.43000000001), (82,59612.96), (66,39755.84), (28,82055.45999999999), (54,20736.739999999998), (80,34805.73), (98,51227.19), (30,68464.77000000002), (14,53709.75), (50,61318.78), (36,31636.440000000002), (24,46973.67), (64,68147.48000000001), (92,43543.5), (74,32156.14), (90,48601.89), (72,38525.81), (70,27855.89), (18,36973.270000000004), (12,45396.11), (38,55719.08000000001), (78,57093.47), (94,31049.07), (10,47085.59), (84,75192.53), (100,50775.009999999..."
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557381761976_-328847370",
+      "id": "20190509-160241_941267623",
+      "dateCreated": "2019-05-09 16:02:41.976",
+      "dateStarted": "2019-05-10 15:32:39.115",
+      "dateFinished": "2019-05-10 15:32:40.206",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val prodFile \u003d sc.textFile(z.get(\"productFile\").toString)\nprodFile.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-10 15:33:05.838",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "prodFile: org.apache.spark.rdd.RDD[String] \u003d /home/ubuntu/test_spark/sia/ch04_data_products.txt MapPartitionsRDD[11] at textFile at \u003cconsole\u003e:27\nres5: Array[String] \u003d Array(1#ROBITUSSIN PEAK COLD NIGHTTIME COLD PLUS FLU#9721.89#10, 2#Mattel Little Mommy Doctor Doll#6060.78#6, 3#Cute baby doll, battery#1808.79#2, 4#Bear doll#51.06#6, 5#LEGO Legends of Chima#849.36#6)\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557382568835_-934483806",
+      "id": "20190509-161608_1850232667",
+      "dateCreated": "2019-05-09 16:16:08.835",
+      "dateStarted": "2019-05-10 15:33:05.911",
+      "dateFinished": "2019-05-10 15:33:06.147",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val prodById \u003d prodFile.map(_.split(\"#\")).map(p \u003d\u003e (p(0).toInt, p))\nprodById.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-10 15:33:15.525",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "prodById: org.apache.spark.rdd.RDD[(Int, Array[String])] \u003d MapPartitionsRDD[13] at map at \u003cconsole\u003e:25\nres6: Array[(Int, Array[String])] \u003d Array((1,Array(1, ROBITUSSIN PEAK COLD NIGHTTIME COLD PLUS FLU, 9721.89, 10)), (2,Array(2, Mattel Little Mommy Doctor Doll, 6060.78, 6)), (3,Array(3, Cute baby doll, battery, 1808.79, 2)), (4,Array(4, Bear doll, 51.06, 6)), (5,Array(5, LEGO Legends of Chima, 849.36, 6)))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557382694666_1513026682",
+      "id": "20190509-161814_93613001",
+      "dateCreated": "2019-05-09 16:18:14.666",
+      "dateStarted": "2019-05-10 15:33:15.581",
+      "dateFinished": "2019-05-10 15:33:15.946",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Join totalByProd with prodById to find the details of each product and total sold.\n\nval totalsAndProds \u003d totalByProd.join(prodById)\ntotalsAndProds.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-10 15:33:37.157",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "totalsAndProds: org.apache.spark.rdd.RDD[(Int, (Double, Array[String]))] \u003d MapPartitionsRDD[16] at join at \u003cconsole\u003e:29\nres7: Array[(Int, (Double, Array[String]))] \u003d Array((34,(62592.43000000001,Array(34, GAM X360 Assassins Creed 3, 6363.95, 9))), (52,(57708.119999999995,Array(52, Essentials Crash Tag Team Racing PSP, 4037.85, 10))), (96,(73536.78,Array(96, chest congestion, 1305.04, 1))), (4,(63520.21000000001,Array(4, Bear doll, 51.06, 6))), (16,(46664.43000000001,Array(16, LEGO Classic, 9933.3, 10))))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557382838231_1605296026",
+      "id": "20190509-162038_2080162947",
+      "dateCreated": "2019-05-09 16:20:38.231",
+      "dateStarted": "2019-05-10 15:33:37.221",
+      "dateFinished": "2019-05-10 15:33:37.545",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Find the products that weren\u0027t sold\n// leftOuterJoin() or rightOuterJoin()\n\nvar prodsAndTotals \u003d prodById.leftOuterJoin(totalByProd)\nprodsAndTotals.take(2)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-09 17:11:20.075",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "prodsAndTotals: org.apache.spark.rdd.RDD[(Int, (Array[String], Option[Double]))] \u003d MapPartitionsRDD[42] at leftOuterJoin at \u003cconsole\u003e:32\nres19: Array[(Int, (Array[String], Option[Double]))] \u003d Array((34,(Array(34, GAM X360 Assassins Creed 3, 6363.95, 9),Some(62592.43000000001))), (52,(Array(52, Essentials Crash Tag Team Racing PSP, 4037.85, 10),Some(57708.119999999995))))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557384154477_-182635426",
+      "id": "20190509-164234_219968907",
+      "dateCreated": "2019-05-09 16:42:34.477",
+      "dateStarted": "2019-05-09 17:11:20.119",
+      "dateFinished": "2019-05-09 17:11:20.317",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "var notSoldProds \u003d prodsAndTotals\n    .filter{case(prodId, productTotalTuple) \u003d\u003e productTotalTuple._2 \u003d\u003d None}\n    .mapValues(_._1)\n\n    \nnotSoldProds.take(2)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-09 17:11:34.927",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "notSoldProds: org.apache.spark.rdd.RDD[(Int, Array[String])] \u003d MapPartitionsRDD[44] at mapValues at \u003cconsole\u003e:29\nres20: Array[(Int, Array[String])] \u003d Array((20,Array(20, LEGO Elves, 4589.79, 4)), (63,Array(63, Pajamas, 8131.85, 3)))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557384284491_838955228",
+      "id": "20190509-164444_1500600881",
+      "dateCreated": "2019-05-09 16:44:44.491",
+      "dateStarted": "2019-05-09 17:11:34.968",
+      "dateFinished": "2019-05-09 17:11:35.158",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Another way\n\nval notSoldProds1 \u003d prodById.subtractByKey(totalByProd)\n\nnotSoldProds1.count",
+      "user": "deepak",
+      "dateUpdated": "2019-05-10 15:44:24.148",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "notSoldProds1: org.apache.spark.rdd.RDD[(Int, Array[String])] \u003d SubtractedRDD[22] at subtractByKey at \u003cconsole\u003e:31\nres12: Long \u003d 4\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557385719670_-1235225132",
+      "id": "20190509-170839_1287053364",
+      "dateCreated": "2019-05-09 17:08:39.670",
+      "dateStarted": "2019-05-10 15:44:24.193",
+      "dateFinished": "2019-05-10 15:44:24.475",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// Another way\n\nval prodCogroup \u003d totalByProd.cogroup(prodById)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-10 15:40:22.015",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "prodCogroup: org.apache.spark.rdd.RDD[(Int, (Iterable[Double], Iterable[Array[String]]))] \u003d MapPartitionsRDD[19] at cogroup at \u003cconsole\u003e:29\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557466759085_1967770764",
+      "id": "20190510-153919_285525636",
+      "dateCreated": "2019-05-10 15:39:19.085",
+      "dateStarted": "2019-05-10 15:40:22.071",
+      "dateFinished": "2019-05-10 15:40:22.389",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val notSoldProds2 \u003d prodCogroup.filter{case(prodId, productTotalTuple) \u003d\u003e productTotalTuple._1.isEmpty}\nnotSoldProds2.count",
+      "user": "deepak",
+      "dateUpdated": "2019-05-10 15:48:08.814",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "notSoldProds2: org.apache.spark.rdd.RDD[(Int, (Iterable[Double], Iterable[Array[String]]))] \u003d MapPartitionsRDD[23] at filter at \u003cconsole\u003e:27\nres18: Long \u003d 4\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557466856121_-2091068655",
+      "id": "20190510-154056_1297042107",
+      "dateCreated": "2019-05-10 15:40:56.121",
+      "dateStarted": "2019-05-10 15:48:08.876",
+      "dateFinished": "2019-05-10 15:48:09.047",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "notSoldProds2.foreach(x \u003d\u003e println(x._2._2.head.mkString(\", \")))",
+      "user": "deepak",
+      "dateUpdated": "2019-05-10 15:48:12.284",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1557467071060_-1715500983",
+      "id": "20190510-154431_41197207",
+      "dateCreated": "2019-05-10 15:44:31.061",
+      "dateStarted": "2019-05-10 15:48:12.331",
+      "dateFinished": "2019-05-10 15:48:12.560",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n#### Cartesian product",
+      "user": "deepak",
+      "dateUpdated": "2019-05-10 15:52:45.620",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eCartesian product\u003c/h4\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557467547639_807081504",
+      "id": "20190510-155227_1958289276",
+      "dateCreated": "2019-05-10 15:52:27.639",
+      "dateStarted": "2019-05-10 15:52:45.621",
+      "dateFinished": "2019-05-10 15:52:47.597",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val c1 \u003d sc.parallelize(List(1,2,3))\nval c2 \u003d sc.parallelize(List(4,5,6))\n\nc1.cartesian(c2).collect",
+      "user": "deepak",
+      "dateUpdated": "2019-05-10 15:54:06.596",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "c1: org.apache.spark.rdd.RDD[Int] \u003d ParallelCollectionRDD[24] at parallelize at \u003cconsole\u003e:25\nc2: org.apache.spark.rdd.RDD[Int] \u003d ParallelCollectionRDD[25] at parallelize at \u003cconsole\u003e:26\nres20: Array[(Int, Int)] \u003d Array((1,4), (1,5), (1,6), (2,4), (2,5), (2,6), (3,4), (3,5), (3,6))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557467570611_632233360",
+      "id": "20190510-155250_291098586",
+      "dateCreated": "2019-05-10 15:52:50.611",
+      "dateStarted": "2019-05-10 15:54:06.641",
+      "dateFinished": "2019-05-10 15:54:06.937",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n#### Sorting data",
+      "user": "deepak",
+      "dateUpdated": "2019-05-10 16:21:19.104",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eSorting data\u003c/h4\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557469266701_590232602",
+      "id": "20190510-162106_661730335",
+      "dateCreated": "2019-05-10 16:21:06.701",
+      "dateStarted": "2019-05-10 16:21:19.105",
+      "dateFinished": "2019-05-10 16:21:19.108",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "// sortBy()\n\nval sortedProdNames \u003d totalsAndProds.sortBy(_._2._2(1))\n\nsortedProdNames.take(5)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-10 16:28:21.402",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "sortedProdNames: org.apache.spark.rdd.RDD[(Int, (Double, Array[String]))] \u003d MapPartitionsRDD[38] at sortBy at \u003cconsole\u003e:29\nres24: Array[(Int, (Double, Array[String]))] \u003d Array((90,(48601.89,Array(90, AMBROSIA TRIFIDA POLLEN, 5887.49, 1))), (94,(31049.07,Array(94, ATOPALM MUSCLE AND JOINT, 1544.25, 7))), (87,(26047.72,Array(87, Acyclovir, 6252.58, 4))), (79,(50917.700000000004,Array(79, Alphanate, 4218.17, 4))), (83,(31498.84,Array(83, Ativan, 9511.99, 9))))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557469281560_2028172219",
+      "id": "20190510-162121_1754298828",
+      "dateCreated": "2019-05-10 16:21:21.560",
+      "dateStarted": "2019-05-10 16:28:21.455",
+      "dateFinished": "2019-05-10 16:28:21.666",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n#### combineByKey()\n* Very versatile and flexible.\n* Used to implement *aggregateByKey()*, *foldByKey()*, and *reduceByKey()*.",
+      "user": "deepak",
+      "dateUpdated": "2019-05-13 15:37:25.142",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003ecombineByKey()\u003c/h4\u003e\n\u003cul\u003e\n\u003cli\u003eVery versatile and flexible.\u003c/li\u003e\n\u003cli\u003eUsed to implement \u003cem\u003eaggregateByKey()\u003c/em\u003e, \u003cem\u003efoldByKey()\u003c/em\u003e, and \u003cem\u003ereduceByKey()\u003c/em\u003e.\u003c/li\u003e\n\u003c/ul\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557725740679_-1260482315",
+      "id": "20190513-153540_49716165",
+      "dateCreated": "2019-05-13 15:35:40.679",
+      "dateStarted": "2019-05-13 15:37:25.143",
+      "dateFinished": "2019-05-13 15:37:27.115",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "def createCombiner \u003d (t: Array[String]) \u003d\u003e {\n    val total \u003d t(5).toDouble  // price\n    val q \u003d t(4).toInt  // quantity\n    (total/q, total/q, q, total)  // min, max, count, total\n}\n\ndef mergeVal: ((Double, Double, Int, Double), Array[String]) \u003d\u003e\n    (Double, Double, Int, Double) \u003d {\n        case((mn, mx, c, tot), t) \u003d\u003e {\n            val total \u003d t(5).toDouble\n            val q \u003d t(4).toInt\n            (scala.math.min(mn, total/q), scala.math.max(mx, total/q), c + q, tot + total)\n        }\n    }\n    \ndef mergeComb: ((Double, Double, Int, Double), (Double, Double, Int, Double)) \u003d\u003e (Double, Double, Int, Double) \u003d {\n    case((mn1, mx1, c1, tot1), (mn2, mx2, c2, tot2)) \u003d\u003e {\n        (scala.math.min(mn1, mn2), scala.math.max(mx1, mx2), c1 + c2, tot1 + tot2)\n    }\n}\n\nval avgByCust \u003d transByCust.combineByKey(createCombiner, mergeVal, mergeComb, new org.apache.spark.HashPartitioner(transByCust.partitioner.size))\n    .mapValues({case(mn, mx, cnt, tot) \u003d\u003e (mn, mx, cnt, tot, tot/cnt)})\n    \navgByCust.take(1)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-13 16:35:15.925",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "createCombiner: Array[String] \u003d\u003e (Double, Double, Int, Double)\nmergeVal: ((Double, Double, Int, Double), Array[String]) \u003d\u003e (Double, Double, Int, Double)\nmergeComb: ((Double, Double, Int, Double), (Double, Double, Int, Double)) \u003d\u003e (Double, Double, Int, Double)\navgByCust: org.apache.spark.rdd.RDD[(Int, (Double, Double, Int, Double, Double))] \u003d MapPartitionsRDD[26] at mapValues at \u003cconsole\u003e:52\nres11: Array[(Int, (Double, Double, Int, Double, Double))] \u003d Array()\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1557725850875_1423623835",
+      "id": "20190513-153730_1614008506",
+      "dateCreated": "2019-05-13 15:37:30.875",
+      "dateStarted": "2019-05-13 16:35:15.976",
+      "dateFinished": "2019-05-13 16:35:16.351",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n#### Converting RDD to DF by specifying schema using case class",
+      "user": "deepak",
+      "dateUpdated": "2019-03-13 14:32:34.321",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eConverting RDD to DF by specifying schema using case class\u003c/h4\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552370392931_-1191279253",
+      "id": "20190312-165952_198093076",
+      "dateCreated": "2019-03-12 16:59:52.931",
+      "dateStarted": "2019-03-13 14:32:34.321",
+      "dateFinished": "2019-03-13 14:32:34.326",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "case class Transaction(date: String, time: String, customerId: Int, productId: Int, quantity: Int, price: Float)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-02 15:24:39.399",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "defined class Transaction\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552369749280_-200910728",
+      "id": "20190312-164909_32028336",
+      "dateCreated": "2019-03-12 16:49:09.280",
+      "dateStarted": "2019-05-02 15:24:39.439",
+      "dateFinished": "2019-05-02 15:24:39.802",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val transRDD \u003d transData.map(trans \u003d\u003e Transaction(trans(0), trans(1), trans(2).toInt, trans(3).toInt, trans(4).toInt, trans(5).toFloat))\ntransRDD.take(10)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-02 15:36:32.884",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "transRDD: org.apache.spark.rdd.RDD[Transaction] \u003d MapPartitionsRDD[17] at map at \u003cconsole\u003e:27\nres7: Array[Transaction] \u003d Array(Transaction(2015-03-30,6:55 AM,51,68,1,9506.21), Transaction(2015-03-30,7:39 PM,99,86,5,4107.59), Transaction(2015-03-30,11:57 AM,79,58,7,2987.22), Transaction(2015-03-30,12:46 AM,51,50,6,7501.89), Transaction(2015-03-30,11:39 AM,86,24,5,8370.2), Transaction(2015-03-30,10:35 AM,63,19,5,1023.57), Transaction(2015-03-30,2:30 AM,23,77,7,5892.41), Transaction(2015-03-30,7:41 PM,49,58,4,9298.18), Transaction(2015-03-30,9:18 AM,97,86,8,9462.89), Transaction(2015-03-30,10:06 PM,94,26,4,4199.15))\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552370041079_-1706676966",
+      "id": "20190312-165401_13585317",
+      "dateCreated": "2019-03-12 16:54:01.079",
+      "dateStarted": "2019-05-02 15:36:32.914",
+      "dateFinished": "2019-05-02 15:36:33.284",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val transDF \u003d transRDD.toDF\ntransDF.show(10)",
+      "user": "deepak",
+      "dateUpdated": "2019-05-02 15:36:36.546",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+--------+----------+---------+--------+-------+\n|      date|    time|customerId|productId|quantity|  price|\n+----------+--------+----------+---------+--------+-------+\n|2015-03-30| 6:55 AM|        51|       68|       1|9506.21|\n|2015-03-30| 7:39 PM|        99|       86|       5|4107.59|\n|2015-03-30|11:57 AM|        79|       58|       7|2987.22|\n|2015-03-30|12:46 AM|        51|       50|       6|7501.89|\n|2015-03-30|11:39 AM|        86|       24|       5| 8370.2|\n|2015-03-30|10:35 AM|        63|       19|       5|1023.57|\n|2015-03-30| 2:30 AM|        23|       77|       7|5892.41|\n|2015-03-30| 7:41 PM|        49|       58|       4|9298.18|\n|2015-03-30| 9:18 AM|        97|       86|       8|9462.89|\n|2015-03-30|10:06 PM|        94|       26|       4|4199.15|\n+----------+--------+----------+---------+--------+-------+\nonly showing top 10 rows\n\ntransDF: org.apache.spark.sql.DataFrame \u003d [date: string, time: string ... 4 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552370201127_-22713273",
+      "id": "20190312-165641_366589846",
+      "dateCreated": "2019-03-12 16:56:41.127",
+      "dateStarted": "2019-05-02 15:36:36.584",
+      "dateFinished": "2019-05-02 15:36:39.198",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "transDF.printSchema",
+      "user": "deepak",
+      "dateUpdated": "2019-05-02 15:37:17.756",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- date: string (nullable \u003d true)\n |-- time: string (nullable \u003d true)\n |-- customerId: integer (nullable \u003d false)\n |-- productId: integer (nullable \u003d false)\n |-- quantity: integer (nullable \u003d false)\n |-- price: float (nullable \u003d false)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1556775382127_1774916758",
+      "id": "20190502-153622_1227104740",
+      "dateCreated": "2019-05-02 15:36:22.128",
+      "dateStarted": "2019-05-02 15:37:17.792",
+      "dateFinished": "2019-05-02 15:37:17.921",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n#### Reading directly into DF",
+      "user": "deepak",
+      "dateUpdated": "2019-03-13 14:36:04.062",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch4\u003eReading directly into DF\u003c/h4\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552448143489_-1318818851",
+      "id": "20190313-143543_1823000943",
+      "dateCreated": "2019-03-13 14:35:43.489",
+      "dateStarted": "2019-03-13 14:36:04.062",
+      "dateFinished": "2019-03-13 14:36:04.066",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val transDF \u003d spark.read.format(\"csv\")\n                    .option(\"header\", false)\n                    .option(\"delimiter\", \"#\")\n                    .load(z.get(\"transactionFile\").toString)\ntransDF.show()",
+      "user": "deepak",
+      "dateUpdated": "2019-03-13 14:48:15.682",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+--------+---+---+---+-------+\n|       _c0|     _c1|_c2|_c3|_c4|    _c5|\n+----------+--------+---+---+---+-------+\n|2015-03-30| 6:55 AM| 51| 68|  1|9506.21|\n|2015-03-30| 7:39 PM| 99| 86|  5|4107.59|\n|2015-03-30|11:57 AM| 79| 58|  7|2987.22|\n|2015-03-30|12:46 AM| 51| 50|  6|7501.89|\n|2015-03-30|11:39 AM| 86| 24|  5| 8370.2|\n|2015-03-30|10:35 AM| 63| 19|  5|1023.57|\n|2015-03-30| 2:30 AM| 23| 77|  7|5892.41|\n|2015-03-30| 7:41 PM| 49| 58|  4|9298.18|\n|2015-03-30| 9:18 AM| 97| 86|  8|9462.89|\n|2015-03-30|10:06 PM| 94| 26|  4|4199.15|\n|2015-03-30|10:57 AM| 91| 18|  1|3795.73|\n|2015-03-30| 7:43 AM| 20| 86| 10|1477.35|\n|2015-03-30| 5:58 PM| 38| 39|  6| 1090.0|\n|2015-03-30| 1:08 PM| 46|  6| 10|1014.78|\n|2015-03-30|12:18 AM| 56| 48|  9|8346.42|\n|2015-03-30| 1:18 AM| 11| 58|  4| 364.59|\n|2015-03-30| 3:01 AM| 59|  9|  5|5984.68|\n|2015-03-30|11:44 AM|  8| 35|  6| 1859.2|\n|2015-03-30|12:05 PM| 23|  8|  3|1527.04|\n|2015-03-30| 4:10 AM| 85| 93|  9|3314.71|\n+----------+--------+---+---+---+-------+\nonly showing top 20 rows\n\ntransDF: org.apache.spark.sql.DataFrame \u003d [_c0: string, _c1: string ... 4 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552448164043_1181527554",
+      "id": "20190313-143604_1694697773",
+      "dateCreated": "2019-03-13 14:36:04.043",
+      "dateStarted": "2019-03-13 14:48:15.702",
+      "dateFinished": "2019-03-13 14:48:16.027",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "transDF.printSchema",
+      "user": "deepak",
+      "dateUpdated": "2019-03-13 14:48:31.034",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- _c0: string (nullable \u003d true)\n |-- _c1: string (nullable \u003d true)\n |-- _c2: string (nullable \u003d true)\n |-- _c3: string (nullable \u003d true)\n |-- _c4: string (nullable \u003d true)\n |-- _c5: string (nullable \u003d true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552448899194_-1283263794",
+      "id": "20190313-144819_1773926034",
+      "dateCreated": "2019-03-13 14:48:19.194",
+      "dateStarted": "2019-03-13 14:48:31.054",
+      "dateFinished": "2019-03-13 14:48:31.131",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n##### Specifying schema while reading",
+      "user": "deepak",
+      "dateUpdated": "2019-03-13 14:43:13.700",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch5\u003eSpecifying schema while reading\u003c/h5\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552448421283_1169310720",
+      "id": "20190313-144021_636951757",
+      "dateCreated": "2019-03-13 14:40:21.283",
+      "dateStarted": "2019-03-13 14:43:13.700",
+      "dateFinished": "2019-03-13 14:43:13.704",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val transDF \u003d spark.read.format(\"csv\")\n                    .option(\"header\", false)\n                    .option(\"delimiter\", \"#\")\n                    .schema(\"date DATE, time STRING, customerId INT, productId INT, quantity INT, price DOUBLE\")\n                    .load(z.get(\"transactionFile\").toString)\ntransDF.show()",
+      "user": "deepak",
+      "dateUpdated": "2019-05-02 15:41:15.992",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+--------+----------+---------+--------+-------+\n|      date|    time|customerId|productId|quantity|  price|\n+----------+--------+----------+---------+--------+-------+\n|2015-03-30| 6:55 AM|        51|       68|       1|9506.21|\n|2015-03-30| 7:39 PM|        99|       86|       5|4107.59|\n|2015-03-30|11:57 AM|        79|       58|       7|2987.22|\n|2015-03-30|12:46 AM|        51|       50|       6|7501.89|\n|2015-03-30|11:39 AM|        86|       24|       5| 8370.2|\n|2015-03-30|10:35 AM|        63|       19|       5|1023.57|\n|2015-03-30| 2:30 AM|        23|       77|       7|5892.41|\n|2015-03-30| 7:41 PM|        49|       58|       4|9298.18|\n|2015-03-30| 9:18 AM|        97|       86|       8|9462.89|\n|2015-03-30|10:06 PM|        94|       26|       4|4199.15|\n|2015-03-30|10:57 AM|        91|       18|       1|3795.73|\n|2015-03-30| 7:43 AM|        20|       86|      10|1477.35|\n|2015-03-30| 5:58 PM|        38|       39|       6| 1090.0|\n|2015-03-30| 1:08 PM|        46|        6|      10|1014.78|\n|2015-03-30|12:18 AM|        56|       48|       9|8346.42|\n|2015-03-30| 1:18 AM|        11|       58|       4| 364.59|\n|2015-03-30| 3:01 AM|        59|        9|       5|5984.68|\n|2015-03-30|11:44 AM|         8|       35|       6| 1859.2|\n|2015-03-30|12:05 PM|        23|        8|       3|1527.04|\n|2015-03-30| 4:10 AM|        85|       93|       9|3314.71|\n+----------+--------+----------+---------+--------+-------+\nonly showing top 20 rows\n\ntransDF: org.apache.spark.sql.DataFrame \u003d [date: date, time: string ... 4 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552448593681_1371348034",
+      "id": "20190313-144313_2133521856",
+      "dateCreated": "2019-03-13 14:43:13.681",
+      "dateStarted": "2019-05-02 15:41:16.031",
+      "dateFinished": "2019-05-02 15:41:16.813",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "transDF.printSchema",
+      "user": "deepak",
+      "dateUpdated": "2019-05-02 15:41:23.883",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- date: date (nullable \u003d true)\n |-- time: string (nullable \u003d true)\n |-- customerId: integer (nullable \u003d true)\n |-- productId: integer (nullable \u003d true)\n |-- quantity: integer (nullable \u003d true)\n |-- price: double (nullable \u003d true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552448671970_-2107816962",
+      "id": "20190313-144431_786565231",
+      "dateCreated": "2019-03-13 14:44:31.970",
+      "dateStarted": "2019-05-02 15:41:23.919",
+      "dateFinished": "2019-05-02 15:41:24.018",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n##### Create schema manually",
+      "user": "deepak",
+      "dateUpdated": "2019-03-13 14:57:09.318",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch5\u003eCreate schema manually\u003c/h5\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552448940449_1370152600",
+      "id": "20190313-144900_1226559115",
+      "dateCreated": "2019-03-13 14:49:00.449",
+      "dateStarted": "2019-03-13 14:57:09.318",
+      "dateFinished": "2019-03-13 14:57:09.323",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import org.apache.spark.sql.types._\n\nval schema1 \u003d StructType(List(\n        StructField(\"date\", DateType, false),\n        StructField(\"time\", StringType, false),\n        StructField(\"customerId\", IntegerType, false),\n        StructField(\"productId\", IntegerType, false),\n        StructField(\"quantity\", IntegerType, false),\n        StructField(\"price\", FloatType, false)\n    ))\n    \nval transDF \u003d spark.read.format(\"csv\")\n                    .option(\"header\", false)\n                    .option(\"delimiter\", \"#\")\n                    .schema(schema1)\n                    .load(z.get(\"transactionFile\").toString)\ntransDF.show()",
+      "user": "deepak",
+      "dateUpdated": "2019-03-13 15:01:11.422",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+--------+----------+---------+--------+-------+\n|      date|    time|customerId|productId|quantity|  price|\n+----------+--------+----------+---------+--------+-------+\n|2015-03-30| 6:55 AM|        51|       68|       1|9506.21|\n|2015-03-30| 7:39 PM|        99|       86|       5|4107.59|\n|2015-03-30|11:57 AM|        79|       58|       7|2987.22|\n|2015-03-30|12:46 AM|        51|       50|       6|7501.89|\n|2015-03-30|11:39 AM|        86|       24|       5| 8370.2|\n|2015-03-30|10:35 AM|        63|       19|       5|1023.57|\n|2015-03-30| 2:30 AM|        23|       77|       7|5892.41|\n|2015-03-30| 7:41 PM|        49|       58|       4|9298.18|\n|2015-03-30| 9:18 AM|        97|       86|       8|9462.89|\n|2015-03-30|10:06 PM|        94|       26|       4|4199.15|\n|2015-03-30|10:57 AM|        91|       18|       1|3795.73|\n|2015-03-30| 7:43 AM|        20|       86|      10|1477.35|\n|2015-03-30| 5:58 PM|        38|       39|       6| 1090.0|\n|2015-03-30| 1:08 PM|        46|        6|      10|1014.78|\n|2015-03-30|12:18 AM|        56|       48|       9|8346.42|\n|2015-03-30| 1:18 AM|        11|       58|       4| 364.59|\n|2015-03-30| 3:01 AM|        59|        9|       5|5984.68|\n|2015-03-30|11:44 AM|         8|       35|       6| 1859.2|\n|2015-03-30|12:05 PM|        23|        8|       3|1527.04|\n|2015-03-30| 4:10 AM|        85|       93|       9|3314.71|\n+----------+--------+----------+---------+--------+-------+\nonly showing top 20 rows\n\nimport org.apache.spark.sql.types._\nschema1: org.apache.spark.sql.types.StructType \u003d StructType(StructField(date,DateType,false), StructField(time,StringType,false), StructField(customerId,IntegerType,false), StructField(productId,IntegerType,false), StructField(quantity,IntegerType,false), StructField(price,FloatType,false))\ntransDF: org.apache.spark.sql.DataFrame \u003d [date: date, time: string ... 4 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552449429295_-1880498005",
+      "id": "20190313-145709_1846642116",
+      "dateCreated": "2019-03-13 14:57:09.295",
+      "dateStarted": "2019-03-13 15:01:11.445",
+      "dateFinished": "2019-03-13 15:01:11.757",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "transDF.printSchema",
+      "user": "deepak",
+      "dateUpdated": "2019-03-13 15:01:25.540",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- date: date (nullable \u003d true)\n |-- time: string (nullable \u003d true)\n |-- customerId: integer (nullable \u003d true)\n |-- productId: integer (nullable \u003d true)\n |-- quantity: integer (nullable \u003d true)\n |-- price: float (nullable \u003d true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552449671422_-988334727",
+      "id": "20190313-150111_1023000523",
+      "dateCreated": "2019-03-13 15:01:11.422",
+      "dateStarted": "2019-03-13 15:01:25.563",
+      "dateFinished": "2019-03-13 15:01:25.649",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md Another way to specify schema",
+      "user": "deepak",
+      "dateUpdated": "2019-03-13 15:04:10.963",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eAnother way to specify schema\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552449685540_-1385437252",
+      "id": "20190313-150125_1107889363",
+      "dateCreated": "2019-03-13 15:01:25.540",
+      "dateStarted": "2019-03-13 15:04:10.963",
+      "dateFinished": "2019-03-13 15:04:10.967",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val schema2 \u003d new StructType()\n        .add(\"date\", DateType, false)\n        .add(\"time\", StringType, false)\n        .add(\"customerId\", IntegerType, false)\n        .add(\"productId\", IntegerType, false)\n        .add(\"quantity\", IntegerType, false)\n        .add(\"price\", FloatType, false)\n        \nval transDF \u003d spark.read.format(\"csv\")\n                    .option(\"header\", false)\n                    .option(\"delimiter\", \"#\")\n                    .schema(schema2)\n                    .load(z.get(\"transactionFile\").toString)\ntransDF.show()",
+      "user": "deepak",
+      "dateUpdated": "2019-03-13 16:52:13.407",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+--------+----------+---------+--------+-------+\n|      date|    time|customerId|productId|quantity|  price|\n+----------+--------+----------+---------+--------+-------+\n|2015-03-30| 6:55 AM|        51|       68|       1|9506.21|\n|2015-03-30| 7:39 PM|        99|       86|       5|4107.59|\n|2015-03-30|11:57 AM|        79|       58|       7|2987.22|\n|2015-03-30|12:46 AM|        51|       50|       6|7501.89|\n|2015-03-30|11:39 AM|        86|       24|       5| 8370.2|\n|2015-03-30|10:35 AM|        63|       19|       5|1023.57|\n|2015-03-30| 2:30 AM|        23|       77|       7|5892.41|\n|2015-03-30| 7:41 PM|        49|       58|       4|9298.18|\n|2015-03-30| 9:18 AM|        97|       86|       8|9462.89|\n|2015-03-30|10:06 PM|        94|       26|       4|4199.15|\n|2015-03-30|10:57 AM|        91|       18|       1|3795.73|\n|2015-03-30| 7:43 AM|        20|       86|      10|1477.35|\n|2015-03-30| 5:58 PM|        38|       39|       6| 1090.0|\n|2015-03-30| 1:08 PM|        46|        6|      10|1014.78|\n|2015-03-30|12:18 AM|        56|       48|       9|8346.42|\n|2015-03-30| 1:18 AM|        11|       58|       4| 364.59|\n|2015-03-30| 3:01 AM|        59|        9|       5|5984.68|\n|2015-03-30|11:44 AM|         8|       35|       6| 1859.2|\n|2015-03-30|12:05 PM|        23|        8|       3|1527.04|\n|2015-03-30| 4:10 AM|        85|       93|       9|3314.71|\n+----------+--------+----------+---------+--------+-------+\nonly showing top 20 rows\n\nschema2: org.apache.spark.sql.types.StructType \u003d StructType(StructField(date,DateType,false), StructField(time,StringType,false), StructField(customerId,IntegerType,false), StructField(productId,IntegerType,false), StructField(quantity,IntegerType,false), StructField(price,FloatType,false))\ntransDF: org.apache.spark.sql.DataFrame \u003d [date: date, time: string ... 4 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552449850936_-1398229563",
+      "id": "20190313-150410_686439760",
+      "dateCreated": "2019-03-13 15:04:10.936",
+      "dateStarted": "2019-03-13 16:52:13.432",
+      "dateFinished": "2019-03-13 16:52:13.694",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n##### Another way to specify schema",
+      "user": "deepak",
+      "dateUpdated": "2019-03-13 16:53:29.312",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch5\u003eAnother way to specify schema\u003c/h5\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552456320449_328382311",
+      "id": "20190313-165200_2047727345",
+      "dateCreated": "2019-03-13 16:52:00.449",
+      "dateStarted": "2019-03-13 16:53:29.313",
+      "dateFinished": "2019-03-13 16:53:29.318",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "val schema3 \u003d StructType(StructField(\"date\", DateType, false)\n                    :: StructField(\"time\", StringType, false)\n                    :: StructField(\"customerId\", IntegerType, false)\n                    :: StructField(\"productId\", IntegerType, false)\n                    :: StructField(\"quantity\", IntegerType, false)\n                    :: StructField(\"price\", FloatType, false)\n                    :: Nil\n                )\n\nval transDF \u003d spark.read.format(\"csv\")\n                    .option(\"header\", false)\n                    .option(\"delimiter\", \"#\")\n                    .schema(schema3)\n                    .load(z.get(\"transactionFile\").toString)\ntransDF.show()",
+      "user": "deepak",
+      "dateUpdated": "2019-03-13 17:02:04.803",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+--------+----------+---------+--------+-------+\n|      date|    time|customerId|productId|quantity|  price|\n+----------+--------+----------+---------+--------+-------+\n|2015-03-30| 6:55 AM|        51|       68|       1|9506.21|\n|2015-03-30| 7:39 PM|        99|       86|       5|4107.59|\n|2015-03-30|11:57 AM|        79|       58|       7|2987.22|\n|2015-03-30|12:46 AM|        51|       50|       6|7501.89|\n|2015-03-30|11:39 AM|        86|       24|       5| 8370.2|\n|2015-03-30|10:35 AM|        63|       19|       5|1023.57|\n|2015-03-30| 2:30 AM|        23|       77|       7|5892.41|\n|2015-03-30| 7:41 PM|        49|       58|       4|9298.18|\n|2015-03-30| 9:18 AM|        97|       86|       8|9462.89|\n|2015-03-30|10:06 PM|        94|       26|       4|4199.15|\n|2015-03-30|10:57 AM|        91|       18|       1|3795.73|\n|2015-03-30| 7:43 AM|        20|       86|      10|1477.35|\n|2015-03-30| 5:58 PM|        38|       39|       6| 1090.0|\n|2015-03-30| 1:08 PM|        46|        6|      10|1014.78|\n|2015-03-30|12:18 AM|        56|       48|       9|8346.42|\n|2015-03-30| 1:18 AM|        11|       58|       4| 364.59|\n|2015-03-30| 3:01 AM|        59|        9|       5|5984.68|\n|2015-03-30|11:44 AM|         8|       35|       6| 1859.2|\n|2015-03-30|12:05 PM|        23|        8|       3|1527.04|\n|2015-03-30| 4:10 AM|        85|       93|       9|3314.71|\n+----------+--------+----------+---------+--------+-------+\nonly showing top 20 rows\n\nschema3: org.apache.spark.sql.types.StructType \u003d StructType(StructField(date,DateType,false), StructField(time,StringType,false), StructField(customerId,IntegerType,false), StructField(productId,IntegerType,false), StructField(quantity,IntegerType,false), StructField(price,FloatType,false))\ntransDF: org.apache.spark.sql.DataFrame \u003d [date: date, time: string ... 4 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1552456409288_-1155756635",
+      "id": "20190313-165329_630747366",
+      "dateCreated": "2019-03-13 16:53:29.288",
+      "dateStarted": "2019-03-13 17:02:04.828",
+      "dateFinished": "2019-03-13 17:02:05.111",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "user": "deepak",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1552456758747_-821537846",
+      "id": "20190313-165918_111741721",
+      "dateCreated": "2019-03-13 16:59:18.747",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "sia/chapter-4",
+  "id": "2E7GMRNJP",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {
+    "md:shared_process": [],
+    "sh:shared_process": [],
+    "spark:shared_process": []
+  },
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {}
+}
